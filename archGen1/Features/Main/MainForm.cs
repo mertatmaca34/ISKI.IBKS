@@ -13,16 +13,13 @@ namespace archGen1.Features.Main
         public MainForm()
         {
             InitializeComponent();
+
+            HomePageButton.Click += (s, e) => HomePageButtonClick?.Invoke(s,e);
         }
 
         public void ShowMert()
         {
             throw new NotImplementedException();
-        }
-
-        private void userControl11_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Mert Tıkladı");
         }
     }
 }

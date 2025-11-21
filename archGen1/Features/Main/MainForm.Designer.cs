@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
-            navigationBarButton1 = new archGen1.Controls.NavigationBarButton();
+            HomePageButton = new archGen1.Controls.NavigationBarButton();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -38,7 +38,7 @@
             tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(navigationBarButton1, 0, 0);
+            tableLayoutPanel1.Controls.Add(HomePageButton, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Left;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.MaximumSize = new Size(90, 0);
@@ -55,20 +55,23 @@
             tableLayoutPanel1.Size = new Size(90, 681);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // navigationBarButton1
+            // HomePageButton
             // 
-            navigationBarButton1.BackColor = Color.White;
-            navigationBarButton1.CornerRadius = 8;
-            navigationBarButton1.FlatAppearance.BorderSize = 0;
-            navigationBarButton1.FlatStyle = FlatStyle.Flat;
-            navigationBarButton1.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            navigationBarButton1.Location = new Point(8, 8);
-            navigationBarButton1.Margin = new Padding(8);
-            navigationBarButton1.Name = "navigationBarButton1";
-            navigationBarButton1.Size = new Size(74, 68);
-            navigationBarButton1.TabIndex = 1;
-            navigationBarButton1.Text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            navigationBarButton1.UseVisualStyleBackColor = false;
+            HomePageButton.BackColor = Color.White;
+            HomePageButton.CornerRadius = 10;
+            HomePageButton.FlatAppearance.BorderSize = 0;
+            HomePageButton.FlatStyle = FlatStyle.Flat;
+            HomePageButton.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            HomePageButton.ForeColor = Color.DimGray;
+            HomePageButton.Image = Properties.Resources.home_24px;
+            HomePageButton.Location = new Point(8, 8);
+            HomePageButton.Margin = new Padding(8);
+            HomePageButton.Name = "HomePageButton";
+            HomePageButton.Size = new Size(74, 68);
+            HomePageButton.TabIndex = 1;
+            HomePageButton.Text = "Anasayfa";
+            HomePageButton.TextAlign = ContentAlignment.BottomCenter;
+            HomePageButton.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
@@ -87,7 +90,6 @@
         #endregion
 
         private TableLayoutPanel tableLayoutPanel1;
-        public Controls.NavigationBarButton HomePageButton;
-        private Controls.NavigationBarButton navigationBarButton1;
+        private Controls.NavigationBarButton HomePageButton;
     }
 }

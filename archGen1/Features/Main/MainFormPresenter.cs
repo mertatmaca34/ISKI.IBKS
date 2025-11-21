@@ -21,6 +21,7 @@ public class MainFormPresenter
 
     private void View_Load(object? sender, EventArgs e)
     {
+
         //MessageBox.Show("Mert Başladı");
     }
 }

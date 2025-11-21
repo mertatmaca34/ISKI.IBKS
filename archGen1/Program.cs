@@ -21,8 +21,7 @@ namespace archGen1
             //var mainForm = host.Services.GetRequiredService<CounterForm>();
 
             var mainForm = new MainForm();
-
-            var mainFormPresenter = new MainFormPresenter(mainForm);
+            mainForm.Tag = new MainFormPresenter(mainForm);
 
             Application.Run(mainForm);
         }

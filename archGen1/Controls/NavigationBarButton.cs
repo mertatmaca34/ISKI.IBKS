@@ -28,9 +28,11 @@ namespace archGen1.Controls
 
         public NavigationBarButton()
         {
-            FlatAppearance.BorderSize = 0;
-            FlatStyle = FlatStyle.Flat;
-            BackColor = Color.White;
+            this.FlatAppearance.BorderSize = 0;
+            this.FlatStyle = FlatStyle.Flat;
+            this.BackColor = Color.White;
+            this.ForeColor = Color.DimGray;
+            this.Size = new Size(75, 68);
             this.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             this.MouseEnter += NavigationBarButton_MouseEnter;
             this.MouseLeave += NavigationBarButton_MouseLeave;
