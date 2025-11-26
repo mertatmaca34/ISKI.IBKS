@@ -1,4 +1,4 @@
-﻿namespace archGen1.Features.HomePage
+﻿namespace Iski.IBKS.Presentation.WinForms.Features.HomePage
 {
     partial class HomePage
     {
@@ -31,18 +31,20 @@
             TableLayoutPanelBg = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel3 = new TableLayoutPanel();
-            analogSensorHeaderControl2 = new archGen1.Controls.AnalogSensorHeaderControl();
-            digitalSensorControl1 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl2 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl3 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl4 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl5 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl6 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl7 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl8 = new archGen1.Controls.DigitalSensorControl();
-            digitalSensorControl9 = new archGen1.Controls.DigitalSensorControl();
+            analogSensorHeaderControl2 = new Iski.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
+            digitalSensorControl1 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl2 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl3 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl4 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl5 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl6 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl7 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl8 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl9 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
             tableLayoutPanel2 = new TableLayoutPanel();
-            analogSensorHeaderControl1 = new archGen1.Controls.AnalogSensorHeaderControl();
+            analogSensorHeaderControl1 = new Iski.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
+            stationParameterStatusControl1 = new Iski.IBKS.Presentation.WinForms.Controls.StationParameterStatusControl();
+            stationStatusBar1 = new Iski.IBKS.Presentation.WinForms.Controls.StationStatusBar();
             TableLayoutPanelBg.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -72,6 +74,8 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 0);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
+            tableLayoutPanel1.Controls.Add(stationParameterStatusControl1, 1, 1);
+            tableLayoutPanel1.Controls.Add(stationStatusBar1, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(1, 1);
             tableLayoutPanel1.Margin = new Padding(1);
@@ -260,6 +264,31 @@
             analogSensorHeaderControl1.Size = new Size(567, 63);
             analogSensorHeaderControl1.TabIndex = 1;
             // 
+            // stationParameterStatusControl1
+            // 
+            stationParameterStatusControl1.Dock = DockStyle.Fill;
+            stationParameterStatusControl1.Location = new Point(582, 213);
+            stationParameterStatusControl1.Name = "stationParameterStatusControl1";
+            stationParameterStatusControl1.Padding = new Padding(1);
+            stationParameterStatusControl1.Size = new Size(573, 413);
+            stationParameterStatusControl1.TabIndex = 2;
+            // 
+            // stationStatusBar1
+            // 
+            stationStatusBar1.BackColor = Color.FromArgb(235, 235, 235);
+            tableLayoutPanel1.SetColumnSpan(stationStatusBar1, 2);
+            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: ";
+            stationStatusBar1.Dock = DockStyle.Fill;
+            stationStatusBar1.IsConnected = "Bağlantı Durumu: ";
+            stationStatusBar1.Location = new Point(3, 632);
+            stationStatusBar1.Name = "stationStatusBar1";
+            stationStatusBar1.Padding = new Padding(1);
+            stationStatusBar1.Size = new Size(1152, 30);
+            stationStatusBar1.SystemTime = "Sistem Saati: ";
+            stationStatusBar1.TabIndex = 3;
+            stationStatusBar1.UpTime = "Bağlantı Süresi: ";
+            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: ";
+            // 
             // HomePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -293,5 +322,7 @@
         private Controls.DigitalSensorControl digitalSensorControl7;
         private Controls.DigitalSensorControl digitalSensorControl8;
         private Controls.DigitalSensorControl digitalSensorControl9;
+        private Controls.StationParameterStatusControl stationParameterStatusControl1;
+        private Controls.StationStatusBar stationStatusBar1;
     }
 }

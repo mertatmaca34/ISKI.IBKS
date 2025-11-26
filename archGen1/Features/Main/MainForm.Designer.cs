@@ -1,4 +1,6 @@
-﻿namespace archGen1.Features.Main
+﻿using Iski.IBKS.Presentation.WinForms.Controls;
+
+namespace Iski.IBKS.Presentation.WinForms.Features.Main
 {
     partial class MainForm
     {
@@ -29,7 +31,7 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
-            HomePageButton = new archGen1.Controls.NavigationBarButton();
+            HomePageButton = new Iski.IBKS.Presentation.WinForms.Controls.NavigationBarButton();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -90,6 +92,6 @@
         #endregion
 
         private TableLayoutPanel tableLayoutPanel1;
-        private Controls.NavigationBarButton HomePageButton;
+        private NavigationBarButton HomePageButton;
     }
 }

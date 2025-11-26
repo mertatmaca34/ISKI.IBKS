@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Iski.IBKS.Presentation.WinForms.Features.Main;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 
-namespace archGen1.Features.Main
+namespace Iski.IBKS.Presentation.WinForms.Features.Main
 {
     public partial class MainForm : Form, IMainFormView
     {

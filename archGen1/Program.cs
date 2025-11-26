@@ -1,8 +1,9 @@
-using archGen1.Features.Main;
+using Iski.IBKS.Presentation.WinForms;
+using Iski.IBKS.Presentation.WinForms.Features.Main;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace archGen1
+namespace Iski.IBKS.Presentation.WinForms
 {
     internal static class Program
     {

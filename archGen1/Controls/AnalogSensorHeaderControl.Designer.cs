@@ -1,4 +1,4 @@
-﻿namespace archGen1.Controls
+﻿namespace Iski.IBKS.Presentation.WinForms.Controls
 {
     partial class AnalogSensorHeaderControl
     {

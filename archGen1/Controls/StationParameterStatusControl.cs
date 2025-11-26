@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace archGen1.Controls
+namespace Iski.IBKS.Presentation.WinForms.Controls
 {
     public partial class StationParameterStatusControl : UserControl
     {

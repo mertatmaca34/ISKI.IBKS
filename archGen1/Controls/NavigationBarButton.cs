@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace archGen1.Controls
+namespace Iski.IBKS.Presentation.WinForms.Controls
 {
     public class NavigationBarButton : Button
     {
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn
+        private static extern nint CreateRoundRectRgn
         (
             int nLeftRect,     // x-coordinate of upper-left corner
             int nTopRect,      // y-coordinate of upper-left corner
@@ -28,17 +28,17 @@ namespace archGen1.Controls
 
         public NavigationBarButton()
         {
-            this.FlatAppearance.BorderSize = 0;
-            this.FlatStyle = FlatStyle.Flat;
-            this.BackColor = Color.White;
-            this.ForeColor = Color.DimGray;
-            this.Size = new Size(75, 68);
-            this.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            this.MouseEnter += NavigationBarButton_MouseEnter;
-            this.MouseLeave += NavigationBarButton_MouseLeave;
-            this.MouseDown += NavigationBarButton_MouseDown;
-            this.MouseUp += NavigationBarButton_MouseUp;
-            this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, CornerRadius, CornerRadius));
+            FlatAppearance.BorderSize = 0;
+            FlatStyle = FlatStyle.Flat;
+            BackColor = Color.White;
+            ForeColor = Color.DimGray;
+            Size = new Size(75, 68);
+            Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            MouseEnter += NavigationBarButton_MouseEnter;
+            MouseLeave += NavigationBarButton_MouseLeave;
+            MouseDown += NavigationBarButton_MouseDown;
+            MouseUp += NavigationBarButton_MouseUp;
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, CornerRadius, CornerRadius));
 
             Invalidate();
         }

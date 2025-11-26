@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace archGen1.Features.Main;
+namespace Iski.IBKS.Presentation.WinForms.Features.Main;
 
 public interface IMainFormView
 {
