@@ -1,9 +1,9 @@
-using Iski.IBKS.Presentation.WinForms;
-using Iski.IBKS.Presentation.WinForms.Features.Main;
+using ISKI.IBKS.Presentation.WinForms;
+using ISKI.IBKS.Presentation.WinForms.Features.Main;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Iski.IBKS.Presentation.WinForms
+namespace ISKI.IBKS.Presentation.WinForms
 {
     internal static class Program
     {

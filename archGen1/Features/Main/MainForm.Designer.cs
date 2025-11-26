@@ -1,6 +1,6 @@
-﻿using Iski.IBKS.Presentation.WinForms.Controls;
+﻿using ISKI.IBKS.Presentation.WinForms.Controls;
 
-namespace Iski.IBKS.Presentation.WinForms.Features.Main
+namespace ISKI.IBKS.Presentation.WinForms.Features.Main
 {
     partial class MainForm
     {
@@ -31,7 +31,7 @@ namespace Iski.IBKS.Presentation.WinForms.Features.Main
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
-            HomePageButton = new Iski.IBKS.Presentation.WinForms.Controls.NavigationBarButton();
+            HomePageButton = new ISKI.IBKS.Presentation.WinForms.Controls.NavigationBarButton();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 

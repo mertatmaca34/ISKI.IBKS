@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Iski.IBKS.Presentation.WinForms
+namespace ISKI.IBKS.Presentation.WinForms
 {
     public static class DependencyInjection
     {

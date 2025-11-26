@@ -1,4 +1,4 @@
-﻿namespace Iski.IBKS.Presentation.WinForms.Features.HomePage
+﻿namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
 {
     partial class HomePage
     {
@@ -31,20 +31,20 @@
             TableLayoutPanelBg = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel3 = new TableLayoutPanel();
-            analogSensorHeaderControl2 = new Iski.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
-            digitalSensorControl1 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl2 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl3 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl4 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl5 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl6 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl7 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl8 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
-            digitalSensorControl9 = new Iski.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            analogSensorHeaderControl2 = new ISKI.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
+            digitalSensorControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl2 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl3 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl4 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl5 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl6 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl7 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl8 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
+            digitalSensorControl9 = new ISKI.IBKS.Presentation.WinForms.Controls.DigitalSensorControl();
             tableLayoutPanel2 = new TableLayoutPanel();
-            analogSensorHeaderControl1 = new Iski.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
-            stationParameterStatusControl1 = new Iski.IBKS.Presentation.WinForms.Controls.StationParameterStatusControl();
-            stationStatusBar1 = new Iski.IBKS.Presentation.WinForms.Controls.StationStatusBar();
+            analogSensorHeaderControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
+            stationParameterStatusControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.StationParameterStatusControl();
+            stationStatusBar1 = new ISKI.IBKS.Presentation.WinForms.Controls.StationStatusBar();
             TableLayoutPanelBg.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();

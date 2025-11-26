@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Iski.IBKS.Presentation.WinForms.Controls
+namespace ISKI.IBKS.Presentation.WinForms.Controls
 {
     public class NavigationBarButton : Button
     {

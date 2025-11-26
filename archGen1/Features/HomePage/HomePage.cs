@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Iski.IBKS.Presentation.WinForms.Features.HomePage
+namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
 {
     public partial class HomePage : UserControl
     {

@@ -1,4 +1,4 @@
-﻿namespace Iski.IBKS.Presentation.WinForms.Controls
+﻿namespace ISKI.IBKS.Presentation.WinForms.Controls
 {
     partial class AnalogSensorHeaderControl
     {
