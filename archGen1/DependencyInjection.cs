@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ISKI.IBKS.Presentation.WinForms.Features.HomePage;
+using ISKI.IBKS.Presentation.WinForms.Features.Main;
+using ISKI.IBKS.Presentation.WinForms.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +14,11 @@ namespace ISKI.IBKS.Presentation.WinForms
     {
         public static IServiceCollection AddWinForms(this IServiceCollection services)
         {
-            //services.AddTransient<CounterPresenter>();
-            //services.AddTransient<CounterForm>();
+            services.AddSingleton<MainFormPresenter>();
+            services.AddSingleton<MainForm>();
+            services.AddSingleton<HomePagePresenter>();
+            services.AddSingleton<HomePage>();
+            services.AddSingleton<IViewNavigator, ViewNavigator>();
 
             return services;
         }

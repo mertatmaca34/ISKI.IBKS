@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
 {
-    public partial class HomePage : UserControl
+    public partial class HomePage : UserControl,IHomePageView
     {
         public HomePage()
         {

@@ -9,6 +9,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main
 {
     public partial class MainForm : Form, IMainFormView
     {
+        public Panel PanelContainer => panel1;
+
         public event EventHandler? HomePageButtonClick;
 
         public MainForm()

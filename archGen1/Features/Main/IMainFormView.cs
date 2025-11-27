@@ -11,5 +11,6 @@ public interface IMainFormView
     event EventHandler Load;
     event EventHandler HomePageButtonClick;
 
+    Panel PanelContainer { get; }
     void ShowMert();
 }

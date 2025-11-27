@@ -31,7 +31,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
-            HomePageButton = new ISKI.IBKS.Presentation.WinForms.Controls.NavigationBarButton();
+            HomePageButton = new NavigationBarButton();
+            panel1 = new Panel();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -75,12 +76,21 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main
             HomePageButton.TextAlign = ContentAlignment.BottomCenter;
             HomePageButton.UseVisualStyleBackColor = false;
             // 
+            // panel1
+            // 
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(90, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1174, 681);
+            panel1.TabIndex = 1;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
             ClientSize = new Size(1264, 681);
+            Controls.Add(panel1);
             Controls.Add(tableLayoutPanel1);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -93,5 +103,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main
 
         private TableLayoutPanel tableLayoutPanel1;
         private NavigationBarButton HomePageButton;
+        private Panel panel1;
     }
 }

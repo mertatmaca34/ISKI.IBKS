@@ -17,12 +17,9 @@ namespace ISKI.IBKS.Presentation.WinForms
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            //using var host = CreateHostBuilder().Build();
+            using var host = CreateHostBuilder().Build();
 
-            //var mainForm = host.Services.GetRequiredService<CounterForm>();
-
-            var mainForm = new MainForm();
-            mainForm.Tag = new MainFormPresenter(mainForm);
+            var mainForm = host.Services.GetRequiredService<MainForm>();
 
             Application.Run(mainForm);
         }
