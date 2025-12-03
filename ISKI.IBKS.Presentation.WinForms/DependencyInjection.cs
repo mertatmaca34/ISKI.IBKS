@@ -18,6 +18,7 @@ namespace ISKI.IBKS.Presentation.WinForms
             services.AddView<IMainFormView, MainForm, MainFormPresenter>();
             services.AddSingleton<GlobalExceptionHandler>();
             services.AddSingleton<IViewNavigator, ViewNavigator>();
+            services.AddView<IHomePageView, HomePage, HomePagePresenter>();
 
             return services;
         }
