@@ -30,4 +30,9 @@ public class PlcConnectionException : Exception
         : base($"Plc'den bağlantı kesilirken bir hata oluştu. Error: {errorText}")
     {
     }
+
+    public PlcConnectionException()
+        : base($"Plc bağlantısı stabil değil, okuma/yazma yapılamıyor.")
+    {
+    }
 }
