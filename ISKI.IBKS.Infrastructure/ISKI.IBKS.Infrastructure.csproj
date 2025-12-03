@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="IoT\Plc\" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Sharp7" Version="1.1.84" />
   </ItemGroup>
 
 </Project>
