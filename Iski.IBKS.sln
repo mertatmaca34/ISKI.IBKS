@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISKI.IBKS.Presentation.WinForms", "archGen1\ISKI.IBKS.Presentation.WinForms.csproj", "{F71F1D38-F50E-42C9-939A-BD48F75C36EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISKI.IBKS.Presentation.WinForms", "ISKI.IBKS.Presentation.WinForms\ISKI.IBKS.Presentation.WinForms.csproj", "{F71F1D38-F50E-42C9-939A-BD48F75C36EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISKI.IBKS.Domain", "Iski.IBKS.Domain\ISKI.IBKS.Domain.csproj", "{C383C06B-5ED0-4DCF-9F8B-D73D417B0C8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISKI.IBKS.Domain", "ISKI.IBKS.Domain\ISKI.IBKS.Domain.csproj", "{C383C06B-5ED0-4DCF-9F8B-D73D417B0C8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
