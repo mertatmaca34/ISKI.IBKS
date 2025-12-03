@@ -27,14 +27,11 @@ public class MainFormPresenter
 
     private void View_HomePageButtonClick(object? sender, EventArgs e)
     {
-        MessageBox.Show("Anasayfa Butonuna Tıklandı");
-
-        var homePageView = _serviceProvider.GetRequiredService<HomePage.HomePage>();
         _viewNavigator.Navigate<HomePage.HomePage>(_mainFormView.PanelContainer);
     }
 
     private void View_Load(object? sender, EventArgs e)
     {
-        MessageBox.Show("Load Başladı");
+        _viewNavigator.Navigate<HomePage.HomePage>(_mainFormView.PanelContainer);
     }
 }

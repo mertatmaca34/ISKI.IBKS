@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            TableLayoutPanelBg = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel3 = new TableLayoutPanel();
             analogSensorHeaderControl2 = new ISKI.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
@@ -45,25 +44,10 @@
             analogSensorHeaderControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
             stationParameterStatusControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.StationParameterStatusControl();
             stationStatusBar1 = new ISKI.IBKS.Presentation.WinForms.Controls.StationStatusBar();
-            TableLayoutPanelBg.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
-            // 
-            // TableLayoutPanelBg
-            // 
-            TableLayoutPanelBg.BackColor = Color.FromArgb(235, 235, 235);
-            TableLayoutPanelBg.ColumnCount = 1;
-            TableLayoutPanelBg.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            TableLayoutPanelBg.Controls.Add(tableLayoutPanel1, 0, 0);
-            TableLayoutPanelBg.Dock = DockStyle.Fill;
-            TableLayoutPanelBg.Location = new Point(5, 5);
-            TableLayoutPanelBg.Name = "TableLayoutPanelBg";
-            TableLayoutPanelBg.RowCount = 1;
-            TableLayoutPanelBg.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            TableLayoutPanelBg.Size = new Size(1160, 667);
-            TableLayoutPanelBg.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -77,15 +61,15 @@
             tableLayoutPanel1.Controls.Add(stationParameterStatusControl1, 1, 1);
             tableLayoutPanel1.Controls.Add(stationStatusBar1, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(1, 1);
+            tableLayoutPanel1.Location = new Point(5, 5);
             tableLayoutPanel1.Margin = new Padding(1);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.43F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 66.57F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.Size = new Size(1158, 665);
-            tableLayoutPanel1.TabIndex = 0;
+            tableLayoutPanel1.Size = new Size(1160, 667);
+            tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel3
             // 
@@ -104,14 +88,14 @@
             tableLayoutPanel3.Controls.Add(digitalSensorControl8, 2, 2);
             tableLayoutPanel3.Controls.Add(digitalSensorControl9, 2, 3);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(582, 3);
+            tableLayoutPanel3.Location = new Point(583, 3);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 4;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 69F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel3.Size = new Size(573, 204);
+            tableLayoutPanel3.Size = new Size(574, 205);
             tableLayoutPanel3.TabIndex = 1;
             // 
             // analogSensorHeaderControl2
@@ -125,7 +109,7 @@
             analogSensorHeaderControl2.Location = new Point(3, 3);
             analogSensorHeaderControl2.Name = "analogSensorHeaderControl2";
             analogSensorHeaderControl2.Padding = new Padding(1);
-            analogSensorHeaderControl2.Size = new Size(567, 63);
+            analogSensorHeaderControl2.Size = new Size(568, 63);
             analogSensorHeaderControl2.TabIndex = 0;
             // 
             // digitalSensorControl1
@@ -160,7 +144,7 @@
             digitalSensorControl3.Name = "digitalSensorControl3";
             digitalSensorControl3.Padding = new Padding(1);
             digitalSensorControl3.SensorName = "-";
-            digitalSensorControl3.Size = new Size(185, 39);
+            digitalSensorControl3.Size = new Size(185, 40);
             digitalSensorControl3.StatusIndicator = Color.Gray;
             digitalSensorControl3.TabIndex = 1;
             // 
@@ -172,7 +156,7 @@
             digitalSensorControl4.Name = "digitalSensorControl4";
             digitalSensorControl4.Padding = new Padding(1);
             digitalSensorControl4.SensorName = "-";
-            digitalSensorControl4.Size = new Size(185, 39);
+            digitalSensorControl4.Size = new Size(185, 40);
             digitalSensorControl4.StatusIndicator = Color.Gray;
             digitalSensorControl4.TabIndex = 1;
             // 
@@ -208,7 +192,7 @@
             digitalSensorControl7.Name = "digitalSensorControl7";
             digitalSensorControl7.Padding = new Padding(1);
             digitalSensorControl7.SensorName = "-";
-            digitalSensorControl7.Size = new Size(185, 39);
+            digitalSensorControl7.Size = new Size(186, 39);
             digitalSensorControl7.StatusIndicator = Color.Gray;
             digitalSensorControl7.TabIndex = 1;
             // 
@@ -220,7 +204,7 @@
             digitalSensorControl8.Name = "digitalSensorControl8";
             digitalSensorControl8.Padding = new Padding(1);
             digitalSensorControl8.SensorName = "-";
-            digitalSensorControl8.Size = new Size(185, 39);
+            digitalSensorControl8.Size = new Size(186, 39);
             digitalSensorControl8.StatusIndicator = Color.Gray;
             digitalSensorControl8.TabIndex = 1;
             // 
@@ -232,7 +216,7 @@
             digitalSensorControl9.Name = "digitalSensorControl9";
             digitalSensorControl9.Padding = new Padding(1);
             digitalSensorControl9.SensorName = "-";
-            digitalSensorControl9.Size = new Size(185, 39);
+            digitalSensorControl9.Size = new Size(186, 40);
             digitalSensorControl9.StatusIndicator = Color.Gray;
             digitalSensorControl9.TabIndex = 1;
             // 
@@ -248,7 +232,7 @@
             tableLayoutPanel1.SetRowSpan(tableLayoutPanel2, 2);
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 69F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(573, 623);
+            tableLayoutPanel2.Size = new Size(574, 625);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // analogSensorHeaderControl1
@@ -261,16 +245,16 @@
             analogSensorHeaderControl1.Location = new Point(3, 3);
             analogSensorHeaderControl1.Name = "analogSensorHeaderControl1";
             analogSensorHeaderControl1.Padding = new Padding(1);
-            analogSensorHeaderControl1.Size = new Size(567, 63);
+            analogSensorHeaderControl1.Size = new Size(568, 63);
             analogSensorHeaderControl1.TabIndex = 1;
             // 
             // stationParameterStatusControl1
             // 
             stationParameterStatusControl1.Dock = DockStyle.Fill;
-            stationParameterStatusControl1.Location = new Point(582, 213);
+            stationParameterStatusControl1.Location = new Point(583, 214);
             stationParameterStatusControl1.Name = "stationParameterStatusControl1";
             stationParameterStatusControl1.Padding = new Padding(1);
-            stationParameterStatusControl1.Size = new Size(573, 413);
+            stationParameterStatusControl1.Size = new Size(574, 414);
             stationParameterStatusControl1.TabIndex = 2;
             // 
             // stationStatusBar1
@@ -280,10 +264,10 @@
             stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: ";
             stationStatusBar1.Dock = DockStyle.Fill;
             stationStatusBar1.IsConnected = "Bağlantı Durumu: ";
-            stationStatusBar1.Location = new Point(3, 632);
+            stationStatusBar1.Location = new Point(3, 634);
             stationStatusBar1.Name = "stationStatusBar1";
             stationStatusBar1.Padding = new Padding(1);
-            stationStatusBar1.Size = new Size(1152, 30);
+            stationStatusBar1.Size = new Size(1154, 30);
             stationStatusBar1.SystemTime = "Sistem Saati: ";
             stationStatusBar1.TabIndex = 3;
             stationStatusBar1.UpTime = "Bağlantı Süresi: ";
@@ -294,11 +278,10 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            Controls.Add(TableLayoutPanelBg);
+            Controls.Add(tableLayoutPanel1);
             Name = "HomePage";
             Padding = new Padding(5);
             Size = new Size(1170, 677);
-            TableLayoutPanelBg.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
@@ -307,12 +290,9 @@
 
         #endregion
 
-        private TableLayoutPanel TableLayoutPanelBg;
         private TableLayoutPanel tableLayoutPanel1;
-        private TableLayoutPanel tableLayoutPanel2;
         private TableLayoutPanel tableLayoutPanel3;
         private Controls.AnalogSensorHeaderControl analogSensorHeaderControl2;
-        private Controls.AnalogSensorHeaderControl analogSensorHeaderControl1;
         private Controls.DigitalSensorControl digitalSensorControl1;
         private Controls.DigitalSensorControl digitalSensorControl2;
         private Controls.DigitalSensorControl digitalSensorControl3;
@@ -322,6 +302,8 @@
         private Controls.DigitalSensorControl digitalSensorControl7;
         private Controls.DigitalSensorControl digitalSensorControl8;
         private Controls.DigitalSensorControl digitalSensorControl9;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Controls.AnalogSensorHeaderControl analogSensorHeaderControl1;
         private Controls.StationParameterStatusControl stationParameterStatusControl1;
         private Controls.StationStatusBar stationStatusBar1;
     }
