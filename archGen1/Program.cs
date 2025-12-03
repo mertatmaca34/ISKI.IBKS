@@ -1,5 +1,7 @@
 using ISKI.IBKS.Presentation.WinForms;
+using ISKI.IBKS.Presentation.WinForms.Configuration;
 using ISKI.IBKS.Presentation.WinForms.Features.Main;
+using ISKI.IBKS.Presentation.WinForms.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -27,9 +29,10 @@ namespace ISKI.IBKS.Presentation.WinForms
         public static IHostBuilder CreateHostBuilder()
         {
             return Host.CreateDefaultBuilder()
+                .ConfigureAndUseLogging()
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddWinForms();
+                    services.AddPresentation();
                 });
         }
     }

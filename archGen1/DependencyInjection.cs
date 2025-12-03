@@ -1,4 +1,5 @@
-﻿using ISKI.IBKS.Presentation.WinForms.Features.HomePage;
+﻿using ISKI.IBKS.Presentation.WinForms.Configuration;
+using ISKI.IBKS.Presentation.WinForms.Features.HomePage;
 using ISKI.IBKS.Presentation.WinForms.Features.Main;
 using ISKI.IBKS.Presentation.WinForms.Navigation;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,12 +13,10 @@ namespace ISKI.IBKS.Presentation.WinForms
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddWinForms(this IServiceCollection services)
+        public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
-            services.AddSingleton<MainFormPresenter>();
-            services.AddSingleton<MainForm>();
-            services.AddSingleton<HomePagePresenter>();
-            services.AddSingleton<HomePage>();
+            services.AddView<IMainFormView, MainForm, MainFormPresenter>();
+            services.AddSingleton<GlobalExceptionHandler>();
             services.AddSingleton<IViewNavigator, ViewNavigator>();
 
             return services;
