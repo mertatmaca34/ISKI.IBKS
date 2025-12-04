@@ -11,4 +11,12 @@
     <PackageReference Include="Sharp7" Version="1.1.84" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ISKI.IBKS.Domain\ISKI.IBKS.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="IoT\Plc\Config\" />
+  </ItemGroup>
+
 </Project>

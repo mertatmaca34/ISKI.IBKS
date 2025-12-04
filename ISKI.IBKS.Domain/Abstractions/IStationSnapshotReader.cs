@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Domain.Interfaces;
+namespace ISKI.IBKS.Domain.Abstractions;
 
 public interface IStationSnapshotReader
 {
-    Task<StationSnapshot?> GetLatestSnapshotAsync(string stationIp);
+    Task<StationSnapshot?> Read(string stationIp);
 }

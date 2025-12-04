@@ -1,11 +1,11 @@
-﻿using ISKI.IBKS.Infrastructure.IoT.Plc.Abstract;
+﻿using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Exceptions;
 using Sharp7;
 using System.Net;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
 
-public class Sharp7Client : IPlcClientSync
+public class Sharp7Client : IPlcClient
 {
     private S7Client S7Client { get; set; }
 

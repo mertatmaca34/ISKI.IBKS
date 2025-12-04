@@ -22,7 +22,6 @@ public class StationSnapshot
     public double? OlcumCihaziAkisHizi { get; set; }
     public double? Ph { get; set; }
     public double? Iletkenlik { get; set; }
-    public double? Sicaklik { get; set; }
     public double? CozunmusOksijen { get; set; }
     public double? OlcumCihaziSuSicakligi { get; set; }
     public double? Koi { get; set; }
