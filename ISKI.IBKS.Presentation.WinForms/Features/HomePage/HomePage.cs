@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ISKI.IBKS.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,16 @@ using System.Windows.Forms;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
 {
-    public partial class HomePage : UserControl,IHomePageView
+    public partial class HomePage : UserControl, IHomePageView
     {
         public HomePage()
         {
             InitializeComponent();
+        }
+
+        public void BindAnalogSensors(StationSnapshot stationSnapshot)
+        {
+            throw new NotImplementedException();
         }
     }
 }

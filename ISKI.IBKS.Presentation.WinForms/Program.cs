@@ -1,9 +1,12 @@
+using ISKI.IBKS.Infrastructure;
 using ISKI.IBKS.Presentation.WinForms;
 using ISKI.IBKS.Presentation.WinForms.Configuration;
 using ISKI.IBKS.Presentation.WinForms.Features.Main;
 using ISKI.IBKS.Presentation.WinForms.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration;
+using System.Runtime;
 
 namespace ISKI.IBKS.Presentation.WinForms
 {
@@ -28,6 +31,7 @@ namespace ISKI.IBKS.Presentation.WinForms
                 .ConfigureServices((context, services) =>
                 {
                     services.AddPresentation();
+                    services.AddInfrastructure(context.Configuration);
                 });
         }
     }

@@ -44,6 +44,7 @@
             analogSensorHeaderControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.AnalogSensorHeaderControl();
             stationParameterStatusControl1 = new ISKI.IBKS.Presentation.WinForms.Controls.StationParameterStatusControl();
             stationStatusBar1 = new ISKI.IBKS.Presentation.WinForms.Controls.StationStatusBar();
+            label1 = new Label();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -225,6 +226,7 @@
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(analogSensorHeaderControl1, 0, 0);
+            tableLayoutPanel2.Controls.Add(label1, 0, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -261,17 +263,26 @@
             // 
             stationStatusBar1.BackColor = Color.FromArgb(235, 235, 235);
             tableLayoutPanel1.SetColumnSpan(stationStatusBar1, 2);
-            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: ";
+            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: G. Yıkamaya Kalan: ";
             stationStatusBar1.Dock = DockStyle.Fill;
-            stationStatusBar1.IsConnected = "Bağlantı Durumu: ";
+            stationStatusBar1.IsConnected = "Bağlantı Durumu: Bağlantı Durumu: ";
             stationStatusBar1.Location = new Point(3, 634);
             stationStatusBar1.Name = "stationStatusBar1";
             stationStatusBar1.Padding = new Padding(1);
             stationStatusBar1.Size = new Size(1154, 30);
-            stationStatusBar1.SystemTime = "Sistem Saati: ";
+            stationStatusBar1.SystemTime = "Sistem Saati: Sistem Saati: ";
             stationStatusBar1.TabIndex = 3;
-            stationStatusBar1.UpTime = "Bağlantı Süresi: ";
-            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: ";
+            stationStatusBar1.UpTime = "Bağlantı Süresi: Bağlantı Süresi: ";
+            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: H. Yıkama Kalan: ";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 69);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 2;
+            label1.Text = "label1";
             // 
             // HomePage
             // 
@@ -285,6 +296,7 @@
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -306,5 +318,6 @@
         private Controls.AnalogSensorHeaderControl analogSensorHeaderControl1;
         private Controls.StationParameterStatusControl stationParameterStatusControl1;
         private Controls.StationStatusBar stationStatusBar1;
+        private Label label1;
     }
 }

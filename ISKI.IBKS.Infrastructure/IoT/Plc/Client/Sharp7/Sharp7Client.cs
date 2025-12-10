@@ -9,6 +9,8 @@ public class Sharp7Client : IPlcClient
 {
     private S7Client S7Client { get; set; }
 
+    public bool IsConnected => S7Client.Connected;
+
     public Sharp7Client()
     {
         S7Client = new S7Client
@@ -20,6 +22,9 @@ public class Sharp7Client : IPlcClient
 
     public void Connect(string ipAddress, int rack, int slot)
     {
+        if (S7Client.Connected)
+            return;
+
         var res = S7Client.ConnectTo(ipAddress, rack, slot);
 
         if (res != 0)
@@ -83,5 +88,20 @@ public class Sharp7Client : IPlcClient
         {
             throw new PlcConnectionException();
         }
+    }
+
+    public float ReadReal(byte[] buffer, int byteOffset)
+    {
+        return S7.GetRealAt(buffer, byteOffset);
+    }
+
+    public bool ReadBit(byte[] buffer, int byteOffset, int bitOffset)
+    {
+        return S7.GetBitAt(buffer, byteOffset, bitOffset);
+    }
+
+    public DateTime ReadDateTime(byte[] buffer, int byteOffset)
+    {
+        return S7.GetDateTimeAt(buffer, byteOffset);
     }
 }

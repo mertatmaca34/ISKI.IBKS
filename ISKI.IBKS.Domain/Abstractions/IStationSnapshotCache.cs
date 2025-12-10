@@ -9,5 +9,6 @@ namespace ISKI.IBKS.Domain.Abstractions;
 
 public interface IStationSnapshotCache
 {
-    Task<StationSnapshot> SetStationSnapshotAsync(string stationIp, StationSnapshot stationSnapshot);
+    Task<StationSnapshot> Set(string stationIp, StationSnapshot stationSnapshot);
+    Task<StationSnapshot?> GetLast(string stationIp);
 }
