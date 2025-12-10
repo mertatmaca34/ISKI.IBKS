@@ -9,6 +9,7 @@ namespace ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 public class PlcSettings
 {
     public List<PlcStationConfig> Stations { get; set; } = new();
+    public PlcStationConfig Station { get; set; } = new();
 }
 
 public class PlcStationConfig

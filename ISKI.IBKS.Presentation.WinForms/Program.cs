@@ -3,6 +3,7 @@ using ISKI.IBKS.Presentation.WinForms;
 using ISKI.IBKS.Presentation.WinForms.Configuration;
 using ISKI.IBKS.Presentation.WinForms.Features.Main;
 using ISKI.IBKS.Presentation.WinForms.Navigation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
@@ -30,8 +31,18 @@ namespace ISKI.IBKS.Presentation.WinForms
                 .ConfigureAndUseLogging()
                 .ConfigureServices((context, services) =>
                 {
+                    var saisConfig = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+                    var marbinConfig = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
                     services.AddPresentation();
-                    services.AddInfrastructure(context.Configuration);
+                    services.AddInfrastructure(saisConfig);
                 });
         }
     }
