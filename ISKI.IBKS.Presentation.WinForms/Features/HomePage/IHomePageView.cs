@@ -1,4 +1,5 @@
 ﻿using ISKI.IBKS.Domain.Entities;
+using ISKI.IBKS.Presentation.WinForms.Features.HomePage.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,4 +12,5 @@ public interface IHomePageView
 {
     event EventHandler Load;
     void BindAnalogSensors(StationSnapshot stationSnapshot);
+    void RenderAnalogSensors(IReadOnlyList<AnalogSensorViewModel> analogSensorList);
 }

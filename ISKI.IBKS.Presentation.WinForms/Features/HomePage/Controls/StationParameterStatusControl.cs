@@ -8,13 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ISKI.IBKS.Presentation.WinForms.Controls
+namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
+
+public partial class StationParameterStatusControl : UserControl
 {
-    public partial class StationParameterStatusControl : UserControl
+    public StationParameterStatusControl()
     {
-        public StationParameterStatusControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

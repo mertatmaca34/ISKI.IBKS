@@ -1,4 +1,6 @@
 ﻿using ISKI.IBKS.Domain.Entities;
+using ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
+using ISKI.IBKS.Presentation.WinForms.Features.HomePage.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +23,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
         public void BindAnalogSensors(StationSnapshot stationSnapshot)
         {
             throw new NotImplementedException();
+        }
+
+        public void RenderAnalogSensors(IReadOnlyList<AnalogSensorViewModel> analogSensorList)
+        {
+            foreach (var analogSensor in analogSensorList)
+            {
+                TableLayoutPanelAnalogSensors.Controls.Add(new AnalogSensorControl(
+                    sensorName: analogSensor.Name, 
+                    sensorInstantValue: analogSensor.InstantValue,
+                    sensorHourlyAvgValue: analogSensor.HourlyAverageValue, 
+                    analogSensorUnit: analogSensor.Unit));
+            }
         }
     }
 }
