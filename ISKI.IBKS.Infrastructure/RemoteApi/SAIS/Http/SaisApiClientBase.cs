@@ -1,18 +1,20 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+﻿using ISKI.IBKS.Infrastructure.RemoteApi.Extensions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Extensions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 
-public class SaisApiClientBase
+public class SaisApiClientBase(HttpClient httpClient, ISaisTicketProvider? saisTicketProvider, IOptions<SAISOptions> saisOptions)
 {
     private static readonly JsonSerializerOptions SerializerOptions = new()
     {
@@ -23,20 +25,9 @@ public class SaisApiClientBase
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    private readonly HttpClient _httpClient;
-    private readonly ILogger _logger;
-    private readonly ISaisTicketProvider _saisTicketProvider;
-    private readonly SAISOptions _saisOptions;
+    private readonly SAISOptions _saisOptions = saisOptions.Value;
 
-    public SaisApiClientBase(HttpClient httpClient, ILogger logger, ISaisTicketProvider saisTicketProvider, IOptions<SAISOptions> saisOptions)
-    {
-        _httpClient = httpClient;
-        _logger = logger;
-        _saisTicketProvider = saisTicketProvider;
-        _saisOptions = saisOptions.Value;
-    }
-
-    public async Task<TResponse> PostAsync<TResponse>(
+    public async Task<SaisResultEnvelope<TResponse>> PostAsync<TResponse>(
         string relativeUri,
         object payload,
         bool includeTicket,
@@ -44,21 +35,56 @@ public class SaisApiClientBase
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, relativeUri)
         {
-            Content = payload is null
-            ? null
-            : new StringContent(JsonSerializer.Serialize(payload, SerializerOptions), Encoding.UTF8, "application/json")
+            Content = new StringContent(
+                JsonSerializer.Serialize(payload, SerializerOptions),
+                Encoding.UTF8,
+                "application/json")
         };
 
         if (includeTicket)
         {
-            if (_saisTicketProvider is null)
+            if (saisTicketProvider is null)
             {
                 throw new InvalidOperationException("Ticket provider has not been configured for this client.");
             }
+
+            var ticket = await saisTicketProvider.GetTicketAsync(cancellationToken).ConfigureAwait(false);
+
+            var ticketHeaderValue = JsonSerializer.Serialize(ticket, SerializerOptions);
+
+            request.Headers.Remove(_saisOptions.TicketHeaderName);
+            request.Headers.AddRequiredHeader(_saisOptions.TicketHeaderName, ticketHeaderValue);
         }
 
-        var ticket = await _saisTicketProvider.GetTicketAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            using var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-        request.Headers.Remove()
+            if (response.StatusCode == HttpStatusCode.Unauthorized && includeTicket)
+            {
+                saisTicketProvider?.InvalidateTicket();
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<SaisResultEnvelope<TResponse>>(SerializerOptions, cancellationToken)
+                         .ConfigureAwait(false) ?? throw new SaisApiException("SAIS API response body was empty.");
+
+            result.EnsureSuccess();
+
+            return result;
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new SaisApiException("SAİS API request failed.", ex);
+        }
+        catch (NotSupportedException ex)
+        {
+            throw new SaisApiException("SAİS API returned an unsupported media type.", ex);
+        }
+        catch (JsonException ex)
+        {
+            throw new SaisApiException("SAİS API response could not be parsed.", ex);
+        }
     }
 }

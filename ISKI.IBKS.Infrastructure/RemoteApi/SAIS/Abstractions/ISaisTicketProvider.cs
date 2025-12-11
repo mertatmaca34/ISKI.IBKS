@@ -9,6 +9,6 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 
 public interface ISaisTicketProvider
 {
-    Task<SaisTicket> GetTicketAsync(CancellationToken cancellationToken);
+    Task<AToken> GetTicketAsync(CancellationToken cancellationToken);
     void InvalidateTicket();
 }
