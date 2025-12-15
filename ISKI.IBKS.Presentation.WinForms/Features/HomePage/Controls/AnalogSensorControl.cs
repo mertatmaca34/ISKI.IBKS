@@ -17,19 +17,19 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
         public string SensorName
         {
             get => LabelSensorName.Text;
-            set => LabelSensorName.Text = $"{value} + {AnalogSensorUnit}";
+            set => LabelSensorName.Text = $"{value} {AnalogSensorUnit}";
         }
 
         public string SensorInstantValue
         {
             get => LabelSensorInstantValue.Text;
-            set => LabelSensorInstantValue.Text = $"{value} + {AnalogSensorUnit}";
+            set => LabelSensorInstantValue.Text = $"{value} {AnalogSensorUnit}";
         }
 
         public string SensorHourlyAvgValue
         {
             get => LabelSensorHourlyAvgValue.Text;
-            set => LabelSensorHourlyAvgValue.Text = $"{value} + {AnalogSensorUnit}";
+            set => LabelSensorHourlyAvgValue.Text = $"{value} {AnalogSensorUnit}";
         }
 
         public AnalogSensorControl(string sensorName, string sensorInstantValue, string sensorHourlyAvgValue, string analogSensorUnit)
