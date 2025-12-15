@@ -1,12 +1,9 @@
 ﻿using ISKI.IBKS.Domain.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Serilog;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc;
 
@@ -14,12 +11,12 @@ public class PlcPollingService : BackgroundService
 {
     private readonly IStationSnapshotReader _stationSnapshotReader;
     private readonly IStationSnapshotCache _stationSnapshotCache;
-    private readonly PlcSettings _plcSettings;
+    private readonly IOptions<PlcSettings> _plcSettings;
 
     public PlcPollingService(
         IStationSnapshotReader stationSnapshotReader,
         IStationSnapshotCache stationSnapshotCache,
-        PlcSettings plcSettings)
+        IOptions<PlcSettings> plcSettings)
     {
         _stationSnapshotReader = stationSnapshotReader;
         _stationSnapshotCache = stationSnapshotCache;
@@ -31,14 +28,42 @@ public class PlcPollingService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            foreach (var station in _plcSettings.Stations)
+
+            if (_plcSettings.Value.Stations.Count > 1)
+            {
+                foreach (var station in _plcSettings.Value.Stations)
+                {
+                    if (stoppingToken.IsCancellationRequested)
+                        break;
+
+                    try
+                    {
+                        var snapshot = await _stationSnapshotReader.Read(station.IpAddress);
+
+                        if (snapshot is null)
+                        {
+                            //TODO
+                        }
+
+                        await _stationSnapshotCache.Set(station.StationId, snapshot!);
+                    }
+                    catch (Exception)
+                    {
+                        Log.Information("PLC polling error at station {StationIp}", station.IpAddress);
+                        //throw new NotImplementedException();
+                    }
+                }
+            }
+            else
             {
                 if (stoppingToken.IsCancellationRequested)
                     break;
 
+                var station = _plcSettings.Value.Station;
+
                 try
                 {
-                    // Read: IP ile çalışıyoruz (istersen StationCode'a çevir)
+
                     var snapshot = await _stationSnapshotReader.Read(station.IpAddress);
 
                     if (snapshot is null)
@@ -46,14 +71,17 @@ public class PlcPollingService : BackgroundService
                         //TODO
                     }
 
-                    _stationSnapshotCache.Set(station.IpAddress, snapshot!);
+                    await _stationSnapshotCache.Set(station.StationId, snapshot!);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
+                    Log.Information("PLC polling error at station {StationIp}", station.IpAddress);
 
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 }
             }
+
+            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
         }
     }
 }

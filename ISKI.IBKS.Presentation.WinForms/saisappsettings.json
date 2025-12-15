@@ -1,7 +1,13 @@
 {
+  "SAIS": {
+    "BaseUrl": "https://entegrationsais.csb.gov.tr/",
+    "Timeout": "00:00:10",
+    "TicketTtl": "00:29:00",
+    "TicketHeaderName": "AToken"
+  },
   "Plc": {
     "Station": {
-      "StationCode": "Sile",
+      "StationId": "f9727c73-6533-45ad-8b1b-780f0ac7d265",
       "IpAddress": "10.33.3.253",
       "Rack": 0,
       "Slot": 1,

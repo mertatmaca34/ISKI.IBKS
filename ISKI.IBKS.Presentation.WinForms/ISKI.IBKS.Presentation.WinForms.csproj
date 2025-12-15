@@ -10,9 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="NewFolder\**" />
-    <EmbeddedResource Remove="NewFolder\**" />
-    <None Remove="NewFolder\**" />
+    <None Remove="marbinappsettings.json" />
+    <None Remove="saisappsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="marbinappsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +33,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISKI.IBKS.Infrastructure\ISKI.IBKS.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="saisappsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

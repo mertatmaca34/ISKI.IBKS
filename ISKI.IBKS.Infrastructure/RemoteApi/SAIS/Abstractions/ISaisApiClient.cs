@@ -1,8 +1,8 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.Channel;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.Login;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.SendData;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.Units;
+﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Channel;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.SendData;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;

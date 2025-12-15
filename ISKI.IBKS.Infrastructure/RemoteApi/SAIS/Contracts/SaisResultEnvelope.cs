@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models;
+namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 
 public sealed record SaisResultEnvelope<T>
 {

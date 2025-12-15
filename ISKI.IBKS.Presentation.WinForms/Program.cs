@@ -8,21 +8,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Presentation.WinForms
 {
     internal static class Program
     {
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
             ApplicationConfiguration.Initialize();
 
             using var host = CreateHostBuilder().Build();
 
+            await host.StartAsync();
+            
             var mainForm = host.Services.GetRequiredService<MainForm>();
 
-            Application.Run(mainForm);
+            System.Windows.Forms.Application.Run(mainForm);
+
+            await host.StopAsync();
         }
 
         public static IHostBuilder CreateHostBuilder()
@@ -32,17 +37,13 @@ namespace ISKI.IBKS.Presentation.WinForms
                 .ConfigureServices((context, services) =>
                 {
                     var saisConfig = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
-                .Build();
+                    .SetBasePath(AppContext.BaseDirectory)
+                    .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile("marbinappsettings.json", optional: false, reloadOnChange: true)
+                    .Build();
 
-                    var marbinConfig = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
-                .Build();
-
-                    services.AddPresentation();
                     services.AddInfrastructure(saisConfig);
+                    services.AddPresentation();
                 });
         }
     }

@@ -1,4 +1,6 @@
-﻿using ISKI.IBKS.Domain.Entities;
+﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+using ISKI.IBKS.Domain.Entities;
+using ISKI.IBKS.Presentation.WinForms.Extensions;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.ViewModels;
 using System;
@@ -20,21 +22,22 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
             InitializeComponent();
         }
 
-        public void BindAnalogSensors(StationSnapshot stationSnapshot)
+        public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos)
         {
-            throw new NotImplementedException();
-        }
+            TableLayoutPanelAnalogSensors.SuspendLayout();
+            TableLayoutPanelAnalogSensors.Controls.Clear();
 
-        public void RenderAnalogSensors(IReadOnlyList<AnalogSensorViewModel> analogSensorList)
-        {
-            foreach (var analogSensor in analogSensorList)
+            foreach (var analogSensor in channelReadingDtos)
             {
                 TableLayoutPanelAnalogSensors.Controls.Add(new AnalogSensorControl(
-                    sensorName: analogSensor.Name, 
-                    sensorInstantValue: analogSensor.InstantValue,
-                    sensorHourlyAvgValue: analogSensor.HourlyAverageValue, 
-                    analogSensorUnit: analogSensor.Unit));
+                    sensorName: analogSensor.ChannelName ?? "-",
+                    sensorInstantValue: analogSensor.Value.ToUiValue(2),
+                    sensorHourlyAvgValue: analogSensor.Value.ToUiValue(2),
+                    analogSensorUnit: analogSensor.UnitName ?? "-"
+                ));
             }
+
+            TableLayoutPanelAnalogSensors.ResumeLayout();
         }
     }
 }

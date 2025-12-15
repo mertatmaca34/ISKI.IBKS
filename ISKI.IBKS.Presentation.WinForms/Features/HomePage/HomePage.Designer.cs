@@ -42,9 +42,9 @@
             digitalSensorControl9 = new ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls.DigitalSensorControl();
             tableLayoutPanel2 = new TableLayoutPanel();
             analogSensorHeaderControl1 = new ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls.AnalogSensorHeaderControl();
+            TableLayoutPanelAnalogSensors = new TableLayoutPanel();
             stationParameterStatusControl1 = new ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls.StationParameterStatusControl();
             stationStatusBar1 = new ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls.StationStatusBar();
-            TableLayoutPanelAnalogSensors = new TableLayoutPanel();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -250,6 +250,34 @@
             analogSensorHeaderControl1.Size = new Size(568, 63);
             analogSensorHeaderControl1.TabIndex = 1;
             // 
+            // TableLayoutPanelAnalogSensors
+            // 
+            TableLayoutPanelAnalogSensors.ColumnCount = 1;
+            TableLayoutPanelAnalogSensors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            TableLayoutPanelAnalogSensors.Dock = DockStyle.Fill;
+            TableLayoutPanelAnalogSensors.Location = new Point(0, 69);
+            TableLayoutPanelAnalogSensors.Margin = new Padding(0);
+            TableLayoutPanelAnalogSensors.Name = "TableLayoutPanelAnalogSensors";
+            TableLayoutPanelAnalogSensors.RowCount = 16;
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            TableLayoutPanelAnalogSensors.Size = new Size(574, 556);
+            TableLayoutPanelAnalogSensors.TabIndex = 2;
+            // 
             // stationParameterStatusControl1
             // 
             stationParameterStatusControl1.Dock = DockStyle.Fill;
@@ -263,30 +291,17 @@
             // 
             stationStatusBar1.BackColor = Color.FromArgb(235, 235, 235);
             tableLayoutPanel1.SetColumnSpan(stationStatusBar1, 2);
-            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: ";
+            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: ";
             stationStatusBar1.Dock = DockStyle.Fill;
-            stationStatusBar1.IsConnected = "Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: ";
+            stationStatusBar1.IsConnected = "Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: ";
             stationStatusBar1.Location = new Point(3, 634);
             stationStatusBar1.Name = "stationStatusBar1";
             stationStatusBar1.Padding = new Padding(1);
             stationStatusBar1.Size = new Size(1154, 30);
-            stationStatusBar1.SystemTime = "Sistem Saati: Sistem Saati: Sistem Saati: ";
+            stationStatusBar1.SystemTime = "Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: ";
             stationStatusBar1.TabIndex = 3;
-            stationStatusBar1.UpTime = "Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: ";
-            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: ";
-            // 
-            // TableLayoutPanelAnalogSensors
-            // 
-            TableLayoutPanelAnalogSensors.ColumnCount = 1;
-            TableLayoutPanelAnalogSensors.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            TableLayoutPanelAnalogSensors.Dock = DockStyle.Fill;
-            TableLayoutPanelAnalogSensors.Location = new Point(0, 69);
-            TableLayoutPanelAnalogSensors.Margin = new Padding(0);
-            TableLayoutPanelAnalogSensors.Name = "TableLayoutPanelAnalogSensors";
-            TableLayoutPanelAnalogSensors.RowCount = 1;
-            TableLayoutPanelAnalogSensors.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            TableLayoutPanelAnalogSensors.Size = new Size(574, 556);
-            TableLayoutPanelAnalogSensors.TabIndex = 2;
+            stationStatusBar1.UpTime = "Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: ";
+            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: ";
             // 
             // HomePage
             // 

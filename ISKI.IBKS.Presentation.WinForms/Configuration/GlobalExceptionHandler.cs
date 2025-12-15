@@ -5,32 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Presentation.WinForms.Configuration
+namespace ISKI.IBKS.Presentation.WinForms.Configuration;
+
+public class GlobalExceptionHandler
 {
-    public class GlobalExceptionHandler
+    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
     {
-        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+        System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+        System.Windows.Forms.Application.ThreadException += (sender, args) =>
         {
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            logger.LogError(args.Exception, "Unhandled Thread Exception");
+        };
 
-            Application.ThreadException += (sender, args) =>
+        AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+        {
+            if (args.ExceptionObject is Exception ex)
             {
-                logger.LogError(args.Exception, "Unhandled Thread Exception");
-            };
+                logger.LogError(ex, "Unhandled Domain Exception");
+            }
+        };
 
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                if (args.ExceptionObject is Exception ex)
-                {
-                    logger.LogError(ex, "Unhandled Domain Exception");
-                }
-            };
-
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
-            {
-                logger.LogError(args.Exception, "Unobserved Task Exception");
-                args.SetObserved();
-            };
-        }
+        TaskScheduler.UnobservedTaskException += (sender, args) =>
+        {
+            logger.LogError(args.Exception, "Unobserved Task Exception");
+            args.SetObserved();
+        };
     }
 }

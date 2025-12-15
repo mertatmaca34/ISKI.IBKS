@@ -1,8 +1,8 @@
 ﻿using ISKI.IBKS.Infrastructure.RemoteApi.Extensions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Extensions;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;

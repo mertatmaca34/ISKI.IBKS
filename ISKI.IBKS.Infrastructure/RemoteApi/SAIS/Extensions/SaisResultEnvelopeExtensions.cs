@@ -1,5 +1,5 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models;
+﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

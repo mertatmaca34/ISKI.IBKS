@@ -14,7 +14,7 @@ public class PlcSettings
 
 public class PlcStationConfig
 {
-    public string StationCode { get; set; } = default!;
+    public Guid StationId { get; set; } = default!;
     public string IpAddress { get; set; } = default!;
     public int Rack { get; set; }
     public int Slot { get; set; }

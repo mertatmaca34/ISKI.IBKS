@@ -1,5 +1,5 @@
 ﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ public class TicketProvider : ISaisTicketProvider
 {
     private SaisTicket? _currentTicket;
 
-    public Task<SaisTicket> GetTicketAsync(CancellationToken cancellationToken)
+    public Task<AToken> GetTicketAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

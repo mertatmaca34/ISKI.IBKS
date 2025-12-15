@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.SendData;
+namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.SendData;
 
 public sealed record SendDataResponse
 {

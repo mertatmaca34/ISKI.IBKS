@@ -5,12 +5,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.Units;
+namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Units;
 
 public sealed record GetUnitsResponse
 {
     [JsonPropertyName("id")]
-    public Guid Id { get; init; }
+    public Guid? Id { get; init; }
     [JsonPropertyName("Name")]
     public string? Name { get; init; }
 }

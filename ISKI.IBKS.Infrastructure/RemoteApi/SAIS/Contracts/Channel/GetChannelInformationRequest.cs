@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Models.Channel;
+namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Channel;
 
 public sealed record GetChannelInformationRequest
 {
