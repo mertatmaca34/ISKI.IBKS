@@ -12,8 +12,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage;
 public interface IHomePageView
 {
     event EventHandler Load;
-    //void BindAnalogSensors(StationSnapshot stationSnapshot);
-    //void RenderAnalogSensors(IReadOnlyList<AnalogSensorViewModel> analogSensorList);
-    //Task LoadAnalogSensorAsync(Guid stationId, CancellationToken cancellationToken = default);
+    event EventHandler Disposed;
+
     public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos);
 }

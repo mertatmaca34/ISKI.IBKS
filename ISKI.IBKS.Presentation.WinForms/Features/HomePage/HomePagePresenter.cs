@@ -1,50 +1,91 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Services;
-using ISKI.IBKS.Domain.Abstractions;
-using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage;
 
-public class HomePagePresenter
+public sealed class HomePagePresenter
 {
-    private readonly IStationSnapshotCache _stationSnapshotCache;
+    //Services
     private readonly IAnalogSensorService _analogSensorService;
     private readonly IHomePageView _view;
     private readonly IOptions<PlcSettings> _options;
+    private readonly ILogger<HomePagePresenter> _logger;
+    private readonly CancellationTokenSource _cts = new();
+
+    //Events
     private readonly System.Windows.Forms.Timer _refreshTimer = new();
+    
+    //Fields
+    private Guid _stationId;
+    private int _isRefreshing;
 
-    public HomePagePresenter(IHomePageView view, IStationSnapshotCache stationSnapshotCache, IAnalogSensorService analogSensorService,
-        IOptions<PlcSettings> options)
+    public HomePagePresenter(
+        IHomePageView view,
+        IAnalogSensorService analogSensorService,
+        IOptions<PlcSettings> options,
+        ILogger<HomePagePresenter> logger)
     {
-        view.Load += OnLoad;
-
         _view = view;
         _analogSensorService = analogSensorService;
-        _stationSnapshotCache = stationSnapshotCache;
         _options = options;
-    }
-    public async Task LoadAnalogChannelsAsync(Guid stationId, CancellationToken ct)
-    {
-        var readings = await _analogSensorService.GetChannelsAsync(stationId, ct);
+        _logger = logger;
 
-        _view.RenderAnalogChannels(readings);
+        view.Load += OnLoad;
+        view.Disposed += OnDisposed;
     }
 
-    private async void OnLoad(object? sender, EventArgs e)
+    private void OnLoad(object? sender, EventArgs e)
     {
-        var stationId = _options.Value.Station.StationId;
+        _stationId = _options.Value.Station.StationId;
 
-        _refreshTimer.Interval = 5000; // 1 sn (istersen config’ten al)
-
-        _refreshTimer.Tick += async (_, __) => await LoadAnalogChannelsAsync(stationId,CancellationToken.None);
+        _refreshTimer.Tick += RefreshTimerTick;
+        _refreshTimer.Interval = 1000;
         _refreshTimer.Start();
 
-        await LoadAnalogChannelsAsync(stationId, CancellationToken.None);
+        _ = TickHandlerAsync();
     }
+
+    private async void RefreshTimerTick(object? sender, EventArgs e)
+    {
+        await TickHandlerAsync();
+    }
+
+    private async Task TickHandlerAsync()
+    {
+        if (Interlocked.Exchange(ref _isRefreshing, 1) == 1)
+            return;
+
+        try
+        {
+            var readings = await _analogSensorService.GetChannelsAsync(_stationId, _cts.Token);
+            _view.RenderAnalogChannels(readings);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Analog kanallar getirilirken hata oluştu.");
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _isRefreshing, 0);
+        }
+    }
+
+    private void OnDisposed(object? sender, EventArgs e)
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+
+        _refreshTimer.Stop();
+        _refreshTimer.Tick -= RefreshTimerTick;
+        _refreshTimer.Dispose();
+
+        _view.Load -= OnLoad;
+        _view.Disposed -= OnDisposed;
+    }   
 }

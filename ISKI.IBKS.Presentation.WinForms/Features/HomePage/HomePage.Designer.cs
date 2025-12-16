@@ -241,9 +241,9 @@
             // 
             analogSensorHeaderControl1.BackColor = Color.FromArgb(235, 235, 235);
             analogSensorHeaderControl1.Dock = DockStyle.Fill;
-            analogSensorHeaderControl1.HeaderTitle = "-";
-            analogSensorHeaderControl1.HeaderTitle2 = "-";
-            analogSensorHeaderControl1.HeaderTitle3 = "-";
+            analogSensorHeaderControl1.HeaderTitle = "Analog Sensörler";
+            analogSensorHeaderControl1.HeaderTitle2 = "Anlık Veri";
+            analogSensorHeaderControl1.HeaderTitle3 = "Saatlik Veri";
             analogSensorHeaderControl1.Location = new Point(3, 3);
             analogSensorHeaderControl1.Name = "analogSensorHeaderControl1";
             analogSensorHeaderControl1.Padding = new Padding(1);
@@ -291,17 +291,17 @@
             // 
             stationStatusBar1.BackColor = Color.FromArgb(235, 235, 235);
             tableLayoutPanel1.SetColumnSpan(stationStatusBar1, 2);
-            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: ";
+            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: ";
             stationStatusBar1.Dock = DockStyle.Fill;
-            stationStatusBar1.IsConnected = "Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: ";
+            stationStatusBar1.IsConnected = "Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: ";
             stationStatusBar1.Location = new Point(3, 634);
             stationStatusBar1.Name = "stationStatusBar1";
             stationStatusBar1.Padding = new Padding(1);
             stationStatusBar1.Size = new Size(1154, 30);
-            stationStatusBar1.SystemTime = "Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: ";
+            stationStatusBar1.SystemTime = "Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: ";
             stationStatusBar1.TabIndex = 3;
-            stationStatusBar1.UpTime = "Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: ";
-            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: ";
+            stationStatusBar1.UpTime = "Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: ";
+            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: ";
             // 
             // HomePage
             // 

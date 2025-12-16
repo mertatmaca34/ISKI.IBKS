@@ -41,5 +41,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
             SensorInstantValue = sensorInstantValue;
             SensorHourlyAvgValue = sensorHourlyAvgValue;
         }
+
+        public void UpdateValues(string instantValue, string hourlyAvgValue, string unit)
+        {
+            SensorInstantValue = instantValue;
+            SensorHourlyAvgValue = hourlyAvgValue;
+            AnalogSensorUnit = unit;
+        }
     }
 }

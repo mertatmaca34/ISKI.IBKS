@@ -1,22 +1,18 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
-using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Presentation.WinForms.Extensions;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
-using ISKI.IBKS.Presentation.WinForms.Features.HomePage.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
 {
     public partial class HomePage : UserControl, IHomePageView
     {
+        // ChannelName -> Control cache
+        private readonly Dictionary<string, AnalogSensorControl> _controlsByChannel =
+            new(StringComparer.OrdinalIgnoreCase);
+
         public HomePage()
         {
             InitializeComponent();
@@ -24,17 +20,39 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
 
         public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos)
         {
-            TableLayoutPanelAnalogSensors.SuspendLayout();
-            TableLayoutPanelAnalogSensors.Controls.Clear();
+            if (IsDisposed) return;
 
-            foreach (var analogSensor in channelReadingDtos)
+            if (InvokeRequired)
             {
-                TableLayoutPanelAnalogSensors.Controls.Add(new AnalogSensorControl(
-                    sensorName: analogSensor.ChannelName ?? "-",
-                    sensorInstantValue: analogSensor.Value.ToUiValue(2),
-                    sensorHourlyAvgValue: analogSensor.Value.ToUiValue(2),
-                    analogSensorUnit: analogSensor.UnitName ?? "-"
-                ));
+                BeginInvoke(new Action(() => RenderAnalogChannels(channelReadingDtos)));
+                return;
+            }
+
+            TableLayoutPanelAnalogSensors.SuspendLayout();
+
+            foreach (var sensor in channelReadingDtos)
+            {
+                var channelName = sensor.ChannelName ?? "-";
+
+                if (!_controlsByChannel.TryGetValue(channelName, out var control))
+                {
+                    control = new AnalogSensorControl(
+                        sensorName: channelName,
+                        sensorInstantValue: "-",
+                        sensorHourlyAvgValue: "-",
+                        analogSensorUnit: sensor.UnitName ?? "-"
+                    );
+
+                    _controlsByChannel[channelName] = control;
+                    TableLayoutPanelAnalogSensors.Controls.Add(control);
+                }
+
+                // AnalogSensorControl içine bunu ekleyeceğiz (aşağıda)
+                control.UpdateValues(
+                    instantValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
+                    hourlyAvgValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
+                    unit: sensor.UnitName ?? "-"
+                );
             }
 
             TableLayoutPanelAnalogSensors.ResumeLayout();
