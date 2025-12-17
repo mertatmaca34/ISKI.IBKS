@@ -104,9 +104,9 @@
             analogSensorHeaderControl2.BackColor = Color.FromArgb(235, 235, 235);
             tableLayoutPanel3.SetColumnSpan(analogSensorHeaderControl2, 3);
             analogSensorHeaderControl2.Dock = DockStyle.Fill;
-            analogSensorHeaderControl2.HeaderTitle = "-";
-            analogSensorHeaderControl2.HeaderTitle2 = "-";
-            analogSensorHeaderControl2.HeaderTitle3 = "-";
+            analogSensorHeaderControl2.HeaderTitle = "Dijital Sensörler";
+            analogSensorHeaderControl2.HeaderTitle2 = "";
+            analogSensorHeaderControl2.HeaderTitle3 = "";
             analogSensorHeaderControl2.Location = new Point(3, 3);
             analogSensorHeaderControl2.Name = "analogSensorHeaderControl2";
             analogSensorHeaderControl2.Padding = new Padding(1);
