@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ISKI.IBKS.Application.Features.AnalogSensors.Enums;
+using ISKI.IBKS.Infrastructure.Features.AnalogSensors;
+using ISKI.IBKS.Presentation.WinForms.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +15,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
 {
     public partial class AnalogSensorControl : UserControl
     {
+        private AnalogSignalStatus _sensorStatus;
+
         public string AnalogSensorUnit { get; set; }
 
         public string SensorName
@@ -32,7 +37,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
             set => LabelSensorHourlyAvgValue.Text = $"{value} {AnalogSensorUnit}";
         }
 
-        public AnalogSensorControl(string sensorName, string sensorInstantValue, string sensorHourlyAvgValue, string analogSensorUnit)
+        public AnalogSignalStatus SensorStatus
+        {
+            get => _sensorStatus;
+            set
+            {
+                _sensorStatus = value;
+
+                PanelStatusIndicator.BackColor = StatusPalette.Get(value);
+            }
+        }
+
+        public AnalogSensorControl(string sensorName, string sensorInstantValue, string sensorHourlyAvgValue, string analogSensorUnit, AnalogSignalStatus analogSignalStatus)
         {
             InitializeComponent();
 
@@ -40,13 +56,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
             SensorName = sensorName;
             SensorInstantValue = sensorInstantValue;
             SensorHourlyAvgValue = sensorHourlyAvgValue;
+            SensorStatus = analogSignalStatus;
         }
 
-        public void UpdateValues(string instantValue, string hourlyAvgValue, string unit)
+        public void UpdateValues(string instantValue, string hourlyAvgValue, string unit, AnalogSignalStatus analogSignalStatus)
         {
             SensorInstantValue = instantValue;
             SensorHourlyAvgValue = hourlyAvgValue;
             AnalogSensorUnit = unit;
+            SensorStatus = analogSignalStatus;
         }
     }
 }

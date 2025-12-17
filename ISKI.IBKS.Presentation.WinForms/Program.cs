@@ -39,7 +39,6 @@ namespace ISKI.IBKS.Presentation.WinForms
                     var saisConfig = new ConfigurationBuilder()
                     .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
-                    .AddJsonFile("marbinappsettings.json", optional: false, reloadOnChange: true)
                     .Build();
 
                     services.AddInfrastructure(saisConfig);

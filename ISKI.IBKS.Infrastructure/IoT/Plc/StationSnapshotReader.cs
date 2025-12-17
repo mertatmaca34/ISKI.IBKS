@@ -33,7 +33,7 @@ public class StationSnapshotReader : IStationSnapshotReader
     {
         StationSnapshot stationSnapshot = new StationSnapshot();
 
-        var station = _settings.Stations.Where(s => s.IpAddress == stationIp).FirstOrDefault();
+        var station = _settings.Station;
 
         if (_plcClient is null || station is null)
         {

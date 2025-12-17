@@ -33,7 +33,7 @@ public partial class StationStatusBar : UserControl
     public TimeSpan UpTime
     {
         get => _upTime;
-        set => LabelUpTime.Text = LabelUpTimeText + value;
+        set => LabelUpTime.Text = LabelUpTimeText + value.ToString("dd':'hh':'mm':'ss");
     }
 
     public TimeSpan DailyWashRemainingTime

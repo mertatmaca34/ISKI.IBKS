@@ -1,15 +1,9 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+using ISKI.IBKS.Application.Features.AnalogSensors.Enums;
 using ISKI.IBKS.Application.Features.AnalogSensors.Services;
 using ISKI.IBKS.Domain.Abstractions;
-using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.Features.AnalogSensors;
 
@@ -31,8 +25,11 @@ public class AnalogSensorService : IAnalogSensorService
         // cancellationToken burada sync işte kullanılmıyor ama interface standardı diye dursun.
         if (!_stationSnapshotCache.TryGet(stationId, out var snapshot) || snapshot is null)
         {
+
             return Task.FromResult<IReadOnlyList<ChannelReadingDto>>(Array.Empty<ChannelReadingDto>());
         }
+
+        bool isAutoMode = snapshot.KabinOtoModu ?? false;
 
         // İstersen burada plcSettings üzerinden station var mı kontrol edebilirsin.
         // var station = _plcSettings.Value.Stations.FirstOrDefault(x => x.StationCode == stationId);
@@ -45,77 +42,77 @@ public class AnalogSensorService : IAnalogSensorService
                 ChannelName = "AKM",
                 Value = snapshot.Akm,
                 UnitName = "mg/L",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.Akm)
             },
             new()
             {
                 ChannelName = "pH",
                 Value = snapshot.Ph,
                 UnitName = "",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.Ph)
             },
             new()
             {
                 ChannelName = "Iletkenlik",
                 Value = snapshot.Iletkenlik,
                 UnitName = "µS/cm",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.Iletkenlik)
             },
             new()
             {
                 ChannelName = "Debi",
                 Value = snapshot.TesisDebi,
                 UnitName = "m³/h",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.TesisDebi)
             },
             new()
             {
                 ChannelName = "DesarjDebi",
                 Value = snapshot.DesarjDebi,
                 UnitName = "m³/h",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.DesarjDebi)
             },
             new()
             {
                 ChannelName = "HariciDebi",
                 Value = snapshot.HariciDebi,
                 UnitName = "m³/h",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.HariciDebi)
             },
             new()
             {
                 ChannelName = "HariciDebi2",
                 Value = snapshot.HariciDebi2,
                 UnitName = "m³/h",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.HariciDebi2)
             },
             new()
             {
                 ChannelName = "KOI",
                 Value = snapshot.Koi,
                 UnitName = "mg/L",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.Koi)
             },
             new()
             {
                 ChannelName = "Sicaklik",
                 Value = snapshot.KabinSicakligi,
                 UnitName = "°C",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.KabinSicakligi)
             },
             new()
             {
                 ChannelName = "AkisHizi",
                 Value = snapshot.OlcumCihaziAkisHizi,
                 UnitName = "m/s",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.OlcumCihaziAkisHizi)
             },
             new()
             {
                 ChannelName = "CozunmusOksijen",
                 Value = snapshot.CozunmusOksijen,
                 UnitName = "mg/L",
-                Status = 1
+                Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.CozunmusOksijen)
             }
         };
 

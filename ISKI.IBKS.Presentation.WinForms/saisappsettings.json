@@ -210,27 +210,27 @@
               "ByteOffset": 0,
               "BitOffset": 0
             },
-            "WeeklyWashDay": {
+            "HaftalikYikamaGunu": {
               "DataType": "Byte",
               "ByteOffset": 14,
               "BitOffset": 0
             },
-            "WeeklyWashHour": {
+            "HaftalikYikamaSaati": {
               "DataType": "Byte",
               "ByteOffset": 15,
               "BitOffset": 0
             },
-            "DailyWashHour": {
+            "SaatlikYikamaSaati": {
               "DataType": "Byte",
               "ByteOffset": 16,
               "BitOffset": 0
             },
-            "Minute": {
+            "YikamaDakikasi": {
               "DataType": "Byte",
               "ByteOffset": 17,
               "BitOffset": 0
             },
-            "Second": {
+            "YikamaSaniyesi": {
               "DataType": "Byte",
               "ByteOffset": 18,
               "BitOffset": 0

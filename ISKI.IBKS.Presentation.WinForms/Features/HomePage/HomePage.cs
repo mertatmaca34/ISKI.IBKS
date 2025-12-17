@@ -41,7 +41,10 @@ public partial class HomePage : UserControl, IHomePageView
                     sensorName: channelName,
                     sensorInstantValue: "-",
                     sensorHourlyAvgValue: "-",
-                    analogSensorUnit: sensor.UnitName ?? "-"
+                    analogSensorUnit: sensor.UnitName ?? "-",
+                    analogSignalStatus: sensor.Status ?? Application.Features.AnalogSensors.Enums.AnalogSignalStatus.Undefined
+
+
                 );
 
                 _controlsByChannel[channelName] = control;
@@ -52,7 +55,8 @@ public partial class HomePage : UserControl, IHomePageView
             control.UpdateValues(
                 instantValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
                 hourlyAvgValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
-                unit: sensor.UnitName ?? "-"
+                unit: sensor.UnitName ?? "-",
+                analogSignalStatus: sensor.Status ?? Application.Features.AnalogSensors.Enums.AnalogSignalStatus.Undefined
             );
         }
 
@@ -62,7 +66,7 @@ public partial class HomePage : UserControl, IHomePageView
     public void RenderStationStatusBar(StationStatusDto? stationStatusDto)
     {
         stationStatusBar1.IsConnected = stationStatusDto?.IsConnected ?? false;
-        stationStatusBar1.UpTime = stationStatusDto?.UpTime ?? TimeSpan.Zero;
+        stationStatusBar1.UpTime = stationStatusDto?.UpTime ?? new TimeSpan(0,0,0);
         stationStatusBar1.WeeklyWashRemainingTime = stationStatusDto?.WeeklyWashRemainingTime ?? TimeSpan.Zero;
         stationStatusBar1.DailyWashRemainingTime = stationStatusDto?.DailyWashRemainingTime ?? TimeSpan.Zero;
         stationStatusBar1.SystemTime = stationStatusDto?.SystemTime ?? DateTime.MinValue;

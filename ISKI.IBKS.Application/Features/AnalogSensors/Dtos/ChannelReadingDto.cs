@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ISKI.IBKS.Application.Features.AnalogSensors.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,5 @@ public sealed record ChannelReadingDto
     public string? ChannelName { get; init; }
     public double? Value { get; init; }
     public string? UnitName { get; init; }
-    public int? Status { get; init; }
+    public AnalogSignalStatus? Status { get; init; }
 }

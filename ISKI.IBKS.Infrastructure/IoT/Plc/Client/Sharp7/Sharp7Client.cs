@@ -13,8 +13,8 @@ public class Sharp7Client : IPlcClient
 
     private DateTimeOffset? _connectedTime;
     public TimeSpan Uptime =>
-        IsConnected
-            ? DateTimeOffset.UtcNow - _connectedTime!.Value
+        IsConnected && _connectedTime.HasValue
+            ? DateTimeOffset.UtcNow - _connectedTime.Value
             : TimeSpan.Zero;
 
     public Sharp7Client()
@@ -110,7 +110,7 @@ public class Sharp7Client : IPlcClient
 
     public DateTime ReadDateTime(byte[] buffer, int byteOffset)
     {
-        return S7.GetDateTimeAt(buffer, byteOffset);
+        return S7.GetDTLAt(buffer, byteOffset);
     }
 
     public byte ReadByte(byte[] buffer, int byteOffset)
