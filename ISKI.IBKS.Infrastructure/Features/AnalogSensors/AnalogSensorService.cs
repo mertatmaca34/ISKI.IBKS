@@ -4,6 +4,7 @@ using ISKI.IBKS.Application.Features.AnalogSensors.Services;
 using ISKI.IBKS.Domain.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISKI.IBKS.Infrastructure.Features.AnalogSensors;
 
@@ -29,14 +30,32 @@ public class AnalogSensorService : IAnalogSensorService
             return Task.FromResult<IReadOnlyList<ChannelReadingDto>>(Array.Empty<ChannelReadingDto>());
         }
 
+        var channels = _plcSettings.Value.Station.DBs.FirstOrDefault(db => db.Type == "Analog");
+
+        if (channels is null)
+        {
+            return Task.FromResult<IReadOnlyList<ChannelReadingDto>>(Array.Empty<ChannelReadingDto>());
+        }
+
         bool isAutoMode = snapshot.KabinOtoModu ?? false;
 
-        // İstersen burada plcSettings üzerinden station var mı kontrol edebilirsin.
-        // var station = _plcSettings.Value.Stations.FirstOrDefault(x => x.StationCode == stationId);
+        var list = new List<ChannelReadingDto>(capacity: channels.Offsets.Count);
 
-        // Snapshot -> DTO mapping (reflection YOK)
-        var list = new List<ChannelReadingDto>(capacity: 16)
+        foreach (var item in channels)
         {
+            var channel = item.ChannelName != null ? snapshot.GetType().GetProperty(item.ChannelName) : null;
+
+            if (channel == null)
+                continue;
+
+            item.ChannelName = channel.Name;
+            item.Value = channel.GetValue(snapshot) as double?;
+            item.UnitName = "mg/L";
+            item.Status = AnalogSignalEvaluator.Evaluate(isAutoMode, item.Value);
+        }
+        /*
+        {
+
             new()
             {
                 ChannelName = "AKM",
@@ -114,7 +133,7 @@ public class AnalogSensorService : IAnalogSensorService
                 UnitName = "mg/L",
                 Status = AnalogSignalEvaluator.Evaluate(isAutoMode, snapshot.CozunmusOksijen)
             }
-        };
+        };*/
 
         // Eğer snapshot'ta null gelebilen numeric alanların varsa,
         // UI'ya "boş" göndermek için filtreleyebilirsin:

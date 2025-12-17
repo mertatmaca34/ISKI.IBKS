@@ -9,9 +9,9 @@ namespace ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
 
 public sealed record ChannelReadingDto
 {
-    public Guid? ChannelId { get; init; }
-    public string? ChannelName { get; init; }
-    public double? Value { get; init; }
-    public string? UnitName { get; init; }
-    public AnalogSignalStatus? Status { get; init; }
+    public Guid? ChannelId { get; set; }
+    public string? ChannelName { get; set; }
+    public double? Value { get; set; }
+    public string? UnitName { get; set; }
+    public AnalogSignalStatus? Status { get; set; }
 }
