@@ -11,6 +11,12 @@ public class Sharp7Client : IPlcClient
 
     public bool IsConnected => S7Client.Connected;
 
+    private DateTimeOffset? _connectedTime;
+    public TimeSpan Uptime =>
+        IsConnected
+            ? DateTimeOffset.UtcNow - _connectedTime!.Value
+            : TimeSpan.Zero;
+
     public Sharp7Client()
     {
         S7Client = new S7Client
@@ -33,6 +39,8 @@ public class Sharp7Client : IPlcClient
 
             throw new PlcConnectionException(ipAddress, rack, slot, errorText);
         }
+
+        _connectedTime = DateTime.Now;
     }
 
     public void Disconnect()
@@ -103,5 +111,10 @@ public class Sharp7Client : IPlcClient
     public DateTime ReadDateTime(byte[] buffer, int byteOffset)
     {
         return S7.GetDateTimeAt(buffer, byteOffset);
+    }
+
+    public byte ReadByte(byte[] buffer, int byteOffset)
+    {
+        return S7.GetByteAt(buffer, byteOffset);
     }
 }

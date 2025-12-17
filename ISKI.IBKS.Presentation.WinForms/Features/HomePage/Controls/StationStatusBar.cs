@@ -17,33 +17,39 @@ public partial class StationStatusBar : UserControl
     private const string LabelDailyWashRemainingTimeText = "G. Yıkamaya Kalan: ";
     private const string LabelWeeklyWashRemainingTimeText = "H. Yıkama Kalan: ";
     private const string LabelSystemTimeText = "Sistem Saati: ";
-   
-    public string IsConnected
+
+    private readonly bool _isConnected;
+    private readonly TimeSpan _upTime;
+    private readonly TimeSpan _dailyWashRemainingTime;
+    private readonly TimeSpan _weeklyWashRemainingTime;
+    private readonly DateTime _systemTime;
+
+    public bool IsConnected
     {
-        get => LabelConnectionStatus.Text;
+        get => _isConnected;
         set => LabelConnectionStatus.Text = LabelConnectionStatusText + value;
     }
 
-    public string UpTime
+    public TimeSpan UpTime
     {
-        get => LabelUpTime.Text;
+        get => _upTime;
         set => LabelUpTime.Text = LabelUpTimeText + value;
     }
 
-    public string DailyWashRemainingTime
+    public TimeSpan DailyWashRemainingTime
     {
-        get => LabelDailyWashRemainingTime.Text;
+        get => _dailyWashRemainingTime;
         set => LabelDailyWashRemainingTime.Text = LabelDailyWashRemainingTimeText + value;
     }
-    public string WeeklyWashRemainingTime
+    public TimeSpan WeeklyWashRemainingTime
     {
-        get => LabelWeeklyWashRemainingTime.Text;
+        get => _weeklyWashRemainingTime;
         set => LabelWeeklyWashRemainingTime.Text = LabelWeeklyWashRemainingTimeText + value;
     }
 
-    public string SystemTime
+    public DateTime SystemTime
     {
-        get => LabelSystemTime.Text;
+        get => _systemTime;
         set => LabelSystemTime.Text = LabelSystemTimeText + value;
     }
 

@@ -1,6 +1,8 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Services;
+using ISKI.IBKS.Application.Features.StationStatus.Services;
 using ISKI.IBKS.Domain.Abstractions;
-using ISKI.IBKS.Infrastructure.AnalogSensors;
+using ISKI.IBKS.Infrastructure.Features.AnalogSensors;
+using ISKI.IBKS.Infrastructure.Features.StationStatus;
 using ISKI.IBKS.Infrastructure.IoT.Plc;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
@@ -42,6 +44,7 @@ public static class DependencyInjection
 
         //services
         services.AddScoped<IAnalogSensorService, AnalogSensorService>();
+        services.AddScoped<IStationStatusService, StationStatusService>();
 
         // Background polling
         services.AddHostedService<PlcPollingService>();

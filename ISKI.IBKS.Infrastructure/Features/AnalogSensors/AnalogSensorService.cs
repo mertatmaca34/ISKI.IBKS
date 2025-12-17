@@ -11,7 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.AnalogSensors;
+namespace ISKI.IBKS.Infrastructure.Features.AnalogSensors;
 
 public class AnalogSensorService : IAnalogSensorService
 {

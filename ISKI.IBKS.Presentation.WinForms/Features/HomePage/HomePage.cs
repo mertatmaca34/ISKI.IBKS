@@ -1,61 +1,70 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+using ISKI.IBKS.Application.Features.StationStatus.Dtos;
 using ISKI.IBKS.Presentation.WinForms.Extensions;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage
+namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage;
+
+public partial class HomePage : UserControl, IHomePageView
 {
-    public partial class HomePage : UserControl, IHomePageView
+    // ChannelName -> Control cache
+    private readonly Dictionary<string, AnalogSensorControl> _controlsByChannel =
+        new(StringComparer.OrdinalIgnoreCase);
+
+    public HomePage()
     {
-        // ChannelName -> Control cache
-        private readonly Dictionary<string, AnalogSensorControl> _controlsByChannel =
-            new(StringComparer.OrdinalIgnoreCase);
+        InitializeComponent();
+    }
 
-        public HomePage()
+    public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos)
+    {
+        if (IsDisposed) return;
+
+        if (InvokeRequired)
         {
-            InitializeComponent();
+            BeginInvoke(new Action(() => RenderAnalogChannels(channelReadingDtos)));
+            return;
         }
 
-        public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos)
+        TableLayoutPanelAnalogSensors.SuspendLayout();
+
+        foreach (var sensor in channelReadingDtos)
         {
-            if (IsDisposed) return;
+            var channelName = sensor.ChannelName ?? "-";
 
-            if (InvokeRequired)
+            if (!_controlsByChannel.TryGetValue(channelName, out var control))
             {
-                BeginInvoke(new Action(() => RenderAnalogChannels(channelReadingDtos)));
-                return;
-            }
-
-            TableLayoutPanelAnalogSensors.SuspendLayout();
-
-            foreach (var sensor in channelReadingDtos)
-            {
-                var channelName = sensor.ChannelName ?? "-";
-
-                if (!_controlsByChannel.TryGetValue(channelName, out var control))
-                {
-                    control = new AnalogSensorControl(
-                        sensorName: channelName,
-                        sensorInstantValue: "-",
-                        sensorHourlyAvgValue: "-",
-                        analogSensorUnit: sensor.UnitName ?? "-"
-                    );
-
-                    _controlsByChannel[channelName] = control;
-                    TableLayoutPanelAnalogSensors.Controls.Add(control);
-                }
-
-                // AnalogSensorControl içine bunu ekleyeceğiz (aşağıda)
-                control.UpdateValues(
-                    instantValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
-                    hourlyAvgValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
-                    unit: sensor.UnitName ?? "-"
+                control = new AnalogSensorControl(
+                    sensorName: channelName,
+                    sensorInstantValue: "-",
+                    sensorHourlyAvgValue: "-",
+                    analogSensorUnit: sensor.UnitName ?? "-"
                 );
+
+                _controlsByChannel[channelName] = control;
+                TableLayoutPanelAnalogSensors.Controls.Add(control);
             }
 
-            TableLayoutPanelAnalogSensors.ResumeLayout();
+            // AnalogSensorControl içine bunu ekleyeceğiz (aşağıda)
+            control.UpdateValues(
+                instantValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
+                hourlyAvgValue: sensor.Value.ToUiValue(2).ToString() ?? "-",
+                unit: sensor.UnitName ?? "-"
+            );
         }
+
+        TableLayoutPanelAnalogSensors.ResumeLayout();
+    }
+
+    public void RenderStationStatusBar(StationStatusDto? stationStatusDto)
+    {
+        stationStatusBar1.IsConnected = stationStatusDto?.IsConnected ?? false;
+        stationStatusBar1.UpTime = stationStatusDto?.UpTime ?? TimeSpan.Zero;
+        stationStatusBar1.WeeklyWashRemainingTime = stationStatusDto?.WeeklyWashRemainingTime ?? TimeSpan.Zero;
+        stationStatusBar1.DailyWashRemainingTime = stationStatusDto?.DailyWashRemainingTime ?? TimeSpan.Zero;
+        stationStatusBar1.SystemTime = stationStatusDto?.SystemTime ?? DateTime.MinValue;
     }
 }

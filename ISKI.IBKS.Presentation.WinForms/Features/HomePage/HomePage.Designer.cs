@@ -291,17 +291,17 @@
             // 
             stationStatusBar1.BackColor = Color.FromArgb(235, 235, 235);
             tableLayoutPanel1.SetColumnSpan(stationStatusBar1, 2);
-            stationStatusBar1.DailyWashRemainingTime = "G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: G. Yıkamaya Kalan: ";
+            stationStatusBar1.DailyWashRemainingTime = TimeSpan.Parse("00:00:00");
             stationStatusBar1.Dock = DockStyle.Fill;
-            stationStatusBar1.IsConnected = "Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: Bağlantı Durumu: ";
+            stationStatusBar1.IsConnected = false;
             stationStatusBar1.Location = new Point(3, 634);
             stationStatusBar1.Name = "stationStatusBar1";
             stationStatusBar1.Padding = new Padding(1);
             stationStatusBar1.Size = new Size(1154, 30);
-            stationStatusBar1.SystemTime = "Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: Sistem Saati: ";
+            stationStatusBar1.SystemTime = new DateTime(0L);
             stationStatusBar1.TabIndex = 3;
-            stationStatusBar1.UpTime = "Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: Bağlantı Süresi: ";
-            stationStatusBar1.WeeklyWashRemainingTime = "H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: H. Yıkama Kalan: ";
+            stationStatusBar1.UpTime = TimeSpan.Parse("00:00:00");
+            stationStatusBar1.WeeklyWashRemainingTime = TimeSpan.Parse("00:00:00");
             // 
             // HomePage
             // 
@@ -335,7 +335,7 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Controls.AnalogSensorHeaderControl analogSensorHeaderControl1;
         private Controls.StationParameterStatusControl stationParameterStatusControl1;
-        private Controls.StationStatusBar stationStatusBar1;
         private TableLayoutPanel TableLayoutPanelAnalogSensors;
+        private Controls.StationStatusBar stationStatusBar1;
     }
 }

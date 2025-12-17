@@ -9,11 +9,11 @@ namespace ISKI.IBKS.Domain.Entities;
 public class StationSnapshot
 {
     public DateTime? SystemTime { get; set; }
-    public short? HaftalikYikamaGunu { get; set; }
-    public short? HaftalikYikamaSaati { get; set; }
-    public short? SaatlikYikamaSaati { get; set; }
-    public short? YikamaDakikasi { get; set; }
-    public short? YikamaSaniyesi { get; set; }
+    public int? HaftalikYikamaGunu { get; set; }
+    public int? HaftalikYikamaSaati { get; set; }
+    public int? SaatlikYikamaSaati { get; set; }
+    public int? YikamaDakikasi { get; set; }
+    public int? YikamaSaniyesi { get; set; }
     public double? TesisDebi { get; set; }
     public double? TesisGunlukDebi { get; set; }
     public double? DesarjDebi { get; set; }

@@ -1,4 +1,5 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+using ISKI.IBKS.Application.Features.StationStatus.Dtos;
 using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.ViewModels;
 using System;
@@ -15,4 +16,5 @@ public interface IHomePageView
     event EventHandler Disposed;
 
     public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos);
+    public void RenderStationStatusBar(StationStatusDto? stationStatusDto);
 }

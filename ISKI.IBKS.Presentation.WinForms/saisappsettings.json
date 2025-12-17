@@ -207,32 +207,37 @@
           "Offsets": {
             "SystemTime": {
               "DataType": "DateTime",
-              "ByteOffset": "0"
+              "ByteOffset": 0,
+              "BitOffset": 0
             },
             "WeeklyWashDay": {
-              "DataType": "Real",
-              "ByteOffset": "14"
-            },
-            "DesarjDebi": {
               "DataType": "Byte",
-              "ByteOffset": "15"
+              "ByteOffset": 14,
+              "BitOffset": 0
             },
-            "HariciDebi": {
+            "WeeklyWashHour": {
               "DataType": "Byte",
-              "ByteOffset": "16"
+              "ByteOffset": 15,
+              "BitOffset": 0
             },
-            "HariciDebi2": {
+            "DailyWashHour": {
               "DataType": "Byte",
-              "ByteOffset": "17"
+              "ByteOffset": 16,
+              "BitOffset": 0
             },
-            "OlcumCihaziAkisHizi": {
+            "Minute": {
               "DataType": "Byte",
-              "ByteOffset": "18"
+              "ByteOffset": 17,
+              "BitOffset": 0
+            },
+            "Second": {
+              "DataType": "Byte",
+              "ByteOffset": 18,
+              "BitOffset": 0
             }
           }
         }
       ]
     }
-
   }
 }
