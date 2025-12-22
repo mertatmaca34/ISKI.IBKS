@@ -1,6 +1,6 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Enums;
 using ISKI.IBKS.Infrastructure.Features.AnalogSensors;
-using ISKI.IBKS.Presentation.WinForms.Common;
+using ISKI.IBKS.Presentation.WinForms.Common.Ui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

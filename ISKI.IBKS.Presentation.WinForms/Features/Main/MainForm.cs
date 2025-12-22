@@ -1,4 +1,4 @@
-﻿using ISKI.IBKS.Presentation.WinForms.Features.Main;
+﻿using ISKI.IBKS.Presentation.WinForms.Features.Main.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

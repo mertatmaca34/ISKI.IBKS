@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Presentation.WinForms.Common;
+namespace ISKI.IBKS.Presentation.WinForms.Common.Ui;
 
 public static class StatusPalette
 {

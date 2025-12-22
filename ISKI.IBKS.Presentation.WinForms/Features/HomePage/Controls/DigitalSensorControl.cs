@@ -1,5 +1,5 @@
 ﻿using ISKI.IBKS.Application.Features.DigitalSensors.Enums;
-using ISKI.IBKS.Presentation.WinForms.Common;
+using ISKI.IBKS.Presentation.WinForms.Common.Ui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

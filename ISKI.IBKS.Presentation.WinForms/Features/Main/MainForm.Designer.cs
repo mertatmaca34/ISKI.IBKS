@@ -1,4 +1,4 @@
-﻿using ISKI.IBKS.Presentation.WinForms.Controls;
+﻿using ISKI.IBKS.Presentation.WinForms.Features.Main.Controls;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.Main
 {
