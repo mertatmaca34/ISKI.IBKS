@@ -1,14 +1,11 @@
 ﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 
 public interface ISaisTicketProvider
 {
-    Task<AToken> GetTicketAsync(CancellationToken cancellationToken);
+    Task<SaisTicket> GetTicketAsync(CancellationToken cancellationToken = default);
     void InvalidateTicket();
 }

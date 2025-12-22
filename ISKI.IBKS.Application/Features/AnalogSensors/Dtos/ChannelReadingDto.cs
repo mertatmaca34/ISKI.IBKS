@@ -14,4 +14,5 @@ public sealed record ChannelReadingDto
     public double? Value { get; set; }
     public string? UnitName { get; set; }
     public AnalogSignalStatus? Status { get; set; }
+    public string? Format { get; set; }
 }

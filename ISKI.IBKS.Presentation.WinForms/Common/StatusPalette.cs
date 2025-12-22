@@ -1,4 +1,5 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Enums;
+using ISKI.IBKS.Application.Features.DigitalSensors.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,14 @@ public static class StatusPalette
         AnalogSignalStatus.Normal => SimGreen,
         AnalogSignalStatus.Critical => SimRed,
         AnalogSignalStatus.Undefined => Color.Gray,
+        _ => Color.Gray
+    };
+
+    public static Color Get(DigitalSignalStatus status) => status switch
+    {
+        DigitalSignalStatus.Normal => SimGreen,
+        DigitalSignalStatus.Critical => SimGreen,
+        DigitalSignalStatus.Undefined => Color.Gray,
         _ => Color.Gray
     };
 }

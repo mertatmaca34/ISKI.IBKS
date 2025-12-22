@@ -1,5 +1,7 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+using ISKI.IBKS.Application.Features.DigitalSensors.Dtos;
 using ISKI.IBKS.Application.Features.StationStatus.Dtos;
+using ISKI.IBKS.Application.Features.HealthSummary.Dtos;
 using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.ViewModels;
 using System;
@@ -17,4 +19,6 @@ public interface IHomePageView
 
     public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos);
     public void RenderStationStatusBar(StationStatusDto? stationStatusDto);
+    public void RenderDigitalSensors(IReadOnlyList<DigitalReadingDto> digitalReadingDtos);
+    public void RenderHealthSummary(HealthSummaryDto dto);
 }

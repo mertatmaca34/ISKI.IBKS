@@ -1,4 +1,5 @@
 ﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Calibration;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Channel;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.SendData;
@@ -16,5 +17,6 @@ public interface ISaisApiClient
     Task<SaisResultEnvelope<LoginResponse>> LoginAsync(LoginRequest request, CancellationToken ct = default);
     Task<SaisResultEnvelope<SendDataResponse>> SendDataAsync(SendDataRequest request, CancellationToken ct = default);
     Task<SaisResultEnvelope<GetChannelInformationResponse>> GetChannelInformation(GetChannelInformationRequest request, CancellationToken ct = default);
+    Task<SaisResultEnvelope<GetCalibrationResponse[]>> GetCalibration(GetCalibrationRequest request, CancellationToken ct = default);
     Task<SaisResultEnvelope<GetUnitsResponse>> GetUnits(CancellationToken ct = default);
 }

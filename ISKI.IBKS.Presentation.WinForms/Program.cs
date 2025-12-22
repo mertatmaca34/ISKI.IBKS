@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Runtime;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ISKI.IBKS.Presentation.WinForms
 {
@@ -36,12 +37,24 @@ namespace ISKI.IBKS.Presentation.WinForms
                 .ConfigureAndUseLogging()
                 .ConfigureServices((context, services) =>
                 {
-                    var saisConfig = new ConfigurationBuilder()
-                    .SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile("saisappsettings.json", optional: false, reloadOnChange: true)
-                    .Build();
+                    // Load configuration files from Infrastructure/Configuration within repository
+                    var infraConfigDir = Path.Combine(AppContext.BaseDirectory, "Infrastructure", "Configuration");
 
-                    services.AddInfrastructure(saisConfig);
+                    // If running from build output where files are not copied, try project relative path
+                    if (!Directory.Exists(infraConfigDir))
+                    {
+                        var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+                        infraConfigDir = Path.Combine(projectRoot, "ISKI.IBKS.Infrastructure", "Configuration");
+                    }
+
+                    var infraConfig = new ConfigurationBuilder()
+                        .SetBasePath(infraConfigDir)
+                        .AddJsonFile("sais.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile("plc.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile("ui-mapping.json", optional: false, reloadOnChange: true)
+                        .Build();
+
+                    services.AddInfrastructure(infraConfig);
                     services.AddPresentation();
                 });
         }

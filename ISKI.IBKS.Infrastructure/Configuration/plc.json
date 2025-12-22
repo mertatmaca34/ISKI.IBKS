@@ -1,10 +1,4 @@
-{
-  "SAIS": {
-    "BaseUrl": "https://entegrationsais.csb.gov.tr/",
-    "Timeout": "00:00:10",
-    "TicketTtl": "00:29:00",
-    "TicketHeaderName": "AToken"
-  },
+﻿{
   "Plc": {
     "Station": {
       "StationId": "f9727c73-6533-45ad-8b1b-780f0ac7d265",
@@ -14,32 +8,20 @@
       "DBs": [
         {
           "DbNumber": 41,
-          "Size": 248,
+          "Size": 148,
           "Type": "Analog",
           "Offsets": {
             "TesisDebi": {
               "DataType": "Real",
               "ByteOffset": "0"
             },
-            "TesisGunlukDebi": {
-              "DataType": "Real",
-              "ByteOffset": "12"
-            },
-            "DesarjDebi": {
-              "DataType": "Real",
-              "ByteOffset": "60"
-            },
-            "HariciDebi": {
-              "DataType": "Real",
-              "ByteOffset": "52"
-            },
-            "HariciDebi2": {
-              "DataType": "Real",
-              "ByteOffset": "56"
-            },
             "OlcumCihaziAkisHizi": {
               "DataType": "Real",
               "ByteOffset": "4"
+            },
+            "TesisGunlukDebi": {
+              "DataType": "Real",
+              "ByteOffset": "12"
             },
             "Ph": {
               "DataType": "Real",
@@ -65,13 +47,25 @@
               "DataType": "Real",
               "ByteOffset": "36"
             },
+            "KabinSicakligi": {
+              "DataType": "Real",
+              "ByteOffset": "40"
+            },
             "KabinNemi": {
               "DataType": "Real",
               "ByteOffset": "44"
             },
-            "KabinSicakligi": {
+            "HariciDebi": {
               "DataType": "Real",
-              "ByteOffset": "40"
+              "ByteOffset": "52"
+            },
+            "HariciDebi2": {
+              "DataType": "Real",
+              "ByteOffset": "56"
+            },
+            "DesarjDebi": {
+              "DataType": "Real",
+              "ByteOffset": "60"
             },
             "Pompa1CalismaFrekansi": {
               "DataType": "Real",
@@ -128,6 +122,7 @@
               "ByteOffset": 0,
               "BitOffset": 7
             },
+
             "KabinHaftalikYikamada": {
               "DataType": "Bool",
               "ByteOffset": 1,
@@ -168,6 +163,7 @@
               "ByteOffset": 1,
               "BitOffset": 7
             },
+
             "Pompa3Calisiyor": {
               "DataType": "Bool",
               "ByteOffset": 2,

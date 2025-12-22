@@ -4,13 +4,15 @@ using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Extensions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using System;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 
@@ -25,17 +27,17 @@ public class SaisApiClientBase
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    private readonly SAISOptions _saisOptions;
+    protected readonly SAISOptions _saisOptions;
     private readonly HttpClient _httpClient;
     private readonly ISaisTicketProvider? _saisTicketProvider;
 
     public SaisApiClientBase(HttpClient httpClient,
-        ISaisTicketProvider? saisTicketProvider,
-        IOptions<SAISOptions> saisOptions)
+        IOptions<SAISOptions> saisOptions,
+        ISaisTicketProvider? saisTicketProvider)
     {
-        _httpClient = httpClient;
-        _saisTicketProvider = saisTicketProvider;
-        _saisOptions = saisOptions.Value;
+        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        _saisOptions = saisOptions?.Value ?? throw new ArgumentNullException(nameof(saisOptions));
+        _saisTicketProvider = saisTicketProvider ?? throw new ArgumentNullException(nameof(saisTicketProvider));
 
         if (string.IsNullOrWhiteSpace(_httpClient.BaseAddress?.ToString()))
         {
@@ -47,7 +49,7 @@ public class SaisApiClientBase
         string relativeUri,
         object? payload,
         bool includeTicket,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, relativeUri)
         {
@@ -92,15 +94,15 @@ public class SaisApiClientBase
         }
         catch (HttpRequestException ex)
         {
-            throw new SaisApiException("SAİS API request failed.", ex);
+            throw new SaisApiException("SAIS API request failed.", ex);
         }
         catch (NotSupportedException ex)
         {
-            throw new SaisApiException("SAİS API returned an unsupported media type.", ex);
+            throw new SaisApiException("SAIS API returned an unsupported media type.", ex);
         }
         catch (JsonException ex)
         {
-            throw new SaisApiException("SAİS API response could not be parsed.", ex);
+            throw new SaisApiException("SAIS API response could not be parsed.", ex);
         }
     }
 }

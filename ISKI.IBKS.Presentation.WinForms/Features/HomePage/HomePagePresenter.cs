@@ -1,5 +1,9 @@
-﻿using ISKI.IBKS.Application.Features.AnalogSensors.Services;
+﻿using ISKI.IBKS.Application.Features;
+using ISKI.IBKS.Application.Features.AnalogSensors.Services;
+using ISKI.IBKS.Application.Features.DigitalSensors.Services;
+using ISKI.IBKS.Application.Features.HealthSummary.Services;
 using ISKI.IBKS.Application.Features.StationStatus.Services;
+using ISKI.IBKS.Infrastructure;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,7 +18,9 @@ public sealed class HomePagePresenter
 {
     //Services
     private readonly IAnalogSensorService _analogSensorService;
+    private readonly IDigitalSensorService _digitalSensorService;
     private readonly IStationStatusService _stationStatusService;
+    private readonly IHealthSummaryService _healthSummaryService;
     private readonly IHomePageView _view;
     private readonly IOptions<PlcSettings> _options;
     private readonly ILogger<HomePagePresenter> _logger;
@@ -29,13 +35,17 @@ public sealed class HomePagePresenter
     public HomePagePresenter(
         IHomePageView view,
         IAnalogSensorService analogSensorService,
+        IDigitalSensorService digitalSensorService,
         IStationStatusService stationStatusService,
+        IHealthSummaryService healthSummaryService,
         IOptions<PlcSettings> options,
         ILogger<HomePagePresenter> logger)
     {
         _view = view;
         _analogSensorService = analogSensorService;
+        _digitalSensorService = digitalSensorService;
         _stationStatusService = stationStatusService;
+        _healthSummaryService = healthSummaryService;
         _options = options;
         _logger = logger;
 
@@ -69,22 +79,23 @@ public sealed class HomePagePresenter
             var readings = await _analogSensorService.GetChannelsAsync(_stationId, _cts.Token);
             _view.RenderAnalogChannels(readings);
 
+            var digital = await _digitalSensorService.GetDigitalSensorsAsync(_stationId, _cts.Token);
+            _view.RenderDigitalSensors(digital);
+
             var stationStatus = await _stationStatusService.GetStationStatusAsync(_stationId, _cts.Token);
             _view.RenderStationStatusBar(stationStatus);
+
+            var health = await _healthSummaryService.GetHealthSummaryAsync(_stationId, _cts.Token);
+            _view.RenderHealthSummary(health);
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex, "Analog kanallar getirilirken hata oluştu.");
+            _logger.LogError(ex, "Kanallar getirilirken hata oluştu.");
         }
         finally
         {
             Interlocked.Exchange(ref _isRefreshing, 0);
         }
-    }
-
-    private void RenderStationStatusBar()
-    {
-
     }
 
     private void OnDisposed(object? sender, EventArgs e)

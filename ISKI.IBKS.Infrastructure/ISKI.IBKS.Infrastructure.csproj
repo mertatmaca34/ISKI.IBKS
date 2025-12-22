@@ -7,6 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Configuration\plc.json" />
+    <None Remove="Configuration\sais.json" />
+    <None Remove="Configuration\ui-mapping.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Configuration\plc.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\sais.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\ui-mapping.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.22" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
@@ -24,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Persistence\Entities\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

@@ -1,0 +1,30 @@
+﻿{
+  "UiMapping": {
+    "Station": {
+      "Analog": [
+        { "Key": "Akm", "Label": "AKM", "Unit": "mg/L", "Format": "N2", "Order": 1 },
+        { "Key": "CozunmusOksijen", "Label": "Çözünmüş Oksijen", "Unit": "mg/L", "Format": "N2", "Order": 2 },
+        { "Key": "KabinSicakligi", "Label": "Kabin Sıcaklığı", "Unit": "°C", "Format": "N1", "Order": 3 },
+        { "Key": "Ph", "Label": "pH", "Unit": "", "Format": "N2", "Order": 4 },
+        { "Key": "Iletkenlik", "Label": "İletkenlik", "Unit": "µS/cm", "Format": "N2", "Order": 5 },
+        { "Key": "Koi", "Label": "KOİ", "Unit": "mg/L", "Format": "N2", "Order": 6 },
+        { "Key": "OlcumCihaziAkisHizi", "Label": "Akış Hızı", "Unit": "m/s", "Format": "N2", "Order": 7 },
+        { "Key": "TesisDebi", "Label": "Tesis Debisi", "Unit": "m³/h", "Format": "N2", "Order": 8 },
+        { "Key": "DesarjDebi", "Label": "Deşarj Debisi", "Unit": "m³/h", "Format": "N2", "Order": 9 },
+        { "Key": "HariciDebi", "Label": "Harici Debi 1", "Unit": "m³/h", "Format": "N2", "Order": 10 },
+        { "Key": "HariciDebi2", "Label": "Harici Debi 2", "Unit": "m³/h", "Format": "N2", "Order": 11 }
+      ],
+      "Digital": [
+        { "Key": "KabinKapiAlarmi", "Label": "Kapı", "Order": 1 },
+        { "Key": "KabinDumanAlarmi", "Label": "Duman", "Order": 2 },
+        { "Key": "KabinSuBaskiniAlarmi", "Label": "Su Baskını", "Order": 3 },
+        { "Key": "KabinAcilStopBasiliAlarmi", "Label": "Acil Stop", "Order": 4 },
+        { "Key": "Pompa1TermikAlarmi", "Label": "Pompa 1 Termik", "Order": 5 },
+        { "Key": "Pompa2TermikAlarmi", "Label": "Pompa 2 Termik", "Order": 6 },
+        { "Key": "Pompa3TermikAlarmi", "Label": "Temiz Su Pompa Termik", "Order": 7 },
+        { "Key": "YikamaTankiBosAlarmi", "Label": "Yıkama Tankı", "Order": 8 },
+        { "Key": "KabinEnerjiAlarmi", "Label": "Enerji Durumu", "Order": 9 }
+      ]
+    }
+  }
+}

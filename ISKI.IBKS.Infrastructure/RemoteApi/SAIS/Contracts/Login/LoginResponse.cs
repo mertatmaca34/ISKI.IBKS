@@ -10,10 +10,10 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login;
 public sealed class LoginResponse
 {
     [JsonPropertyName("TicketId")]
-    public string TicketId { get; init; } = string.Empty;
+    public Guid? TicketId { get; init; }
 
     [JsonPropertyName("DeviceId")]
-    public string? DeviceId { get; init; }
+    public Guid? DeviceId { get; init; }
 
     [JsonPropertyName("User")]
     public SaisUserResponse? User { get; init; }
