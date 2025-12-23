@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.Features.HealthSummary;
+namespace ISKI.IBKS.Infrastructure.Application.Features.HealthSummary;
 
 public class HealthSummaryService : IHealthSummaryService
 {

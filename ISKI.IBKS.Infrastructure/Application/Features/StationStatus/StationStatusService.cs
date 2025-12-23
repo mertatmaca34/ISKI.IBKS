@@ -5,7 +5,7 @@ using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace ISKI.IBKS.Infrastructure.Features.StationStatus;
+namespace ISKI.IBKS.Infrastructure.Application.Features.StationStatus;
 
 public class StationStatusService : IStationStatusService
 {

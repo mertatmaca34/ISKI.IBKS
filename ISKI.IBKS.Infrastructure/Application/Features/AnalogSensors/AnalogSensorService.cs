@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.Features.AnalogSensors;
+namespace ISKI.IBKS.Infrastructure.Application.Features.AnalogSensors;
 
 public class AnalogSensorService : IAnalogSensorService
 {
@@ -68,8 +68,8 @@ public class AnalogSensorService : IAnalogSensorService
             {
                 float f => (double)f,
                 double d => d,
-                int i => (double)i,
-                long l => (double)l,
+                int i => i,
+                long l => l,
                 decimal m => (double)m,
                 null => null,
                 _ => TryParseToDouble(raw)

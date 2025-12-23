@@ -5,7 +5,7 @@ using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ISKI.IBKS.Infrastructure.IoT.Plc;
+namespace ISKI.IBKS.Infrastructure.IoT.Plc.Readers;
 
 public class StationSnapshotReader : IStationSnapshotReader
 {

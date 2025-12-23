@@ -4,10 +4,6 @@ using ISKI.IBKS.Application.Features.StationStatus.Services;
 using ISKI.IBKS.Application.Features.DigitalSensors.Services;
 using ISKI.IBKS.Application.Features.HealthSummary.Services;
 using ISKI.IBKS.Infrastructure.Configuration;
-using ISKI.IBKS.Infrastructure.Features.AnalogSensors;
-using ISKI.IBKS.Infrastructure.Features.DigitalSensors;
-using ISKI.IBKS.Infrastructure.Features.HealthSummary;
-using ISKI.IBKS.Infrastructure.Features.StationStatus;
 using ISKI.IBKS.Infrastructure.IoT.Plc;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
@@ -22,6 +18,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Infrastructure.Application.Features.AnalogSensors;
+using ISKI.IBKS.Infrastructure.Application.Features.DigitalSensors;
+using ISKI.IBKS.Infrastructure.Application.Features.HealthSummary;
+using ISKI.IBKS.Infrastructure.Application.Features.StationStatus;
 
 namespace ISKI.IBKS.Infrastructure;
 
@@ -39,7 +39,6 @@ public static class DependencyInjection
         // IoT / Plc
         services.AddSingleton<IPlcClient, Sharp7Client>();
         services.AddSingleton<IStationSnapshotReader, StationSnapshotReader>();
-        services.AddSingleton<IStationPlcTagReader, StationPlcTagReader>();
 
         // IoC: SAIS auth client (no ticket header) - typed HttpClient
         services.AddHttpClient<ISaisAuthClient, SaisAuthClient>()

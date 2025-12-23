@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.Features.DigitalSensors;
+namespace ISKI.IBKS.Infrastructure.Application.Features.DigitalSensors;
 
 public class DigitalSensorService : IDigitalSensorService
 {
@@ -39,7 +39,7 @@ public class DigitalSensorService : IDigitalSensorService
         if (digitalMappings is null)
             return Task.FromResult<IReadOnlyList<DigitalReadingDto>>(Array.Empty<DigitalReadingDto>());
 
-        var ordered = digitalMappings.OrderBy(m => (int?)(m.Order) ?? int.MaxValue).ToList();
+        var ordered = digitalMappings.OrderBy(m => (int?)m.Order ?? int.MaxValue).ToList();
 
         var snapshotType = typeof(StationSnapshotDto);
         var props = snapshotType.GetProperties(BindingFlags.Public | BindingFlags.Instance)

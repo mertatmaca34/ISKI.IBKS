@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.Features.AnalogSensors;
+namespace ISKI.IBKS.Infrastructure.Application.Features.AnalogSensors;
 
 public static class AnalogSignalEvaluator
 {

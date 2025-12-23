@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Infrastructure.Persistence;
+namespace ISKI.IBKS.Persistence;
 
 public sealed class IbksDbContext : DbContext
 {
