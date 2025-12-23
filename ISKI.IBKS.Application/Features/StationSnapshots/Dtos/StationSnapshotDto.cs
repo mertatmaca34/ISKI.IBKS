@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISKI.IBKS.Domain.Entities;
+namespace ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 
-public class StationSnapshot
+public class StationSnapshotDto
 {
     public DateTime? SystemTime { get; set; }
     public int? HaftalikYikamaGunu { get; set; }

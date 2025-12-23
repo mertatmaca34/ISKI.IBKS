@@ -1,6 +1,6 @@
-﻿using ISKI.IBKS.Application.Features.StationStatus.Dtos;
+﻿using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationStatus.Dtos;
 using ISKI.IBKS.Application.Features.StationStatus.Services;
-using ISKI.IBKS.Domain.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Options;

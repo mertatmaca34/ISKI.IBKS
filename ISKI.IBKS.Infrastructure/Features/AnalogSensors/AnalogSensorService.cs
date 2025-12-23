@@ -1,7 +1,8 @@
 ﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
 using ISKI.IBKS.Application.Features.AnalogSensors.Enums;
 using ISKI.IBKS.Application.Features.AnalogSensors.Services;
-using ISKI.IBKS.Domain.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Infrastructure.Configuration;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
@@ -47,7 +48,7 @@ public class AnalogSensorService : IAnalogSensorService
 
         var list = new List<ChannelReadingDto>(ordered.Count);
 
-        var snapshotType = typeof(StationSnapshot);
+        var snapshotType = typeof(StationSnapshotDto);
         var props = snapshotType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .ToDictionary(p => p.Name, p => p, StringComparer.OrdinalIgnoreCase);
 

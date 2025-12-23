@@ -1,11 +1,11 @@
-﻿using ISKI.IBKS.Domain.Abstractions;
-using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
+﻿using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc;
 

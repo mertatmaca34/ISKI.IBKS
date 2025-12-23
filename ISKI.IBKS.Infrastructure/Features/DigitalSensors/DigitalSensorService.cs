@@ -1,6 +1,7 @@
 using ISKI.IBKS.Application.Features.DigitalSensors.Dtos;
 using ISKI.IBKS.Application.Features.DigitalSensors.Services;
-using ISKI.IBKS.Domain.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Infrastructure.Configuration;
 using Microsoft.Extensions.Options;
@@ -40,7 +41,7 @@ public class DigitalSensorService : IDigitalSensorService
 
         var ordered = digitalMappings.OrderBy(m => (int?)(m.Order) ?? int.MaxValue).ToList();
 
-        var snapshotType = typeof(StationSnapshot);
+        var snapshotType = typeof(StationSnapshotDto);
         var props = snapshotType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .ToDictionary(p => p.Name, p => p, StringComparer.OrdinalIgnoreCase);
 

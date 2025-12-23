@@ -1,15 +1,9 @@
-﻿using ISKI.IBKS.Domain.Abstractions;
-using ISKI.IBKS.Domain.Entities;
+﻿using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc;
 
@@ -29,9 +23,9 @@ public class StationSnapshotReader : IStationSnapshotReader
         _logger = logger;
     }
 
-    public Task<StationSnapshot?> Read(string stationIp)
+    public Task<StationSnapshotDto?> Read(string stationIp)
     {
-        StationSnapshot stationSnapshot = new StationSnapshot();
+        StationSnapshotDto stationSnapshot = new StationSnapshotDto();
 
         var station = _settings.Station;
 
@@ -39,7 +33,7 @@ public class StationSnapshotReader : IStationSnapshotReader
         {
             _logger.LogError("Bu {StationIp} IP adresi ile ilgili Plc konfigürasyonu bulunamadı.", stationIp);
 
-            return Task.FromResult<StationSnapshot?>(null);
+            return Task.FromResult<StationSnapshotDto?>(null);
         }
 
         try
@@ -51,10 +45,10 @@ public class StationSnapshotReader : IStationSnapshotReader
 
             var db41 = station.DBs.Where(db => db.DbNumber == 41).FirstOrDefault();
 
-            if(db41 is null)
+            if (db41 is null)
             {
                 _logger.LogError("Bu {StationIp} IP adresi ile ilgili Plc DB41 konfigürasyonu bulunamadı.", stationIp);
-                return Task.FromResult<StationSnapshot?>(null);
+                return Task.FromResult<StationSnapshotDto?>(null);
             }
 
             var db41Data = _plcClient.ReadBytes(db41.DbNumber, 0, new byte[db41.Size]);
@@ -81,7 +75,7 @@ public class StationSnapshotReader : IStationSnapshotReader
             if (db42 is null)
             {
                 _logger.LogError("Bu {StationIp} IP adresi ile ilgili Plc DB42 konfigürasyonu bulunamadı.", stationIp);
-                return Task.FromResult<StationSnapshot?>(null);
+                return Task.FromResult<StationSnapshotDto?>(null);
             }
 
             var db42Data = _plcClient.ReadBytes(db42.DbNumber, 0, new byte[db42.Size]);
@@ -111,10 +105,10 @@ public class StationSnapshotReader : IStationSnapshotReader
 
             var db43 = station.DBs.Where(db => db.DbNumber == 43).FirstOrDefault();
 
-            if(db43 is null)
+            if (db43 is null)
             {
                 _logger.LogError("Bu {StationIp} IP adresi ile ilgili Plc DB43 konfigürasyonu bulunamadı.", stationIp);
-                return Task.FromResult<StationSnapshot?>(null);
+                return Task.FromResult<StationSnapshotDto?>(null);
             }
 
             var db43Data = _plcClient.ReadBytes(db43.DbNumber, 0, new byte[db43.Size]);
@@ -125,7 +119,7 @@ public class StationSnapshotReader : IStationSnapshotReader
             stationSnapshot.YikamaDakikasi = _plcClient.ReadByte(db43Data, db43.Offsets["YikamaDakikasi"].ByteOffset);
             stationSnapshot.YikamaSaniyesi = _plcClient.ReadByte(db43Data, db43.Offsets["YikamaSaniyesi"].ByteOffset);
 
-            return Task.FromResult<StationSnapshot?>(stationSnapshot);
+            return Task.FromResult<StationSnapshotDto?>(stationSnapshot);
         }
         catch (Exception)
         {

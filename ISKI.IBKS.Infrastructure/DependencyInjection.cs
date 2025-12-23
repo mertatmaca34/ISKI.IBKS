@@ -3,7 +3,6 @@ using ISKI.IBKS.Application.Features.AnalogSensors.Services;
 using ISKI.IBKS.Application.Features.StationStatus.Services;
 using ISKI.IBKS.Application.Features.DigitalSensors.Services;
 using ISKI.IBKS.Application.Features.HealthSummary.Services;
-using ISKI.IBKS.Domain.Abstractions;
 using ISKI.IBKS.Infrastructure.Configuration;
 using ISKI.IBKS.Infrastructure.Features.AnalogSensors;
 using ISKI.IBKS.Infrastructure.Features.DigitalSensors;
@@ -22,6 +21,7 @@ using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 
 namespace ISKI.IBKS.Infrastructure;
 
@@ -73,7 +73,8 @@ public static class DependencyInjection
 
         // Background polling
         services.AddHostedService<PlcPollingService>();
-        //services.AddHostedService<SaisTicketKeepAliveService>();
+        // Enable SAIS ticket keep-alive background service
+        services.AddHostedService<SaisTicketKeepAliveService>();
 
         return services;
     }

@@ -1,6 +1,6 @@
 using ISKI.IBKS.Application.Features.HealthSummary.Dtos;
 using ISKI.IBKS.Application.Features.HealthSummary.Services;
-using ISKI.IBKS.Domain.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Calibration;
 using Microsoft.Extensions.Logging;

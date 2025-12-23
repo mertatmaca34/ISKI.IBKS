@@ -1,4 +1,5 @@
-﻿using ISKI.IBKS.Domain.Abstractions;
+﻿using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 using ISKI.IBKS.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,26 +8,23 @@ using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc;
 
-public class StationSnapshotCache : IStationSnapshotCache
+public class StationSnapshotCache() : IStationSnapshotCache
 {
-    private readonly ConcurrentDictionary<Guid, StationSnapshot> _cache = new();
-    private readonly ILogger<StationSnapshotCache> _logger;
+    private readonly ConcurrentDictionary<Guid, StationSnapshotDto> _cache = new();
 
-    public StationSnapshotCache(ILogger<StationSnapshotCache> logger)
-    {
-        _logger = logger;
-    }
-
-    public Task<StationSnapshot> Set(Guid? stationId, StationSnapshot stationSnapshot)
+    public Task<StationSnapshotDto> Set(Guid? stationId, StationSnapshotDto stationSnapshot)
     {
         if (stationId is null) throw new ArgumentNullException(nameof(stationId));
-        if (stationSnapshot is null) throw new ArgumentNullException(nameof(stationSnapshot));
+        if (stationSnapshot is null)
+        {
+            throw new ArgumentNullException(nameof(stationSnapshot));
+        }
 
         _cache.AddOrUpdate(stationId.Value, stationSnapshot, (k, v) => stationSnapshot);
         return Task.FromResult(stationSnapshot);
     }
 
-    public bool TryGet(Guid? stationId, out StationSnapshot? snapshot)
+    public bool TryGet(Guid? stationId, out StationSnapshotDto? snapshot)
     {
         if (stationId is null)
         {
