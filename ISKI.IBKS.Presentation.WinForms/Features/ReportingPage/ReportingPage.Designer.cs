@@ -389,6 +389,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             DataGridViewDatas.RowsDefaultCellStyle = dataGridViewCellStyle2;
             DataGridViewDatas.RowTemplate.Height = 25;
             DataGridViewDatas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DataGridViewDatas.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             DataGridViewDatas.Size = new Size(926, 575);
             DataGridViewDatas.TabIndex = 0;
             // 

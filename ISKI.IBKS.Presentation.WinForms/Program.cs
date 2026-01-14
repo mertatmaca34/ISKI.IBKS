@@ -20,7 +20,7 @@ namespace ISKI.IBKS.Presentation.WinForms
     internal static class Program
     {
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             ApplicationConfiguration.Initialize();
 
@@ -34,7 +34,7 @@ namespace ISKI.IBKS.Presentation.WinForms
                 {
                     var context = services.GetRequiredService<IbksDbContext>();
                     // Veritabanı oluşturma ve migrasyonları uygulama
-                    await context.Database.MigrateAsync();
+                    context.Database.MigrateAsync().GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -44,7 +44,7 @@ namespace ISKI.IBKS.Presentation.WinForms
             }
 
 
-            await host.StartAsync();
+            host.StartAsync().GetAwaiter().GetResult();
             
             // 2. Kurulum Kontrolü ve Akışı
             bool startMainApp = false;
@@ -74,7 +74,7 @@ namespace ISKI.IBKS.Presentation.WinForms
                 else
                 {
                     // Kullanıcı kurulumu tamamlamadan kapattı
-                    await host.StopAsync();
+                    host.StopAsync().GetAwaiter().GetResult();
                     return;
                 }
             }
@@ -90,7 +90,7 @@ namespace ISKI.IBKS.Presentation.WinForms
                 System.Windows.Forms.Application.Run(mainForm);
             }
 
-            await host.StopAsync();
+            host.StopAsync().GetAwaiter().GetResult();
         }
 
         public static IHostBuilder CreateHostBuilder()

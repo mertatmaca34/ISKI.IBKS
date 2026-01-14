@@ -55,6 +55,8 @@ public class SaisApiClientBase
                 : new StringContent(JsonSerializer.Serialize(payload, SerializerOptions), Encoding.UTF8, "application/json")
         };
 
+        request.Headers.Remove(_saisOptions.TicketHeaderName);
+
         if (includeTicket)
         {
             if (_saisTicketProvider is null)
@@ -64,7 +66,9 @@ public class SaisApiClientBase
 
             var ticket = await _saisTicketProvider.GetTicketAsync(cancellationToken).ConfigureAwait(false);
 
-            var ticketHeaderValue = JsonSerializer.Serialize(ticket, SerializerOptions);
+            // SAIS API requires AToken wrapper serialization
+            var aToken = new Contracts.AToken(ticket.TicketId, ticket.DeviceId);
+            var ticketHeaderValue = JsonSerializer.Serialize(aToken, SerializerOptions);
 
             request.Headers.Remove(_saisOptions.TicketHeaderName);
             request.Headers.AddRequiredHeader(_saisOptions.TicketHeaderName, ticketHeaderValue);
