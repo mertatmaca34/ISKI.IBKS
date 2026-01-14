@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Domain.Entities;
 
-public sealed class Calibration : AuditableEntity
+public sealed class Calibration : AuditableEntity<Guid>
 {
     public Guid StationId { get; private set; }
     public string DbColumnName { get; private set; } = string.Empty;

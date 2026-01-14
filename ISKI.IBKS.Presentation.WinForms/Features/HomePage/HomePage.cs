@@ -1,13 +1,12 @@
-﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+﻿using ISKI.IBKS.Application.Common.Results;
+using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
 using ISKI.IBKS.Application.Features.DigitalSensors.Dtos;
 using ISKI.IBKS.Application.Features.DigitalSensors.Enums;
 using ISKI.IBKS.Application.Features.HealthSummary.Dtos;
 using ISKI.IBKS.Application.Features.StationStatus.Dtos;
-using ISKI.IBKS.Presentation.WinForms.Extensions;
 using ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
-using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage;
 
@@ -31,7 +30,7 @@ public partial class HomePage : UserControl, IHomePageView
         InitializeComponent();
     }
 
-    public void RenderAnalogChannels(IReadOnlyList<ChannelReadingDto> channelReadingDtos)
+    public void RenderAnalogChannels(IDataResult<IReadOnlyList<ChannelReadingDto>> channelReadingDtos)
     {
         if (IsDisposed) return;
 
@@ -43,7 +42,25 @@ public partial class HomePage : UserControl, IHomePageView
 
         TableLayoutPanelAnalogSensors.SuspendLayout();
 
-        foreach (var sensor in channelReadingDtos)
+        if (!channelReadingDtos.IsSuccess)
+        {
+            foreach (var item in TableLayoutPanelAnalogSensors.Controls)
+            {
+                if (item is AnalogSensorControl control)
+                {
+                    control.UpdateValues(
+                        instantValue: "-",
+                        hourlyAvgValue: "-",
+                        unit: "-",
+                        analogSignalStatus: Application.Features.AnalogSensors.Enums.AnalogSignalStatus.Undefined
+                    );
+                }
+            }
+            TableLayoutPanelAnalogSensors.ResumeLayout();
+            return;
+        }
+
+        foreach (var sensor in channelReadingDtos.Data)
         {
             var channelName = sensor.ChannelName ?? "-";
 
@@ -76,16 +93,21 @@ public partial class HomePage : UserControl, IHomePageView
         TableLayoutPanelAnalogSensors.ResumeLayout();
     }
 
-    public void RenderStationStatusBar(StationStatusDto? stationStatusDto)
+    public void RenderStationStatusBar(IDataResult<StationStatusDto>? stationStatusDto)
     {
-        stationStatusBar1.IsConnected = stationStatusDto?.IsConnected ?? false;
-        stationStatusBar1.UpTime = stationStatusDto?.UpTime ?? new TimeSpan(0,0,0);
-        stationStatusBar1.WeeklyWashRemainingTime = stationStatusDto?.WeeklyWashRemainingTime ?? TimeSpan.Zero;
-        stationStatusBar1.DailyWashRemainingTime = stationStatusDto?.DailyWashRemainingTime ?? TimeSpan.Zero;
-        stationStatusBar1.SystemTime = stationStatusDto?.SystemTime ?? DateTime.MinValue;
+        if (stationStatusDto != null && !stationStatusDto.IsSuccess)
+        {
+            stationStatusDto = null;
+        }
+
+        stationStatusBar1.IsConnected = stationStatusDto?.Data.IsConnected ?? false;
+        stationStatusBar1.UpTime = stationStatusDto?.Data.UpTime ?? new TimeSpan(0,0,0);
+        stationStatusBar1.WeeklyWashRemainingTime = stationStatusDto?.Data.WeeklyWashRemainingTime ?? TimeSpan.Zero;
+        stationStatusBar1.DailyWashRemainingTime = stationStatusDto?.Data.DailyWashRemainingTime ?? TimeSpan.Zero;
+        stationStatusBar1.SystemTime = stationStatusDto?.Data.SystemTime ?? DateTime.MinValue;
     }
 
-    public void RenderDigitalSensors(IReadOnlyList<DigitalReadingDto> digitalReadingDtos)
+    public void RenderDigitalSensors(IDataResult<IReadOnlyList<DigitalReadingDto>> digitalReadingDtos)
     {
         if (IsDisposed) return;
 
@@ -97,7 +119,21 @@ public partial class HomePage : UserControl, IHomePageView
 
         TableLayoutPanelDigitalSensors.SuspendLayout();
 
-        foreach (var sensor in digitalReadingDtos)
+        if (!digitalReadingDtos.IsSuccess)
+        {
+            foreach (var item in TableLayoutPanelDigitalSensors.Controls)
+            {
+                if (item is DigitalSensorControl control)
+                {
+                    control.SensorName = "-";
+                    control.SensorStatus = DigitalSignalStatus.Undefined;
+                }
+            }
+            TableLayoutPanelDigitalSensors.ResumeLayout();
+            return;
+        }
+
+        foreach (var sensor in digitalReadingDtos.Data)
         {
             var key = sensor.Key ?? "-";
 
@@ -163,8 +199,8 @@ public partial class HomePage : UserControl, IHomePageView
 
         // set texts and icons using public API
         _plcCard.Title = "PLC İletişimi:";
-        _plcCard.Value = dto.PlcConnected ? "Sağlıklı" : "Problemli";
-        _plcCard.StatusImage = dto.PlcConnected ? Properties.Resources.Checkmark_12px : Properties.Resources.cancel;
+        _plcCard.Value = dto.PlcHealthy ? "Sağlıklı" : "Problemli";
+        _plcCard.StatusImage = dto.PlcHealthy? Properties.Resources.Checkmark_12px : Properties.Resources.cancel;
 
         _apiCard.Title = "API İletişimi:";
         _apiCard.Value = dto.ApiHealthy ? "Sağlıklı" : "Problemli";

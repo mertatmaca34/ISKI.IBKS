@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Domain.Common.Entities;
 
-public abstract class Entity
+public abstract class Entity <TId>
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public required TId Id { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using ISKI.IBKS.Application.Features;
-using ISKI.IBKS.Application.Features.AnalogSensors.Services;
+using ISKI.IBKS.Application.Features.AnalogSensors.Abstractions;
 using ISKI.IBKS.Application.Features.DigitalSensors.Services;
-using ISKI.IBKS.Application.Features.HealthSummary.Services;
+using ISKI.IBKS.Application.Features.HealthSummary.Abstractions;
 using ISKI.IBKS.Application.Features.StationStatus.Services;
 using ISKI.IBKS.Infrastructure;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
@@ -77,6 +77,7 @@ public sealed class HomePagePresenter
         try
         {
             var readings = await _analogSensorService.GetChannelsAsync(_stationId, _cts.Token);
+
             _view.RenderAnalogChannels(readings);
 
             var digital = await _digitalSensorService.GetDigitalSensorsAsync(_stationId, _cts.Token);

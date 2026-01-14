@@ -1,18 +1,15 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.Extensions;
+﻿using ISKI.IBKS.Domain.Exceptions;
+using ISKI.IBKS.Infrastructure.RemoteApi.Extensions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Extensions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
 using Microsoft.Extensions.Options;
-using System;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 
@@ -71,7 +68,6 @@ public class SaisApiClientBase
 
             request.Headers.Remove(_saisOptions.TicketHeaderName);
             request.Headers.AddRequiredHeader(_saisOptions.TicketHeaderName, ticketHeaderValue);
-
         }
 
         try
@@ -86,7 +82,7 @@ public class SaisApiClientBase
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<SaisResultEnvelope<TResponse>>(SerializerOptions, cancellationToken)
-                         .ConfigureAwait(false) ?? throw new SaisApiException("SAIS API response body was empty.");
+                         .ConfigureAwait(false) ?? throw new RemoteApiException("SAIS API response body was empty.");
 
             result.EnsureSuccess();
 
@@ -94,15 +90,21 @@ public class SaisApiClientBase
         }
         catch (HttpRequestException ex)
         {
-            throw new SaisApiException("SAIS API request failed.", ex);
+            throw new RemoteApiException("SAIS API request failed.", ex);
+        }
+        catch (TimeoutException ex)
+        {
+            return await Task.FromResult<SaisResultEnvelope<TResponse>>(default!).ConfigureAwait(false);
+
+            throw new RemoteApiException("SAIS API request timed out.", ex);
         }
         catch (NotSupportedException ex)
         {
-            throw new SaisApiException("SAIS API returned an unsupported media type.", ex);
+            throw new RemoteApiException("SAIS API returned an unsupported media type.", ex);
         }
         catch (JsonException ex)
         {
-            throw new SaisApiException("SAIS API response could not be parsed.", ex);
+            throw new RemoteApiException("SAIS API response could not be parsed.", ex);
         }
     }
 }

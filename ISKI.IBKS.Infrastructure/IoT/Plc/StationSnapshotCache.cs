@@ -12,6 +12,17 @@ public class StationSnapshotCache() : IStationSnapshotCache
 {
     private readonly ConcurrentDictionary<Guid, StationSnapshotDto> _cache = new();
 
+    public Task<StationSnapshotDto?> Get(Guid? stationId)
+    {
+        if (stationId is null)
+            return Task.FromResult<StationSnapshotDto?>(null);
+
+        if (!_cache.TryGetValue(stationId.Value, out StationSnapshotDto? snapshot))
+            return Task.FromResult<StationSnapshotDto?>(null);
+
+        return Task.FromResult<StationSnapshotDto?>(snapshot);
+    }
+
     public Task<StationSnapshotDto> Set(Guid? stationId, StationSnapshotDto stationSnapshot)
     {
         if (stationId is null) throw new ArgumentNullException(nameof(stationId));

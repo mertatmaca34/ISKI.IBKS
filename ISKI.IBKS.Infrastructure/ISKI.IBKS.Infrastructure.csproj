@@ -7,24 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Configuration\plc.json" />
-    <None Remove="Configuration\sais.json" />
-    <None Remove="Configuration\ui-mapping.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Configuration\plc.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\sais.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\ui-mapping.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22" />
@@ -44,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISKI.IBKS.Application\ISKI.IBKS.Application.csproj" />
-    <ProjectReference Include="..\ISKI.IBKS.Domain\ISKI.IBKS.Domain.csproj" />
+    <ProjectReference Include="..\ISKI.IBKS.Persistence\ISKI.IBKS.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

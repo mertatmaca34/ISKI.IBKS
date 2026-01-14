@@ -18,9 +18,31 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main.Controls
             int nHeightEllipse // height of ellipse
         );
 
-        public new Color DefaultBackColor = Color.White;
-        public Color HoverBackColor = Color.FromArgb(230, 230, 230);
-        public Color MouseDownColor = Color.FromArgb(210, 210, 210);
+        // Default (inactive) colors
+        public Color InactiveBackColor { get; set; } = Color.White;
+        public Color InactiveForeColor { get; set; } = Color.DimGray;
+        public Color HoverBackColor { get; set; } = Color.FromArgb(230, 230, 230);
+        public Color MouseDownColor { get; set; } = Color.FromArgb(210, 210, 210);
+
+        // Active (selected) colors
+        public Color ActiveBackColor { get; set; } = Color.FromArgb(230, 240, 255);
+        public Color ActiveForeColor { get; set; } = Color.FromArgb(0, 102, 204);
+        public Color ActiveHoverBackColor { get; set; } = Color.FromArgb(210, 230, 255);
+
+        private bool _isActive;
+
+        /// <summary>
+        /// Gets or sets whether this button is currently active/selected.
+        /// </summary>
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                ApplyCurrentStyle();
+            }
+        }
 
         public int CornerRadius { get; set; } = 8;
 
@@ -28,8 +50,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main.Controls
         {
             FlatAppearance.BorderSize = 0;
             FlatStyle = FlatStyle.Flat;
-            BackColor = Color.White;
-            ForeColor = Color.DimGray;
+            BackColor = InactiveBackColor;
+            ForeColor = InactiveForeColor;
             Size = new Size(75, 68);
             Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             MouseEnter += NavigationBarButton_MouseEnter;
@@ -43,27 +65,40 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main.Controls
 
         private void NavigationBarButton_MouseUp(object? sender, MouseEventArgs e)
         {
-            SetColor(DefaultBackColor);
+            ApplyCurrentStyle();
         }
 
         private void NavigationBarButton_MouseDown(object? sender, MouseEventArgs e)
         {
-            SetColor(MouseDownColor);
+            BackColor = MouseDownColor;
         }
 
         private void NavigationBarButton_MouseLeave(object? sender, EventArgs e)
         {
-            SetColor(DefaultBackColor);
+            ApplyCurrentStyle();
         }
 
         private void NavigationBarButton_MouseEnter(object? sender, EventArgs e)
         {
-            SetColor(HoverBackColor);
+            BackColor = _isActive ? ActiveHoverBackColor : HoverBackColor;
         }
 
-        public void SetColor(Color color)
+        /// <summary>
+        /// Applies the appropriate style based on active state.
+        /// </summary>
+        private void ApplyCurrentStyle()
         {
-            BackColor = color;
+            if (_isActive)
+            {
+                BackColor = ActiveBackColor;
+                ForeColor = ActiveForeColor;
+            }
+            else
+            {
+                BackColor = InactiveBackColor;
+                ForeColor = InactiveForeColor;
+            }
         }
     }
 }
+

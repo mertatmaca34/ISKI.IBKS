@@ -1,6 +1,6 @@
-﻿using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+﻿using ISKI.IBKS.Application.Features.Plc.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
-using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

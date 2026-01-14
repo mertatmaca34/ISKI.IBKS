@@ -18,39 +18,60 @@ public partial class StationStatusBar : UserControl
     private const string LabelWeeklyWashRemainingTimeText = "H. Yıkama Kalan: ";
     private const string LabelSystemTimeText = "Sistem Saati: ";
 
-    private readonly bool _isConnected;
-    private readonly TimeSpan _upTime;
-    private readonly TimeSpan _dailyWashRemainingTime;
-    private readonly TimeSpan _weeklyWashRemainingTime;
-    private readonly DateTime _systemTime;
+    private bool _isConnected;
+    private TimeSpan _upTime;
+    private TimeSpan _dailyWashRemainingTime;
+    private TimeSpan _weeklyWashRemainingTime;
+    private DateTime _systemTime;
 
     public bool IsConnected
     {
         get => _isConnected;
-        set => LabelConnectionStatus.Text = LabelConnectionStatusText + value;
+        set
+        {
+            _isConnected = value;
+            LabelConnectionStatus.Text = LabelConnectionStatusText + value;
+        }
     }
 
     public TimeSpan UpTime
     {
         get => _upTime;
-        set => LabelUpTime.Text = LabelUpTimeText + value.ToString("dd':'hh':'mm':'ss");
+        set
+        {
+            _upTime = value;
+            LabelUpTime.Text = LabelUpTimeText + value.ToString("dd':'hh':'mm':'ss");
+        }
     }
 
     public TimeSpan DailyWashRemainingTime
     {
         get => _dailyWashRemainingTime;
-        set => LabelDailyWashRemainingTime.Text = LabelDailyWashRemainingTimeText + value;
+        set
+        {
+            _dailyWashRemainingTime = value;
+            LabelDailyWashRemainingTime.Text = LabelDailyWashRemainingTimeText + value;
+        }
     }
+
     public TimeSpan WeeklyWashRemainingTime
     {
         get => _weeklyWashRemainingTime;
-        set => LabelWeeklyWashRemainingTime.Text = LabelWeeklyWashRemainingTimeText + value;
+        set
+        {
+            _weeklyWashRemainingTime = value;
+            LabelWeeklyWashRemainingTime.Text = LabelWeeklyWashRemainingTimeText + value;
+        }
     }
 
     public DateTime SystemTime
     {
         get => _systemTime;
-        set => LabelSystemTime.Text = LabelSystemTimeText + value;
+        set
+        {
+            _systemTime = value;
+            LabelSystemTime.Text = LabelSystemTimeText + value;
+        }
     }
 
     public StationStatusBar()

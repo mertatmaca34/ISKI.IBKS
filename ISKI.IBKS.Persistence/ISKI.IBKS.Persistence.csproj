@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Interceptors\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Seeders\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ISKI.IBKS.Application\ISKI.IBKS.Application.csproj" />
     <ProjectReference Include="..\ISKI.IBKS.Domain\ISKI.IBKS.Domain.csproj" />
   </ItemGroup>
 

@@ -1,27 +1,28 @@
-﻿using ISKI.IBKS.Application.Features;
+﻿using ISKI.IBKS.Application.Features.AnalogSensors.Abstractions;
 using ISKI.IBKS.Application.Features.AnalogSensors.Services;
-using ISKI.IBKS.Application.Features.StationStatus.Services;
 using ISKI.IBKS.Application.Features.DigitalSensors.Services;
+using ISKI.IBKS.Application.Features.HealthSummary.Abstractions;
 using ISKI.IBKS.Application.Features.HealthSummary.Services;
-using ISKI.IBKS.Infrastructure.Configuration;
+using ISKI.IBKS.Application.Features.Plc.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationStatus.Services;
+using ISKI.IBKS.Application.Options;
+using ISKI.IBKS.Infrastructure.Application.Features.StationStatus;
 using ISKI.IBKS.Infrastructure.IoT.Plc;
-using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Readers;
+using ISKI.IBKS.Infrastructure.IoT.Plc.StatusProviders;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Services;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Providers;
+using ISKI.IBKS.Infrastructure.BackgroundServices;
+using ISKI.IBKS.Application.Services.Mail;
+using ISKI.IBKS.Application.Services.DataCollection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
-using ISKI.IBKS.Infrastructure.Application.Features.AnalogSensors;
-using ISKI.IBKS.Infrastructure.Application.Features.DigitalSensors;
-using ISKI.IBKS.Infrastructure.Application.Features.HealthSummary;
-using ISKI.IBKS.Infrastructure.Application.Features.StationStatus;
+using ISKI.IBKS.Persistence;
 
 namespace ISKI.IBKS.Infrastructure;
 
@@ -35,6 +36,9 @@ public static class DependencyInjection
         services.Configure<PlcSettings>(configuration.GetSection("Plc"));
         services.Configure<SAISOptions>(configuration.GetSection("SAIS"));
         services.Configure<UiMappingOptions>(configuration.GetSection("UiMapping"));
+        
+        // Persistence
+        services.AddPersistence(configuration);
 
         // IoT / Plc
         services.AddSingleton<IPlcClient, Sharp7Client>();
@@ -68,12 +72,20 @@ public static class DependencyInjection
         services.AddScoped<IAnalogSensorService, AnalogSensorService>();
         services.AddScoped<IStationStatusService, StationStatusService>();
         services.AddScoped<IDigitalSensorService, DigitalSensorService>();
+        services.AddScoped<IPlcStatusProvider, PlcStatusProvider>();
+        services.AddScoped<ISaisStatusProvider, SaisStatusProvider>();
         services.AddScoped<IHealthSummaryService, HealthSummaryService>();
 
         // Background polling
         services.AddHostedService<PlcPollingService>();
-        // Enable SAIS ticket keep-alive background service
-        services.AddHostedService<SaisTicketKeepAliveService>();
+        services.AddHostedService<DataCollectionBackgroundService>();
+        
+        // Logging
+        services.AddSingleton<ISKI.IBKS.Infrastructure.Logging.IApplicationLogger, ISKI.IBKS.Infrastructure.Logging.ApplicationLogger>();
+
+        // Application Services
+        services.AddScoped<IAlarmMailService, ISKI.IBKS.Infrastructure.Services.Mail.SmtpAlarmMailService>();
+        services.AddSingleton<IDataCollectionService, ISKI.IBKS.Infrastructure.Services.DataCollection.DataCollectionService>();
 
         return services;
     }

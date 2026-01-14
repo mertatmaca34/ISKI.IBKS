@@ -10,5 +10,5 @@ namespace ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 public interface IStationSnapshotCache
 {
     Task<StationSnapshotDto> Set(Guid? stationId, StationSnapshotDto stationSnapshot);
-    bool TryGet(Guid? stationId, out StationSnapshotDto? snapshot);
+    Task<StationSnapshotDto?> Get(Guid? stationId);
 }

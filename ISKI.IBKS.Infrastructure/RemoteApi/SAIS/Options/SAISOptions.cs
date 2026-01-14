@@ -10,7 +10,7 @@ public sealed class SAISOptions
 {
     public string BaseUrl { get; init; } = "https://entegrationsais.csb.gov.tr/";
     public string LoginUrl { get; init; } = "/Security/login";
-    public TimeSpan Timeout { get; init; } = TimeSpan.FromSeconds(10);
+    public TimeSpan Timeout { get; init; } = TimeSpan.FromSeconds(1);
 
     //Login
     public string Username { get; init; } = default!;

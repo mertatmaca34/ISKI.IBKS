@@ -1,4 +1,4 @@
-﻿using ISKI.IBKS.Infrastructure.IoT.Plc.Abstractions;
+﻿using ISKI.IBKS.Application.Features.Plc.Abstractions;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Exceptions;
 using Sharp7;
 using System.Net;
@@ -116,5 +116,32 @@ public class Sharp7Client : IPlcClient
     public byte ReadByte(byte[] buffer, int byteOffset)
     {
         return S7.GetByteAt(buffer, byteOffset);
+    }
+
+    public void WriteBit(int dbNumber, int byteOffset, int bitOffset, bool value)
+    {
+        if (S7Client.Connected)
+        {
+            var buffer = new byte[1];
+            buffer[0] = value ? (byte)1 : (byte)0;
+            
+            // S7Consts.S7AreaDB = 0x84
+            // Amount = 1 (1 bit)
+            // WordLen = S7Consts.S7WLBit = 0x01
+            // Start = (byteOffset * 8) + bitOffset
+            int start = (byteOffset * 8) + bitOffset;
+            
+            var res = S7Client.WriteArea(S7Consts.S7AreaDB, dbNumber, start, 1, S7Consts.S7WLBit, buffer);
+
+            if (res != 0)
+            {
+                var errorText = S7Client.ErrorText(res);
+                throw new PlcReadException(dbNumber, byteOffset, 1, buffer, errorText);
+            }
+        }
+        else
+        {
+            throw new PlcConnectionException();
+        }
     }
 }

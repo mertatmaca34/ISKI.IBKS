@@ -1,5 +1,5 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
-using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Exceptions;
+﻿using ISKI.IBKS.Domain.Exceptions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ public static class SaisResultEnvelopeExtensions
     {
         if (envelope is not { Result: true })
         {
-            throw new SaisApiException(
+            throw new RemoteApiException(
                 envelope.Message ?? "SAIS API returned an unsuccessful result.");
         }
     }

@@ -1,4 +1,5 @@
-﻿using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
+﻿using ISKI.IBKS.Application.Common.Results;
+using ISKI.IBKS.Application.Features.AnalogSensors.Dtos;
 using ISKI.IBKS.Application.Features.StationStatus.Dtos;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,5 @@ namespace ISKI.IBKS.Application.Features.StationStatus.Services;
 
 public interface IStationStatusService
 {
-    Task<StationStatusDto> GetStationStatusAsync(Guid stationId, CancellationToken cancellationToken = default);
+    Task<IDataResult<StationStatusDto>> GetStationStatusAsync(Guid stationId, CancellationToken cancellationToken = default);
 }
