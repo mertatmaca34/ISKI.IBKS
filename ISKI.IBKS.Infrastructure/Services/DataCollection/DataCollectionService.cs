@@ -175,6 +175,13 @@ public sealed class DataCollectionService : IDataCollectionService
         }
     }
 
+    /// <summary>
+    /// SAIS API'ye sensör verilerini gönderir.
+    /// SAIS Gereksinimleri:
+    /// - Sadece 1 dakikalık periyot kabul edilir
+    /// - 48 saat geçmiş veriler kabul edilmez
+    /// - Değeri olan her parametre için mutlaka status bilgisi gönderilmelidir
+    /// </summary>
     public async Task<bool> SendDataToSaisAsync(PlcDataSnapshot data, CancellationToken ct = default)
     {
         try
@@ -189,39 +196,91 @@ public sealed class DataCollectionService : IDataCollectionService
                 return false;
             }
 
-            // SendDataRequest oluştur
+            // SAIS Validasyonu 1: 48 saat kontrolü
+            var dataAge = DateTime.Now - data.ReadTime;
+            if (dataAge.TotalHours > 48)
+            {
+                _logger.LogWarning("SAIS'e veri gönderilemedi: Veri 48 saatten eski (ReadTime: {ReadTime}, Age: {Age} saat)", 
+                    data.ReadTime, dataAge.TotalHours);
+                return false;
+            }
+
+            // SAIS Validasyonu 2: Period kontrolü (sadece 1 dakikalık periyot kabul edilir)
+            const int period = 1;
+
+            // SendDataRequest oluştur - Sadece ölçülen parametreleri gönder
             var request = new SendDataRequest
             {
                 StationId = stationSettings.StationId,
                 ReadTime = data.ReadTime,
-                SoftwareVersion = "1.0.0",
+                SoftwareVersion = "1.0.0", // TODO: Add SoftwareVersion to StationSettings entity
+                Period = period,
+
+                // Tesis Debi (Debi)
                 Debi = data.TesisDebi,
-                Ph = data.Ph,
-                PhStatus = data.PhTetik ? 0 : 1,
+                Debi_Status = 1, // 1 = Normal/Geçerli
+
+                // Akış Hızı
+                AkisHizi = data.NumuneHiz,
+                AkisHizi_Status = 1,
+
+                // pH
+                pH = data.Ph,
+                pH_Status = data.PhTetik ? 0 : 1, // 0 = Alarm/Hata, 1 = Normal
+
+                // İletkenlik
                 Iletkenlik = data.Iletkenlik,
-                IletkenlikStatus = "1",
-                Period = 1
+                Iletkenlik_Status = 1,
+
+                // Çözünmüş Oksijen
+                CozunmusOksijen = data.CozunmusOksijen,
+                CozunmusOksijen_Status = 1,
+
+                // KOI (Kimyasal Oksijen İhtiyacı)
+                KOi = data.Koi,
+                KOi_Status = data.KoiTetik ? 0 : 1,
+
+                // AKM (Askıda Katı Madde)
+                AKM = data.Akm,
+                AKM_Status = data.AkmTetik ? 0 : 1,
+
+                // Sıcaklık
+                Sicaklik = data.NumuneSicaklik,
+                Sicaklik_Status = 1,
+
+                // Opsiyonel Sensörler (sadece değer varsa gönder)
+                DesarjDebi = data.DesarjDebi > 0 ? data.DesarjDebi : null,
+                DesarjDebi_Status = data.DesarjDebi > 0 ? 1 : null,
+
+                HariciDebi = data.HariciDebi > 0 ? data.HariciDebi : null,
+                HariciDebi_Status = data.HariciDebi > 0 ? 1 : null,
+
+                HariciDebi2 = data.HariciDebi2 > 0 ? data.HariciDebi2 : null,
+                HariciDebi2_Status = data.HariciDebi2 > 0 ? 1 : null
             };
 
-            _logger.LogInformation("SAIS API'ye veri gönderiliyor: StationId={StationId}, ReadTime={ReadTime}", 
-                request.StationId, request.ReadTime);
+            _logger.LogInformation(
+                "SAIS API'ye veri gönderiliyor - StationId: {StationId}, ReadTime: {ReadTime}, " +
+                "pH: {Ph}, Debi: {Debi}, KOI: {Koi}, AKM: {Akm}, Sicaklik: {Sicaklik}",
+                request.StationId, request.ReadTime, 
+                request.pH, request.Debi, request.KOi, request.AKM, request.Sicaklik);
 
             var response = await _saisApiClient.SendDataAsync(request, ct);
             
             if (response.Result)
             {
-                _logger.LogInformation("SAIS API başarılı yanıt döndü");
+                _logger.LogInformation("SAIS API başarılı yanıt döndü - Message: {Message}", response.Message);
+                return true;
             }
             else
             {
-                _logger.LogWarning("SAIS API başarısız yanıt döndü: Result=false");
+                _logger.LogWarning("SAIS API başarısız yanıt döndü - Result: false, Message: {Message}", response.Message);
+                return false;
             }
-            
-            return response.Result;
         }
         catch (HttpRequestException ex)
         {
-            _logger.LogError(ex, "SAIS API HTTP hatası: {Message}. API URL'si kontrol edilmeli.", ex.Message);
+            _logger.LogError(ex, "SAIS API HTTP hatası: {Message}. API URL'si ve ağ bağlantısı kontrol edilmeli.", ex.Message);
             return false;
         }
         catch (TaskCanceledException ex)

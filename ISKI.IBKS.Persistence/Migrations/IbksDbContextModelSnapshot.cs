@@ -646,6 +646,12 @@ namespace ISKI.IBKS.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("AkmZeroDuration")
+                        .HasColumnType("int");
+
+                    b.Property<double>("AkmZeroReference")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -693,6 +699,12 @@ namespace ISKI.IBKS.Persistence.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("KoiZeroDuration")
+                        .HasColumnType("int");
+
+                    b.Property<double>("KoiZeroReference")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("LastDataDate")
                         .HasColumnType("datetime2");

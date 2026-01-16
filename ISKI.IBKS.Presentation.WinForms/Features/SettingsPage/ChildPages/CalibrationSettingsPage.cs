@@ -94,7 +94,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                 
                 settings.UpdateCalibrationSettings(
                     settings.PhZeroDuration, phZ, settings.PhSpanDuration, phS,
-                    settings.ConductivityZeroDuration, condZ, settings.ConductivitySpanDuration, condS
+                    settings.ConductivityZeroDuration, condZ, settings.ConductivitySpanDuration, condS,
+                    settings.AkmZeroDuration, 0, settings.KoiZeroDuration, 0
                 );
 
                 await dbContext.SaveChangesAsync();

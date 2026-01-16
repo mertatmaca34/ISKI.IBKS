@@ -67,6 +67,12 @@ public sealed class StationSettings
     public int ConductivitySpanDuration { get; private set; } = 60;
     public double ConductivitySpanReference { get; private set; } = 1413;
     
+    public int AkmZeroDuration { get; private set; } = 60;
+    public double AkmZeroReference { get; private set; } = 0;
+    
+    public int KoiZeroDuration { get; private set; } = 60;
+    public double KoiZeroReference { get; private set; } = 0;
+    
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
     public bool IsDeleted { get; private set; }
@@ -111,7 +117,8 @@ public sealed class StationSettings
 
     public void UpdateCalibrationSettings(
         int phZeroDuration, double phZeroRef, int phSpanDuration, double phSpanRef,
-        int condZeroDuration, double condZeroRef, int condSpanDuration, double condSpanRef)
+        int condZeroDuration, double condZeroRef, int condSpanDuration, double condSpanRef,
+        int akmZeroDuration, double akmZeroRef, int koiZeroDuration, double koiZeroRef)
     {
         PhZeroDuration = phZeroDuration;
         PhZeroReference = phZeroRef;
@@ -121,6 +128,10 @@ public sealed class StationSettings
         ConductivityZeroReference = condZeroRef;
         ConductivitySpanDuration = condSpanDuration;
         ConductivitySpanReference = condSpanRef;
+        AkmZeroDuration = akmZeroDuration;
+        AkmZeroReference = akmZeroRef;
+        KoiZeroDuration = koiZeroDuration;
+        KoiZeroReference = koiZeroRef;
         UpdatedAt = DateTime.UtcNow;
     }
 

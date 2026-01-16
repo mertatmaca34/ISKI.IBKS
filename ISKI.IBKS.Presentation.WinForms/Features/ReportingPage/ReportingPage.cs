@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ISKI.IBKS.Persistence.Contexts;
+using ISKI.IBKS.Domain.Entities; // Added for LogLevel enum
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
 {
@@ -78,11 +79,43 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
 
             var row = DataGridViewDatas.Rows[e.RowIndex];
             
-            // SAIS Durumu column check (adjust index or name based on data source)
-            // Since we use DataSource = DataTable, we can check by column name if mapped, or iterate
-            // But checking Cell value directly is easier if we know the column name "SAIS Durumu"
+            // "Seviye" kolonu kontrolü (Log seviyesi için renklendirme)
+            int levelColIndex = -1;
+            foreach(DataGridViewColumn col in DataGridViewDatas.Columns)
+            {
+                if (col.HeaderText == "Seviye")
+                {
+                    levelColIndex = col.Index;
+                    break;
+                }
+            }
+
+            if (levelColIndex >= 0)
+            {
+                var levelCell = row.Cells[levelColIndex].Value;
+                if (levelCell != null)
+                {
+                    // Convert enum to string for display and comparison
+                    var levelStr = levelCell.ToString();
+                    
+                    if (levelStr == "Warning")
+                    {
+                        // Pastel Yellow/Orange for Warning
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 243, 205); // Pastel yellow
+                        row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 193, 7);
+                        row.DefaultCellStyle.ForeColor = Color.Black;
+                    }
+                    else if (levelStr == "Error" || levelStr == "Critical")
+                    {
+                        // Pastel Red for Error/Critical
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 205, 210); // Pastel red
+                        row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(244, 67, 54);
+                        row.DefaultCellStyle.ForeColor = Color.Black;
+                    }
+                }
+            }
             
-            // Find "SAIS Durumu" column index
+            // SAIS Durumu column check (for measurement reports)
             int saisColIndex = -1;
             foreach(DataGridViewColumn col in DataGridViewDatas.Columns)
             {
@@ -285,8 +318,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
                     dt.Columns.Add("Açıklama");
                     dt.Columns.Add("Seviye");
 
+                    // Info logları hariç tut - sadece Warning ve Error göster
                     var logQuery = dbContext.LogEntries
-                        .Where(x => x.LogCreatedDate >= startDate && x.LogCreatedDate <= endDate);
+                        .Where(x => x.LogCreatedDate >= startDate && x.LogCreatedDate <= endDate
+                                 && x.Level != Domain.Entities.LogLevel.Info && x.Level != Domain.Entities.LogLevel.Debug);
 
                     logQuery = sortNewestFirst
                         ? logQuery.OrderByDescending(x => x.LogCreatedDate)

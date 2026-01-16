@@ -16,6 +16,11 @@ public sealed class DataCollectionBackgroundService : BackgroundService
     private readonly TimeSpan _saisHealthCheckInterval = TimeSpan.FromMinutes(15);
     private DateTime _lastSaisHealthCheck = DateTime.MinValue;
     private bool _powerOffChecked = false;
+    
+    // Rate limiting for error logs (log only once per 5 minutes)
+    private DateTime _lastPlcErrorLog = DateTime.MinValue;
+    private DateTime _lastSaisErrorLog = DateTime.MinValue;
+    private readonly TimeSpan _errorLogInterval = TimeSpan.FromMinutes(5);
 
     public DataCollectionBackgroundService(
         IServiceScopeFactory scopeFactory,
@@ -79,7 +84,12 @@ public sealed class DataCollectionBackgroundService : BackgroundService
         var data = await dataCollectionService.ReadCurrentDataAsync(ct);
         if (data == null)
         {
-            _logger.LogWarning("PLC'den veri okunamadı - PLC bağlantısı kontrol edilmeli");
+            // Rate limited warning - only log every 5 minutes
+            if (DateTime.Now - _lastPlcErrorLog > _errorLogInterval)
+            {
+                _logger.LogWarning("PLC'den veri okunamadı - PLC bağlantısı kontrol edilmeli");
+                _lastPlcErrorLog = DateTime.Now;
+            }
             return;
         }
 
@@ -103,7 +113,12 @@ public sealed class DataCollectionBackgroundService : BackgroundService
         var sent = await dataCollectionService.SendDataToSaisAsync(data, ct);
         if (!sent)
         {
-            _logger.LogError("Veri SAIS'e gönderilemedi - API ayarları ve bağlantı kontrol edilmeli");
+            // Rate limited warning - only log every 5 minutes
+            if (DateTime.Now - _lastSaisErrorLog > _errorLogInterval)
+            {
+                _logger.LogWarning("Veri SAIS'e gönderilemedi - API ayarları ve bağlantı kontrol edilmeli");
+                _lastSaisErrorLog = DateTime.Now;
+            }
         }
         else if (savedEntity != null)
         {

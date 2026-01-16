@@ -157,7 +157,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
                         60, phZero, 
                         60, phSpan,
                         60, condZero,
-                        60, condSpan
+                        60, condSpan,
+                        60, 0, 60, 0 // AKM and KOI defaults
                     );
                     
                     dbContext.StationSettings.Add(station);
@@ -169,7 +170,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
                         station.PhZeroDuration, phZero,
                         station.PhSpanDuration, phSpan,
                         station.ConductivityZeroDuration, condZero,
-                        station.ConductivitySpanDuration, condSpan
+                        station.ConductivitySpanDuration, condSpan,
+                        station.AkmZeroDuration, 0,
+                        station.KoiZeroDuration, 0
                     );
                 }
 

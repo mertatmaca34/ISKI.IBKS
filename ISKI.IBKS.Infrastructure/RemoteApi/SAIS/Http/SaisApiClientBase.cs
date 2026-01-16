@@ -1,9 +1,12 @@
-﻿using ISKI.IBKS.Domain.Exceptions;
+﻿using ISKI.IBKS.Domain.Entities;
+using ISKI.IBKS.Domain.Exceptions;
+using ISKI.IBKS.Infrastructure.Logging;
 using ISKI.IBKS.Infrastructure.RemoteApi.Extensions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Extensions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Json;
@@ -27,14 +30,17 @@ public class SaisApiClientBase
     protected readonly SAISOptions _saisOptions;
     private readonly HttpClient _httpClient;
     private readonly ISaisTicketProvider? _saisTicketProvider;
+    private readonly IApplicationLogger _logger;
 
     public SaisApiClientBase(HttpClient httpClient,
         IOptions<SAISOptions> saisOptions,
-        ISaisTicketProvider? saisTicketProvider)
+        ISaisTicketProvider? saisTicketProvider,
+        IApplicationLogger logger)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _saisOptions = saisOptions?.Value ?? throw new ArgumentNullException(nameof(saisOptions));
         _saisTicketProvider = saisTicketProvider ?? throw new ArgumentNullException(nameof(saisTicketProvider));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         if (string.IsNullOrWhiteSpace(_httpClient.BaseAddress?.ToString()))
         {
@@ -48,6 +54,44 @@ public class SaisApiClientBase
         bool includeTicket,
         CancellationToken cancellationToken = default)
     {
+        await _logger.LogInfo(
+            "SAIS API Request",
+            $"Initiating request to {relativeUri}. IncludeTicket={includeTicket}",
+            LogCategory.ApiCall);
+
+        // Validate and refresh ticket if needed (for non-login calls)
+        if (includeTicket)
+        {
+            if (_saisTicketProvider is null)
+            {
+                await _logger.LogError(
+                    "SAIS API Error",
+                    "Ticket provider has not been configured for this client.",
+                    LogCategory.ApiCall);
+                throw new InvalidOperationException("Ticket provider has not been configured for this client.");
+            }
+
+            // Get ticket (this will validate and refresh if needed)
+            var ticket = await _saisTicketProvider.GetTicketAsync(cancellationToken).ConfigureAwait(false);
+            
+            await _logger.LogInfo(
+                "SAIS Ticket Validated",
+                $"Using ticket {ticket.TicketId} for request to {relativeUri}",
+                LogCategory.ApiCall);
+        }
+
+        // Try the request (with automatic retry on 401)
+        return await ExecuteRequestWithRetryAsync<TResponse>(relativeUri, payload, includeTicket, cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    private async Task<SaisResultEnvelope<TResponse>> ExecuteRequestWithRetryAsync<TResponse>(
+        string relativeUri,
+        object? payload,
+        bool includeTicket,
+        CancellationToken cancellationToken,
+        bool isRetry = false)
+    {
         using var request = new HttpRequestMessage(HttpMethod.Post, relativeUri)
         {
             Content = payload is null
@@ -55,59 +99,111 @@ public class SaisApiClientBase
                 : new StringContent(JsonSerializer.Serialize(payload, SerializerOptions), Encoding.UTF8, "application/json")
         };
 
-        request.Headers.Remove(_saisOptions.TicketHeaderName);
-
         if (includeTicket)
         {
-            if (_saisTicketProvider is null)
-            {
-                throw new InvalidOperationException("Ticket provider has not been configured for this client.");
-            }
-
-            var ticket = await _saisTicketProvider.GetTicketAsync(cancellationToken).ConfigureAwait(false);
+            var ticket = await _saisTicketProvider!.GetTicketAsync(cancellationToken).ConfigureAwait(false);
 
             // SAIS API requires AToken wrapper serialization
-            var aToken = new Contracts.AToken(ticket.TicketId, ticket.DeviceId);
+            var aToken = new AToken(ticket.TicketId, ticket.DeviceId);
             var ticketHeaderValue = JsonSerializer.Serialize(aToken, SerializerOptions);
 
             request.Headers.Remove(_saisOptions.TicketHeaderName);
             request.Headers.AddRequiredHeader(_saisOptions.TicketHeaderName, ticketHeaderValue);
         }
+        else
+        {
+            // For login calls, send AToken with null/empty values
+            var emptyToken = new AToken(null, null);
+            request.Headers.AddRequiredHeader("AToken", JsonSerializer.Serialize(emptyToken, SerializerOptions));
+        }
 
+        string? rawResponse = null;
+        
         try
         {
             using var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized && includeTicket)
             {
+                await _logger.LogWarning(
+                    "SAIS API 401 Response",
+                    $"Received 401 Unauthorized from {relativeUri}. IsRetry={isRetry}",
+                    LogCategory.ApiCall);
+
                 _saisTicketProvider?.InvalidateTicket();
+
+                // Retry once with a new ticket
+                if (!isRetry)
+                {
+                    await _logger.LogInfo(
+                        "SAIS API Retry",
+                        $"Retrying request to {relativeUri} with new ticket",
+                        LogCategory.ApiCall);
+
+                    return await ExecuteRequestWithRetryAsync<TResponse>(
+                        relativeUri, payload, includeTicket, cancellationToken, isRetry: true)
+                        .ConfigureAwait(false);
+                }
             }
 
-            response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadFromJsonAsync<SaisResultEnvelope<TResponse>>(SerializerOptions, cancellationToken)
-                         .ConfigureAwait(false) ?? throw new RemoteApiException("SAIS API response body was empty.");
+            // Read raw response for debugging purposes
+            rawResponse = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            
+            // Parse the response
+            var result = JsonSerializer.Deserialize<SaisResultEnvelope<TResponse>>(rawResponse, SerializerOptions)
+                         ?? throw new RemoteApiException("SAIS API response body was empty.");
 
             result.EnsureSuccess();
+
+            await _logger.LogInfo(
+                "SAIS API Success",
+                $"Request to {relativeUri} completed successfully",
+                LogCategory.ApiCall);
 
             return result;
         }
         catch (HttpRequestException ex)
         {
+            await _logger.LogError(
+                "SAIS API Request Failed",
+                $"Request to {relativeUri} failed: {ex.Message}",
+                LogCategory.ApiCall);
             throw new RemoteApiException("SAIS API request failed.", ex);
         }
         catch (TimeoutException ex)
         {
-            return await Task.FromResult<SaisResultEnvelope<TResponse>>(default!).ConfigureAwait(false);
-
+            await _logger.LogError(
+                "SAIS API Timeout",
+                $"Request to {relativeUri} timed out",
+                LogCategory.ApiCall);
             throw new RemoteApiException("SAIS API request timed out.", ex);
         }
         catch (NotSupportedException ex)
         {
+            await _logger.LogError(
+                "SAIS API Unsupported Media Type",
+                $"Request to {relativeUri} returned unsupported media type",
+                LogCategory.ApiCall);
             throw new RemoteApiException("SAIS API returned an unsupported media type.", ex);
         }
         catch (JsonException ex)
         {
+            // Use previously captured response for debugging
+            var responseContent = rawResponse ?? "(no response captured)";
+            if (responseContent.Length > 500)
+                responseContent = responseContent.Substring(0, 500) + "...[truncated]";
+
+            await _logger.LogError(
+                "SAIS API Parse Error",
+                $"Response from {relativeUri} could not be parsed. Response: {responseContent}",
+                LogCategory.ApiCall);
+            
+            // Return empty result instead of throwing for non-critical endpoints
+            if (relativeUri.Contains("GetCalibration") || relativeUri.Contains("GetChannelInformation"))
+            {
+                return new SaisResultEnvelope<TResponse> { Result = false, Message = "Parse error - response may be empty or malformed" };
+            }
+            
             throw new RemoteApiException("SAIS API response could not be parsed.", ex);
         }
     }

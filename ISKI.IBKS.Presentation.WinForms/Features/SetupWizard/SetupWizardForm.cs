@@ -251,7 +251,8 @@ public partial class SetupWizardForm : Form
             _state.PhCalibrationDuration, _state.PhZeroRef,
             _state.PhCalibrationDuration, _state.PhSpanRef,
             _state.IletkenlikCalibrationDuration, _state.IletkenlikZeroRef,
-            _state.IletkenlikCalibrationDuration, _state.IletkenlikSpanRef);
+            _state.IletkenlikCalibrationDuration, _state.IletkenlikSpanRef,
+            60, 0, 60, 0); // AKM and KOI defaults
 
         await _dbContext.SaveChangesAsync();
     }

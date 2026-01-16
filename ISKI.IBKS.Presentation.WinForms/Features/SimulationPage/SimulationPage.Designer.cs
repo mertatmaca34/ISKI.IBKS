@@ -710,6 +710,12 @@
             PanelDoor.Size = new Size(127, 63);
             PanelDoor.TabIndex = 0;
             // 
+            // TimerSimulation
+            // 
+            TimerSimulation.Enabled = true;
+            TimerSimulation.Interval = 5000;
+            TimerSimulation.Tick += SimulationTimer_Tick;
+            // 
             // SimulationPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -739,6 +745,7 @@
             DoubleBuffered = true;
             Name = "SimulationPage";
             Text = "SimulationPage";
+            Load += SimulationPage_Load;
             tableLayoutPanel14.ResumeLayout(false);
             tableLayoutPanel14.PerformLayout();
             tableLayoutPanel13.ResumeLayout(false);

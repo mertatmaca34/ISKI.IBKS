@@ -6,4 +6,4 @@ using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 
-public sealed record SaisTicket(Guid? TicketId, Guid? DeviceId, DateTime? ExpiresAt);
+public sealed record SaisTicket(Guid? TicketId, Guid? DeviceId, DateTime? ExpiresAt, DateTime CreatedAt);

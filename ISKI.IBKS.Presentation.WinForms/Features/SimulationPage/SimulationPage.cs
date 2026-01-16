@@ -1,5 +1,7 @@
 ﻿using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
+using ISKI.IBKS.Presentation.WinForms.Common.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,7 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ISKI.IBKS.Application.Features.StationSnapshots.Dtos;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.SimulationPage
 {
@@ -25,6 +26,16 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SimulationPage
 
         System.Windows.Forms.Timer _simulationTimer;
         private bool _blinkState;
+
+        // Background frames for animations
+        private readonly Bitmap _autoFrame;
+        private readonly Bitmap _autoFrame2;
+        private readonly Bitmap _systemMaintenance;
+        private readonly Bitmap _wash1;
+        private readonly Bitmap _wash2;
+        private readonly Bitmap _pump1Idle, _pump2Idle;
+        private readonly Bitmap _pump1Animation, _pump2Animation;
+
 
         #region No Image-Flick
 
@@ -46,58 +57,160 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SimulationPage
 
             _stationSnapshotCache = stationSnapshotCache;
             _plcSettings = plcSettings;
+
+            // Load background frames
+            _autoFrame = Properties.Resources.system_auto1;
+            _autoFrame2 = Properties.Resources.system_auto2;
+            _systemMaintenance = Properties.Resources.system_wait;
+            _wash1 = Properties.Resources.wash1;
+            _wash2 = Properties.Resources.wash2;
+            _pump1Idle = Properties.Resources.pump1_idle;
+            _pump2Idle = Properties.Resources.pump2_idle;
+            _pump1Animation = Properties.Resources.pump1_animation;
+            _pump2Animation = Properties.Resources.pump2_animation;
+
+            PictureBoxPump1.Image = _pump1Idle;
+            PictureBoxPump2.Image = _pump2Idle;
+
+            // Set initial background
+            this.BackgroundImage = _autoFrame;
         }
 
-        private async void SimulationTimer_Tick(object sender, EventArgs e)
+
+        private void SimulationTimer_Tick(object sender, EventArgs e)
         {
             if (_stationSnapshotCache == null || _plcSettings?.Value == null) return;
 
-            var snapshot = await _stationSnapshotCache.Get(_plcSettings.Value.Station.StationId);
-            if (snapshot == null)
-                return;
+            // Stop timer to prevent overlapping ticks
+            _simulationTimer?.Stop();
 
-            _blinkState = !_blinkState; // Toggle blink
+            try
+            {
+                // Get snapshot synchronously using Task.Run to avoid blocking
+                var snapshot = Task.Run(async () => 
+                    await _stationSnapshotCache.Get(_plcSettings.Value.Station.StationId)).Result;
 
-            // Update Analog Labels
-            LabelPh.Text = snapshot.Ph?.ToString("F2") ?? "-";
-            LabelIletkenlik.Text = snapshot.Iletkenlik?.ToString("F2") ?? "-";
-            LabelOksijen.Text = snapshot.CozunmusOksijen?.ToString("F2") ?? "-";
-            LabelKoi.Text = snapshot.Koi?.ToString("F2") ?? "-";
-            LabelAkm.Text = snapshot.Akm?.ToString("F2") ?? "-";
-            
-            LabelDebi.Text = snapshot.TesisDebi?.ToString("F2") ?? "-";
-            LabelDesarjDebi.Text = snapshot.DesarjDebi?.ToString("F2") ?? "-";
-            LabelHariciDebi.Text = snapshot.HariciDebi?.ToString("F2") ?? "-";
-            LabelHariciDebi2.Text = snapshot.HariciDebi2?.ToString("F2") ?? "-";
-            LabelAkisHizi.Text = snapshot.OlcumCihaziAkisHizi?.ToString("F2") ?? "-";
+                if (snapshot == null)
+                    return;
 
-            LabelSicaklik.Text = snapshot.KabinSicakligi?.ToString("F1") ?? "-";
-            LabelNem.Text = snapshot.KabinNemi?.ToString("F1") ?? "-";
+                _blinkState = !_blinkState; // Toggle blink
 
-            // Update Pump Frequencies
-            LabelFrekans.Text = $"P1: {snapshot.Pompa1CalismaFrekansi:F1} / P2: {snapshot.Pompa2CalismaFrekansi:F1}";
+                // Update Analog Labels
+                LabelPh.Text = snapshot.Ph?.ToString("F2") ?? "-";
+                LabelIletkenlik.Text = snapshot.Iletkenlik?.ToString("F2") ?? "-";
+                LabelOksijen.Text = snapshot.CozunmusOksijen?.ToString("F2") ?? "-";
+                LabelKoi.Text = snapshot.Koi?.ToString("F2") ?? "-";
+                LabelAkm.Text = snapshot.Akm?.ToString("F2") ?? "-";
+                
+                LabelDebi.Text = snapshot.TesisDebi?.ToString("F2") ?? "-";
+                LabelDesarjDebi.Text = snapshot.DesarjDebi?.ToString("F2") ?? "-";
+                LabelHariciDebi.Text = snapshot.HariciDebi?.ToString("F2") ?? "-";
+                LabelHariciDebi2.Text = snapshot.HariciDebi2?.ToString("F2") ?? "-";
+                LabelAkisHizi.Text = snapshot.OlcumCihaziAkisHizi?.ToString("F2") ?? "-";
 
-            // Update Active Pump Indicator
-            if (snapshot.Pompa1Calisiyor == true) LabelAktifPompa.Text = "Pompa 1";
-            else if (snapshot.Pompa2Calisiyor == true) LabelAktifPompa.Text = "Pompa 2";
-            else LabelAktifPompa.Text = "Duruyor";
+                LabelSicaklik.Text = snapshot.KabinSicakligi?.ToString("F1") ?? "-";
+                LabelNem.Text = snapshot.KabinNemi?.ToString("F1") ?? "-";
 
-            // Update Pump Visuals
-            PictureBoxPump1.Image = (snapshot.Pompa1Calisiyor == true) ? Properties.Resources.pump1_animation : Properties.Resources.pump1_idle;
-            PictureBoxPump2.Image = (snapshot.Pompa2Calisiyor == true) ? Properties.Resources.pump2_animation : Properties.Resources.pump2_idle;
+                // Update Pump Frequencies
+                LabelFrekans.Text = $"P1: {snapshot.Pompa1CalismaFrekansi:F1} / P2: {snapshot.Pompa2CalismaFrekansi:F1}";
 
-            // Update Door
-            PanelDoor.BackgroundImage = (snapshot.KabinKapiAlarmi == true) ? Properties.Resources.door_opened : Properties.Resources.door_closed;
+                // Update Active Pump Indicator
+                if (snapshot.Pompa1Calisiyor == true) LabelAktifPompa.Text = "Pompa 1";
+                else if (snapshot.Pompa2Calisiyor == true) LabelAktifPompa.Text = "Pompa 2";
+                else LabelAktifPompa.Text = "Duruyor";
 
+                // Perform Animations
+                AnimateSystemStatus(snapshot);
+                AnimatePumps(snapshot);
+                AnimateDoor(snapshot);
+                AnimateWaterTank(snapshot);
+
+                // Color Coding Sensors
+                LabelPh.ForeColor = (snapshot.Ph > 9 || snapshot.Ph < 6) ? Color.Red : Color.Lime;
+                LabelIletkenlik.ForeColor = (snapshot.Iletkenlik > 2000) ? Color.Red : Color.Lime;
+
+                // Update Status Overlay
+                UpdateStatusOverlay(snapshot);
+            }
+            finally
+            {
+                // Restart timer
+                _simulationTimer?.Start();
+            }
+        }
+
+        private void AnimateSystemStatus(StationSnapshotDto snapshot)
+        {
+            // System Status Animation (Background Frame)
+            if (snapshot.KabinOtoModu == true && 
+                snapshot.KabinHaftalikYikamada == false && 
+                snapshot.KabinSaatlikYikamada == false)
+            {
+                // Auto mode - alternate between two frames
+                FrameOperations.ChangeControlFrame(this, _autoFrame, _autoFrame2);
+            }
+            else if (snapshot.KabinBakimModu == true || snapshot.KabinKalibrasyonModu == true)
+            {
+                // Maintenance/Calibration mode - static maintenance image
+                if (this.BackgroundImage != _systemMaintenance)
+                {
+                    this.BackgroundImage = _systemMaintenance;
+                }
+            }
+            else if (snapshot.KabinSaatlikYikamada == true || snapshot.KabinHaftalikYikamada == true)
+            {
+                // Washing mode - alternate between wash frames
+                FrameOperations.ChangeControlFrame(this, _wash1, _wash2);
+            }
+        }
+
+        private void AnimatePumps(StationSnapshotDto snapshot)
+        {
+            // Pump 1 Animation
+            if (snapshot.Pompa1Calisiyor == true)
+            {
+                FrameOperations.ChangePictureBoxFrame(PictureBoxPump1, _pump1Animation, _pump1Idle, PumpState.Working);
+            }
+            else
+            {
+                FrameOperations.ChangePictureBoxFrame(PictureBoxPump1, _pump1Animation, _pump1Idle, PumpState.Idle);
+            }
+
+            // Pump 2 Animation
+            if (snapshot.Pompa2Calisiyor == true)
+            {
+                FrameOperations.ChangePictureBoxFrame(PictureBoxPump2, _pump2Animation, _pump2Idle, PumpState.Working);
+            }
+            else
+            {
+                FrameOperations.ChangePictureBoxFrame(PictureBoxPump2, _pump2Animation, _pump2Idle, PumpState.Idle);
+            }
+        }
+
+        private void AnimateDoor(StationSnapshotDto snapshot)
+        {
+            // Door Status
+            if (snapshot.KabinKapiAlarmi == true)
+            {
+                FrameOperations.ChangePanelFrame(PanelDoor, Properties.Resources.door_opened);
+            }
+            else
+            {
+                FrameOperations.ChangePanelFrame(PanelDoor, Properties.Resources.door_closed);
+            }
+        }
+
+        private void AnimateWaterTank(StationSnapshotDto snapshot)
+        {
             // Water Tank Level
-            PanelWaterTank.BackgroundImage = (snapshot.YikamaTankiBosAlarmi == true) ? Properties.Resources.water_tank_empty : Properties.Resources.water_tank_full;
-
-            // Color Coding Sensors
-            LabelPh.ForeColor = (snapshot.Ph > 9 || snapshot.Ph < 6) ? Color.Red : Color.Lime;
-            LabelIletkenlik.ForeColor = (snapshot.Iletkenlik > 2000) ? Color.Red : Color.Lime;
-
-            // Update Status Overlay
-            UpdateStatusOverlay(snapshot);
+            if (snapshot.YikamaTankiBosAlarmi == true)
+            {
+                FrameOperations.ChangePanelFrame(PanelWaterTank, Properties.Resources.water_tank_empty);
+            }
+            else
+            {
+                FrameOperations.ChangePanelFrame(PanelWaterTank, Properties.Resources.water_tank_full);
+            }
         }
 
         private void UpdateStatusOverlay(StationSnapshotDto s)

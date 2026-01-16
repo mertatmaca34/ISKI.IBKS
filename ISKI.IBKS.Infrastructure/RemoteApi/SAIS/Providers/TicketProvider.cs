@@ -2,6 +2,7 @@
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Utilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -52,10 +53,13 @@ public sealed class TicketProvider : ISaisTicketProvider, IDisposable
             using var scope = _serviceProvider.CreateScope();
             var authClient = scope.ServiceProvider.GetRequiredService<ISaisAuthClient>();
 
+            // Hash password twice with MD5 as required by SAIS API
+            var hashedPassword = PasswordHasher.HashPassword(_options.Password);
+
             var loginReq = new LoginRequest
             {
                 UserName = _options.Username,
-                Password = _options.Password
+                Password = hashedPassword
             };
 
             var envelope = await authClient.LoginAsync(loginReq, cancellationToken).ConfigureAwait(false);
@@ -72,12 +76,18 @@ public sealed class TicketProvider : ISaisTicketProvider, IDisposable
                 throw new InvalidOperationException("Login response did not contain a ticket id.");
             }
 
-            var ticket = new SaisTicket(envelope.Objects.TicketId, envelope.Objects.DeviceId, envelope.Objects.User is null ? null : DateTime.UtcNow.AddMinutes(30));
+            var createdAt = DateTime.UtcNow;
+            var ticket = new SaisTicket(
+                envelope.Objects.TicketId, 
+                envelope.Objects.DeviceId, 
+                envelope.Objects.User is null ? null : createdAt.AddMinutes(30),
+                createdAt);
 
             _currentTicket = ticket;
             _expiresAtUtc = DateTimeOffset.UtcNow.Add(_options.TicketTtl);
 
-            _logger.LogInformation("SAIS ticket acquired. ExpiresAtUtc={ExpiresAtUtc}", _expiresAtUtc);
+            _logger.LogInformation("SAIS ticket acquired. TicketId={TicketId}, CreatedAt={CreatedAt}, ExpiresAtUtc={ExpiresAtUtc}", 
+                ticket.TicketId, createdAt, _expiresAtUtc);
 
             return ticket;
         }
@@ -103,7 +113,32 @@ public sealed class TicketProvider : ISaisTicketProvider, IDisposable
     }
 
     private bool IsTicketValid()
-        => _currentTicket is not null && _expiresAtUtc > DateTimeOffset.UtcNow.AddSeconds(10);
+    {
+        if (_currentTicket is null)
+        {
+            _logger.LogDebug("Ticket validation failed: ticket is null");
+            return false;
+        }
+
+        // Check if ticket is older than 30 minutes
+        var ticketAge = DateTime.UtcNow - _currentTicket.CreatedAt;
+        if (ticketAge.TotalMinutes >= 30)
+        {
+            _logger.LogWarning("Ticket validation failed: ticket is older than 30 minutes. Age={TicketAgeMinutes} minutes", 
+                ticketAge.TotalMinutes);
+            return false;
+        }
+
+        // Check provider's expiration time
+        if (_expiresAtUtc <= DateTimeOffset.UtcNow.AddSeconds(10))
+        {
+            _logger.LogWarning("Ticket validation failed: provider expiration time reached");
+            return false;
+        }
+
+        _logger.LogDebug("Ticket is valid. Age={TicketAgeMinutes} minutes", ticketAge.TotalMinutes);
+        return true;
+    }
 
     private void ThrowIfDisposed()
     {

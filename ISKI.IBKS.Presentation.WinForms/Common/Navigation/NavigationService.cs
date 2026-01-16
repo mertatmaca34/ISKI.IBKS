@@ -31,29 +31,41 @@ public class NavigationService : INavigationService
     /// <inheritdoc/>
     public void NavigateTo<TPage>() where TPage : UserControl
     {
-        // Resolve the page from DI
+        // Resolve the page from DI (will return same instance for singletons)
         var newPage = _serviceProvider.GetRequiredService<TPage>();
 
         // Store old page reference for event
         var oldPage = CurrentPage;
 
-        // Clear existing content
+        // If we're already on this page, do nothing
+        if (CurrentPage == newPage)
+            return;
+
+        // Suspend layout for better performance
         _contentPanel.SuspendLayout();
         
+        // Hide all existing pages (don't dispose singletons)
         foreach (Control control in _contentPanel.Controls)
         {
-            if (control is IDisposable disposable && control != newPage)
+            if (control is UserControl page)
             {
-                disposable.Dispose();
+                page.Visible = false;
             }
         }
-        _contentPanel.Controls.Clear();
 
-        // Configure new page
-        newPage.Dock = DockStyle.Fill;
+        // Check if the page is already in the panel
+        if (!_contentPanel.Controls.Contains(newPage))
+        {
+            // Configure new page
+            newPage.Dock = DockStyle.Fill;
+            
+            // Add to panel
+            _contentPanel.Controls.Add(newPage);
+        }
 
-        // Add and display new page
-        _contentPanel.Controls.Add(newPage);
+        // Show the page
+        newPage.Visible = true;
+        newPage.BringToFront();
         CurrentPage = newPage;
 
         _contentPanel.ResumeLayout();

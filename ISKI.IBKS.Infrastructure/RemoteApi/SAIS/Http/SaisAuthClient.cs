@@ -1,4 +1,5 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+﻿using ISKI.IBKS.Infrastructure.Logging;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
@@ -12,8 +13,8 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 
 public sealed class SaisAuthClient : SaisApiClientBase, ISaisAuthClient
 {
-    public SaisAuthClient(HttpClient httpClient, IOptions<SAISOptions> saisOptions, ISaisTicketProvider saisTicketProvider)
-        : base(httpClient, saisOptions, saisTicketProvider)
+    public SaisAuthClient(HttpClient httpClient, IOptions<SAISOptions> saisOptions, ISaisTicketProvider saisTicketProvider, IApplicationLogger logger)
+        : base(httpClient, saisOptions, saisTicketProvider, logger)
     {
     }
 

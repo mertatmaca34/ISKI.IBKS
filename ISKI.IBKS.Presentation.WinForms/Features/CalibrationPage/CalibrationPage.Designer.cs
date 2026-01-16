@@ -22,7 +22,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
                 components.Dispose();
             }
             base.Dispose(disposing);
-        }       
+        }
 
         #region Windows Form Designer generated code
 
@@ -91,14 +91,14 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel6 = new TableLayoutPanel();
             label3 = new Label();
             LabelAkmLastCalibration = new Label();
-            titleBarControl1 = new TitleBarControl();
+            titleBarControl1 = new Common.Controls.TitleBarControl();
             tableLayoutPanel27 = new TableLayoutPanel();
-            TitleBarControlActiveCalibration = new TitleBarControl();
-            CalibrationStatusBarZero = new CalibrationStatusBarZeroControl();
-            CalibrationStatusBarSpan = new CalibrationStatusBarSpanControl();
+            TitleBarControlActiveCalibration = new Common.Controls.TitleBarControl();
+            CalibrationStatusBarZero = new Controls.CalibrationStatusBarZeroControl();
+            CalibrationStatusBarSpan = new Controls.CalibrationStatusBarSpanControl();
             tableLayoutPanel28 = new TableLayoutPanel();
-            TitleBarControlTimeRemain = new TitleBarControl();
-            titleBarControl3 = new TitleBarControl();
+            TitleBarControlTimeRemain = new Common.Controls.TitleBarControl();
+            titleBarControl3 = new Common.Controls.TitleBarControl();
             tableLayoutPanel29 = new TableLayoutPanel();
             ChartCalibration = new Chart();
             tableLayoutPanel7 = new TableLayoutPanel();
@@ -296,6 +296,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonKoiZero.TabIndex = 4;
             ButtonKoiZero.Text = "ZERO";
             ButtonKoiZero.UseVisualStyleBackColor = false;
+            ButtonKoiZero.Click += ButtonKoiZero_Click;
             // 
             // panel19
             // 
@@ -414,6 +415,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonIletkenlikSpan.TabIndex = 5;
             ButtonIletkenlikSpan.Text = "SPAN";
             ButtonIletkenlikSpan.UseVisualStyleBackColor = false;
+            ButtonIletkenlikSpan.Click += ButtonIletkenlikSpan_Click;
             // 
             // panel14
             // 
@@ -475,6 +477,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonIletkenlikZero.TabIndex = 4;
             ButtonIletkenlikZero.Text = "ZERO";
             ButtonIletkenlikZero.UseVisualStyleBackColor = false;
+            ButtonIletkenlikZero.Click += ButtonIletkenlikZero_Click;
             // 
             // panel15
             // 
@@ -602,6 +605,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonPhSpan.TabIndex = 5;
             ButtonPhSpan.Text = "SPAN";
             ButtonPhSpan.UseVisualStyleBackColor = false;
+            ButtonPhSpan.Click += ButtonPhSpan_Click;
             // 
             // panel10
             // 
@@ -663,6 +667,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonPhZero.TabIndex = 4;
             ButtonPhZero.Text = "ZERO";
             ButtonPhZero.UseVisualStyleBackColor = false;
+            ButtonPhZero.Click += ButtonPhZero_Click;
             // 
             // panel11
             // 
@@ -829,6 +834,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonAkmZero.TabIndex = 4;
             ButtonAkmZero.Text = "ZERO";
             ButtonAkmZero.UseVisualStyleBackColor = false;
+            ButtonAkmZero.Click += ButtonAkmZero_Click;
             // 
             // panel2
             // 
@@ -1064,7 +1070,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             series5.MarkerSize = 8;
             series5.MarkerStyle = MarkerStyle.Circle;
             series5.Name = "Kalibrasyon Değeri";
-            series5.XValueType = ChartValueType.Time;
+            series5.XValueType = ChartValueType.Double;
             series5.YValueType = ChartValueType.Double;
             series6.BorderWidth = 2;
             series6.ChartArea = "ChartArea1";
@@ -1072,7 +1078,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             series6.Color = Color.Blue;
             series6.Legend = "Legend1";
             series6.Name = "Referans Değeri";
-            series6.XValueType = ChartValueType.Time;
+            series6.XValueType = ChartValueType.Double;
             series6.YValueType = ChartValueType.Double;
             ChartCalibration.Series.Add(series5);
             ChartCalibration.Series.Add(series6);
@@ -1400,6 +1406,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             Controls.Add(tableLayoutPanel1);
             Name = "CalibrationPage";
             Text = "CalibrationPage";
+            Load += CalibrationPage_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel23.ResumeLayout(false);
@@ -1443,7 +1450,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ResumeLayout(false);
         }
 
-#endregion
+        #endregion
 
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;

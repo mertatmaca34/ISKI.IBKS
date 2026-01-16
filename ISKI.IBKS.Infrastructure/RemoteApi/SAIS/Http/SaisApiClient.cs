@@ -1,4 +1,5 @@
-﻿using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+﻿using ISKI.IBKS.Infrastructure.Logging;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Calibration;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Channel;
@@ -16,8 +17,8 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 
 public class SaisApiClient : SaisApiClientBase, ISaisApiClient
 {
-    public SaisApiClient(HttpClient httpClient, ISaisTicketProvider? saisTicketProvider, IOptions<SAISOptions> saisOptions)
-        : base(httpClient, saisOptions, saisTicketProvider)
+    public SaisApiClient(HttpClient httpClient, ISaisTicketProvider? saisTicketProvider, IOptions<SAISOptions> saisOptions, IApplicationLogger logger)
+        : base(httpClient, saisOptions, saisTicketProvider, logger)
     {
     }
 

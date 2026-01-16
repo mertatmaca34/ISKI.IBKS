@@ -83,5 +83,6 @@ public enum LogCategory
     Power = 3,
     Connection = 4,
     Data = 5,
-    Configuration = 6
+    Configuration = 6,
+    ApiCall = 7
 }

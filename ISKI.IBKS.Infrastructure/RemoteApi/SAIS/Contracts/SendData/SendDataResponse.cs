@@ -55,7 +55,7 @@ public sealed record SendDataResponse
     public double? Conductivity { get; init; }
 
     [JsonPropertyName("Iletkenlik_Status")]
-    public string? ConductivityStatus { get; init; }
+    public int? ConductivityStatus { get; init; }
 
     [JsonPropertyName("Sicaklik")]
     public double? Temperature { get; init; }

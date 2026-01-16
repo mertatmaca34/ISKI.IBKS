@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISKI.IBKS.Persistence.Migrations
 {
     [DbContext(typeof(IbksDbContext))]
-    [Migration("20260114100829_AddNewEntities")]
-    partial class AddNewEntities
+    [Migration("20260116123649_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -649,6 +649,12 @@ namespace ISKI.IBKS.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("AkmZeroDuration")
+                        .HasColumnType("int");
+
+                    b.Property<double>("AkmZeroReference")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -696,6 +702,12 @@ namespace ISKI.IBKS.Persistence.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("KoiZeroDuration")
+                        .HasColumnType("int");
+
+                    b.Property<double>("KoiZeroReference")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("LastDataDate")
                         .HasColumnType("datetime2");

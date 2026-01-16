@@ -85,10 +85,10 @@ public sealed class HomePagePresenter
 
             var stationStatus = await _stationStatusService.GetStationStatusAsync(_stationId, _cts.Token);
             _view.RenderStationStatusBar(stationStatus);
-
-            var health = await _healthSummaryService.GetHealthSummaryAsync(_stationId, _cts.Token);
+            
+            /*var health = await _healthSummaryService.GetHealthSummaryAsync(_stationId, _cts.Token);
             _view.RenderHealthSummary(health);
-        }
+        */}
         catch(Exception ex)
         {
             _logger.LogError(ex, "Kanallar getirilirken hata oluştu.");

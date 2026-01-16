@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ISKI.IBKS.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNewEntities : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -298,6 +298,10 @@ namespace ISKI.IBKS.Persistence.Migrations
                     ConductivityZeroReference = table.Column<double>(type: "float", nullable: false),
                     ConductivitySpanDuration = table.Column<int>(type: "int", nullable: false),
                     ConductivitySpanReference = table.Column<double>(type: "float", nullable: false),
+                    AkmZeroDuration = table.Column<int>(type: "int", nullable: false),
+                    AkmZeroReference = table.Column<double>(type: "float", nullable: false),
+                    KoiZeroDuration = table.Column<int>(type: "int", nullable: false),
+                    KoiZeroReference = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
