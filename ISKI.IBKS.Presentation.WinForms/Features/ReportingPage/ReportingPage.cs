@@ -31,6 +31,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
 
         private void InitializeControls()
         {
+            // Set double buffering for smoother UI
+            this.DoubleBuffered = true;
+            typeof(Control).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(DataGridViewDatas, true, null);
+
             // Set default values
             if (ComboBoxReportType != null)
             {
@@ -38,13 +43,24 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             }
 
             if (RadioButtonDaily != null) RadioButtonDaily.Checked = true;
-            if (RadioButtonSortByFirst != null) RadioButtonSortByFirst.Checked = true;
+            if (RadioButtonSortByLast != null) RadioButtonSortByLast.Checked = true;
 
             // Set date ranges to today
             if (DateTimePickerFirstDate != null) DateTimePickerFirstDate.Value = DateTime.Today;
             if (DateTimePickerFirstTime != null) DateTimePickerFirstTime.Value = DateTime.Today;
             if (DateTimePickerLastDate != null) DateTimePickerLastDate.Value = DateTime.Today;
             if (DateTimePickerLastTime != null) DateTimePickerLastTime.Value = DateTime.Today.AddHours(23).AddMinutes(59);
+
+            // Button hover effects
+            if (ButtonGenerate != null)
+            {
+                ButtonGenerate.MouseEnter += (s, e) => ButtonGenerate.BackColor = Color.FromArgb(0, 100, 190);
+                ButtonGenerate.MouseLeave += (s, e) => ButtonGenerate.BackColor = Color.FromArgb(0, 120, 215);
+                ButtonGenerate.BackColor = Color.FromArgb(0, 120, 215); // Sync with designer update
+            }
+
+            // Apply initial period logic
+            UpdateDateRangeByPeriod();
         }
 
         private void AttachEvents()
@@ -64,8 +80,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             }
 
             // Set date ranges based on period selection
-            if (RadioButtonDaily != null) RadioButtonDaily.CheckedChanged += (s, e) => SetDateRange(1);
-            if (RadioButtonMonthly != null) RadioButtonMonthly.CheckedChanged += (s, e) => SetDateRange(30);
+            if (RadioButtonDaily != null) RadioButtonDaily.CheckedChanged += (s, e) => { if (RadioButtonDaily.Checked) UpdateDateRangeByPeriod(); };
+            if (RadioButtonWeekly != null) RadioButtonWeekly.CheckedChanged += (s, e) => { if (RadioButtonWeekly.Checked) UpdateDateRangeByPeriod(); };
+            if (RadioButtonMonthly != null) RadioButtonMonthly.CheckedChanged += (s, e) => { if (RadioButtonMonthly.Checked) UpdateDateRangeByPeriod(); };
 
             if (DataGridViewDatas != null)
             {
@@ -158,12 +175,38 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             }
         }
 
-        private void SetDateRange(int days)
+        private void UpdateDateRangeByPeriod()
         {
-            if (DateTimePickerFirstDate != null)
-                DateTimePickerFirstDate.Value = DateTime.Today.AddDays(-days);
-            if (DateTimePickerLastDate != null)
-                DateTimePickerLastDate.Value = DateTime.Today;
+            if (RadioButtonCustom == null || RadioButtonCustom.Checked) return;
+
+            DateTime now = DateTime.Now;
+            DateTime start = DateTime.Today;
+            DateTime end = DateTime.Today;
+
+            if (RadioButtonDaily.Checked)
+            {
+                // Bugün 00:00 - Yarın 00:00
+                start = DateTime.Today;
+                end = DateTime.Today.AddDays(1);
+            }
+            else if (RadioButtonWeekly.Checked)
+            {
+                // Son Pazartesi 00:00 - Bir sonraki Pazartesi 00:00
+                int diff = (7 + (now.DayOfWeek - DayOfWeek.Monday)) % 7;
+                start = DateTime.Today.AddDays(-1 * diff);
+                end = start.AddDays(7);
+            }
+            else if (RadioButtonMonthly.Checked)
+            {
+                // Bulunduğumuz ayın 1'inden (00:00) bir sonraki ayın 1'ine (00:00)
+                start = new DateTime(now.Year, now.Month, 1);
+                end = start.AddMonths(1);
+            }
+
+            if (DateTimePickerFirstDate != null) DateTimePickerFirstDate.Value = start;
+            if (DateTimePickerFirstTime != null) DateTimePickerFirstTime.Value = start;
+            if (DateTimePickerLastDate != null) DateTimePickerLastDate.Value = end;
+            if (DateTimePickerLastTime != null) DateTimePickerLastTime.Value = end;
         }
 
         private async void ButtonGenerate_Click(object? sender, EventArgs e)
@@ -193,6 +236,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
                 if (DataGridViewDatas != null)
                 {
                     DataGridViewDatas.DataSource = reportData;
+                    
+                    if (DataGridViewDatas.Columns.Contains("Tarih"))
+                    {
+                        DataGridViewDatas.Columns["Tarih"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                    
                     DataGridViewDatas.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
                 }
 
@@ -332,6 +381,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
 
                     // Build list of selected log levels
                     var selectedLevels = new List<Domain.Entities.LogLevel>();
+                    if (CheckBoxLogDebug?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Debug);
                     if (CheckBoxLogInfo?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Info);
                     if (CheckBoxLogWarning?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Warning);
                     if (CheckBoxLogError?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Error);

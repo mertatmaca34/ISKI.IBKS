@@ -32,6 +32,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             titleBarControl1 = new TitleBarControl();
             tableLayoutPanel2 = new TableLayoutPanel();
@@ -42,10 +43,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             RadioButtonSortByLast = new RadioButton();
             RadioButtonSortByFirst = new RadioButton();
             GroupBoxDate = new GroupBox();
-            groupBox5 = new GroupBox();
+            LabelEndDate = new Label();
+            LabelStartDate = new Label();
             DateTimePickerLastTime = new DateTimePicker();
             DateTimePickerLastDate = new DateTimePicker();
-            groupBox4 = new GroupBox();
             DateTimePickerFirstTime = new DateTimePicker();
             DateTimePickerFirstDate = new DateTimePicker();
             groupBox1 = new GroupBox();
@@ -53,6 +54,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             RadioButtonMonthly = new RadioButton();
             RadioButtonWeekly = new RadioButton();
             RadioButtonDaily = new RadioButton();
+            GroupBoxLogLevel = new GroupBox();
+            CheckBoxLogDebug = new CheckBox();
+            CheckBoxLogInfo = new CheckBox();
+            CheckBoxLogWarning = new CheckBox();
+            CheckBoxLogError = new CheckBox();
+            CheckBoxLogCritical = new CheckBox();
             ButtonGenerate = new Button();
             tableLayoutPanel4 = new TableLayoutPanel();
             DataGridViewDatas = new DataGridView();
@@ -60,19 +67,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             tableLayoutPanel6 = new TableLayoutPanel();
             ButtonSaveAsExcel = new Button();
             ButtonSaveAsPdf = new Button();
-            GroupBoxLogLevel = new GroupBox();
-            CheckBoxLogInfo = new CheckBox();
-            CheckBoxLogWarning = new CheckBox();
-            CheckBoxLogError = new CheckBox();
-            CheckBoxLogCritical = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             GroupBoxReportTypes.SuspendLayout();
             groupBox3.SuspendLayout();
             GroupBoxDate.SuspendLayout();
-            groupBox5.SuspendLayout();
-            groupBox4.SuspendLayout();
             groupBox1.SuspendLayout();
             GroupBoxLogLevel.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
@@ -103,7 +103,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // 
             // titleBarControl1
             // 
-            titleBarControl1.BackColor = Color.FromArgb(235, 235, 235);
+            titleBarControl1.BackColor = Color.White;
             tableLayoutPanel1.SetColumnSpan(titleBarControl1, 2);
             titleBarControl1.Dock = DockStyle.Fill;
             titleBarControl1.Location = new Point(11, 11);
@@ -115,7 +115,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.BackColor = Color.FromArgb(235, 235, 235);
+            tableLayoutPanel2.BackColor = Color.FromArgb(248, 249, 250);
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(tableLayoutPanel3, 0, 0);
@@ -137,21 +137,21 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             tableLayoutPanel3.Controls.Add(groupBox3, 0, 3);
             tableLayoutPanel3.Controls.Add(GroupBoxDate, 0, 2);
             tableLayoutPanel3.Controls.Add(groupBox1, 0, 1);
-            tableLayoutPanel3.Controls.Add(GroupBoxLogLevel, 0, 5);
-            tableLayoutPanel3.Controls.Add(ButtonGenerate, 0, 6);
+            tableLayoutPanel3.Controls.Add(GroupBoxLogLevel, 0, 4);
+            tableLayoutPanel3.Controls.Add(ButtonGenerate, 0, 5);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            tableLayoutPanel3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             tableLayoutPanel3.Location = new Point(1, 1);
             tableLayoutPanel3.Margin = new Padding(1);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.Padding = new Padding(3);
             tableLayoutPanel3.RowCount = 7;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 176F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 100F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 55F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 85F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 185F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 85F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 150F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.Size = new Size(212, 615);
             tableLayoutPanel3.TabIndex = 2;
@@ -160,16 +160,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // 
             GroupBoxReportTypes.Controls.Add(ComboBoxReportType);
             GroupBoxReportTypes.Dock = DockStyle.Fill;
-            GroupBoxReportTypes.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            GroupBoxReportTypes.FlatStyle = FlatStyle.Flat;
+            GroupBoxReportTypes.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            GroupBoxReportTypes.ForeColor = Color.FromArgb(0, 120, 215);
             GroupBoxReportTypes.Location = new Point(6, 6);
             GroupBoxReportTypes.Name = "GroupBoxReportTypes";
-            GroupBoxReportTypes.Size = new Size(200, 74);
+            GroupBoxReportTypes.Size = new Size(200, 49);
             GroupBoxReportTypes.TabIndex = 5;
             GroupBoxReportTypes.TabStop = false;
             GroupBoxReportTypes.Text = "RAPOR TİPİ";
-            //
+            // 
             // ComboBoxReportType
-            //
+            // 
             ComboBoxReportType.Dock = DockStyle.Top;
             ComboBoxReportType.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBoxReportType.FormattingEnabled = true;
@@ -184,10 +186,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             groupBox3.Controls.Add(RadioButtonSortByLast);
             groupBox3.Controls.Add(RadioButtonSortByFirst);
             groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            groupBox3.Location = new Point(6, 342);
+            groupBox3.FlatStyle = FlatStyle.Flat;
+            groupBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox3.ForeColor = Color.FromArgb(0, 120, 215);
+            groupBox3.Location = new Point(6, 331);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(200, 74);
+            groupBox3.Size = new Size(200, 79);
             groupBox3.TabIndex = 4;
             groupBox3.TabStop = false;
             groupBox3.Text = "SIRALAMA";
@@ -195,7 +199,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // RadioButtonSortByLast
             // 
             RadioButtonSortByLast.AutoSize = true;
-            RadioButtonSortByLast.Location = new Point(6, 46);
+            RadioButtonSortByLast.Checked = true;
+            RadioButtonSortByLast.ForeColor = Color.Black;
+            RadioButtonSortByLast.Location = new Point(10, 50);
             RadioButtonSortByLast.Name = "RadioButtonSortByLast";
             RadioButtonSortByLast.Size = new Size(115, 19);
             RadioButtonSortByLast.TabIndex = 2;
@@ -206,86 +212,86 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // RadioButtonSortByFirst
             // 
             RadioButtonSortByFirst.AutoSize = true;
-            RadioButtonSortByFirst.Location = new Point(6, 21);
+            RadioButtonSortByFirst.ForeColor = Color.Black;
+            RadioButtonSortByFirst.Location = new Point(10, 25);
             RadioButtonSortByFirst.Name = "RadioButtonSortByFirst";
-            RadioButtonSortByFirst.Size = new Size(106, 19);
+            RadioButtonSortByFirst.Size = new Size(108, 19);
             RadioButtonSortByFirst.TabIndex = 2;
-            RadioButtonSortByFirst.TabStop = true;
             RadioButtonSortByFirst.Text = "İlk Veriye Göre";
             RadioButtonSortByFirst.UseVisualStyleBackColor = true;
             // 
             // GroupBoxDate
             // 
-            GroupBoxDate.Controls.Add(groupBox5);
-            GroupBoxDate.Controls.Add(groupBox4);
+            GroupBoxDate.Controls.Add(LabelEndDate);
+            GroupBoxDate.Controls.Add(LabelStartDate);
+            GroupBoxDate.Controls.Add(DateTimePickerLastTime);
+            GroupBoxDate.Controls.Add(DateTimePickerLastDate);
+            GroupBoxDate.Controls.Add(DateTimePickerFirstTime);
+            GroupBoxDate.Controls.Add(DateTimePickerFirstDate);
             GroupBoxDate.Dock = DockStyle.Fill;
             GroupBoxDate.Enabled = false;
-            GroupBoxDate.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            GroupBoxDate.Location = new Point(6, 166);
+            GroupBoxDate.FlatStyle = FlatStyle.Flat;
+            GroupBoxDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            GroupBoxDate.ForeColor = Color.FromArgb(0, 120, 215);
+            GroupBoxDate.Location = new Point(6, 146);
             GroupBoxDate.Name = "GroupBoxDate";
-            GroupBoxDate.Size = new Size(200, 170);
+            GroupBoxDate.Size = new Size(200, 179);
             GroupBoxDate.TabIndex = 3;
             GroupBoxDate.TabStop = false;
             GroupBoxDate.Text = "TARİH";
             // 
-            // groupBox5
+            // LabelEndDate
             // 
-            groupBox5.Controls.Add(DateTimePickerLastTime);
-            groupBox5.Controls.Add(DateTimePickerLastDate);
-            groupBox5.Location = new Point(6, 95);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(187, 69);
-            groupBox5.TabIndex = 2;
-            groupBox5.TabStop = false;
-            groupBox5.Text = "Bitiş";
+            LabelEndDate.AutoSize = true;
+            LabelEndDate.Font = new Font("Segoe UI", 8.5F);
+            LabelEndDate.ForeColor = Color.Gray;
+            LabelEndDate.Location = new Point(6, 95);
+            LabelEndDate.Name = "LabelEndDate";
+            LabelEndDate.Size = new Size(29, 15);
+            LabelEndDate.TabIndex = 5;
+            LabelEndDate.Text = "Bitiş";
+            // 
+            // LabelStartDate
+            // 
+            LabelStartDate.AutoSize = true;
+            LabelStartDate.Font = new Font("Segoe UI", 8.5F);
+            LabelStartDate.ForeColor = Color.Gray;
+            LabelStartDate.Location = new Point(6, 22);
+            LabelStartDate.Name = "LabelStartDate";
+            LabelStartDate.Size = new Size(57, 15);
+            LabelStartDate.TabIndex = 4;
+            LabelStartDate.Text = "Başlangıç";
             // 
             // DateTimePickerLastTime
             // 
-            DateTimePickerLastTime.Dock = DockStyle.Bottom;
             DateTimePickerLastTime.Format = DateTimePickerFormat.Time;
-            DateTimePickerLastTime.Location = new Point(3, 45);
+            DateTimePickerLastTime.Location = new Point(6, 140);
             DateTimePickerLastTime.Name = "DateTimePickerLastTime";
             DateTimePickerLastTime.ShowUpDown = true;
-            DateTimePickerLastTime.Size = new Size(181, 21);
+            DateTimePickerLastTime.Size = new Size(188, 23);
             DateTimePickerLastTime.TabIndex = 3;
-            DateTimePickerLastTime.Value = new DateTime(2023, 7, 31, 0, 0, 0, 0);
             // 
             // DateTimePickerLastDate
             // 
-            DateTimePickerLastDate.Dock = DockStyle.Top;
-            DateTimePickerLastDate.Location = new Point(3, 17);
+            DateTimePickerLastDate.Location = new Point(6, 113);
             DateTimePickerLastDate.Name = "DateTimePickerLastDate";
-            DateTimePickerLastDate.Size = new Size(181, 21);
+            DateTimePickerLastDate.Size = new Size(188, 23);
             DateTimePickerLastDate.TabIndex = 2;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(DateTimePickerFirstTime);
-            groupBox4.Controls.Add(DateTimePickerFirstDate);
-            groupBox4.Location = new Point(6, 20);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(187, 69);
-            groupBox4.TabIndex = 2;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Başlangıç";
             // 
             // DateTimePickerFirstTime
             // 
-            DateTimePickerFirstTime.Dock = DockStyle.Bottom;
             DateTimePickerFirstTime.Format = DateTimePickerFormat.Time;
-            DateTimePickerFirstTime.Location = new Point(3, 45);
+            DateTimePickerFirstTime.Location = new Point(6, 67);
             DateTimePickerFirstTime.Name = "DateTimePickerFirstTime";
             DateTimePickerFirstTime.ShowUpDown = true;
-            DateTimePickerFirstTime.Size = new Size(181, 21);
+            DateTimePickerFirstTime.Size = new Size(188, 23);
             DateTimePickerFirstTime.TabIndex = 3;
-            DateTimePickerFirstTime.Value = new DateTime(2023, 7, 31, 0, 0, 0, 0);
             // 
             // DateTimePickerFirstDate
             // 
-            DateTimePickerFirstDate.Dock = DockStyle.Top;
-            DateTimePickerFirstDate.Location = new Point(3, 17);
+            DateTimePickerFirstDate.Location = new Point(6, 40);
             DateTimePickerFirstDate.Name = "DateTimePickerFirstDate";
-            DateTimePickerFirstDate.Size = new Size(181, 21);
+            DateTimePickerFirstDate.Size = new Size(188, 23);
             DateTimePickerFirstDate.TabIndex = 2;
             // 
             // groupBox1
@@ -295,10 +301,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             groupBox1.Controls.Add(RadioButtonWeekly);
             groupBox1.Controls.Add(RadioButtonDaily);
             groupBox1.Dock = DockStyle.Fill;
-            groupBox1.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            groupBox1.Location = new Point(6, 86);
+            groupBox1.FlatStyle = FlatStyle.Flat;
+            groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox1.ForeColor = Color.FromArgb(0, 120, 215);
+            groupBox1.Location = new Point(6, 61);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(200, 74);
+            groupBox1.Size = new Size(200, 79);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "PERİYOT";
@@ -306,7 +314,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // RadioButtonCustom
             // 
             RadioButtonCustom.AutoSize = true;
-            RadioButtonCustom.Location = new Point(88, 47);
+            RadioButtonCustom.ForeColor = Color.Black;
+            RadioButtonCustom.Location = new Point(105, 50);
             RadioButtonCustom.Name = "RadioButtonCustom";
             RadioButtonCustom.Size = new Size(50, 19);
             RadioButtonCustom.TabIndex = 2;
@@ -317,7 +326,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // RadioButtonMonthly
             // 
             RadioButtonMonthly.AutoSize = true;
-            RadioButtonMonthly.Location = new Point(6, 47);
+            RadioButtonMonthly.ForeColor = Color.Black;
+            RadioButtonMonthly.Location = new Point(10, 50);
             RadioButtonMonthly.Name = "RadioButtonMonthly";
             RadioButtonMonthly.Size = new Size(52, 19);
             RadioButtonMonthly.TabIndex = 2;
@@ -328,9 +338,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // RadioButtonWeekly
             // 
             RadioButtonWeekly.AutoSize = true;
-            RadioButtonWeekly.Location = new Point(88, 22);
+            RadioButtonWeekly.ForeColor = Color.Black;
+            RadioButtonWeekly.Location = new Point(105, 25);
             RadioButtonWeekly.Name = "RadioButtonWeekly";
-            RadioButtonWeekly.Size = new Size(68, 19);
+            RadioButtonWeekly.Size = new Size(69, 19);
             RadioButtonWeekly.TabIndex = 2;
             RadioButtonWeekly.TabStop = true;
             RadioButtonWeekly.Text = "Haftalık";
@@ -339,50 +350,56 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // RadioButtonDaily
             // 
             RadioButtonDaily.AutoSize = true;
-            RadioButtonDaily.Location = new Point(6, 22);
+            RadioButtonDaily.ForeColor = Color.Black;
+            RadioButtonDaily.Location = new Point(10, 25);
             RadioButtonDaily.Name = "RadioButtonDaily";
-            RadioButtonDaily.Size = new Size(64, 19);
+            RadioButtonDaily.Size = new Size(65, 19);
             RadioButtonDaily.TabIndex = 2;
             RadioButtonDaily.TabStop = true;
             RadioButtonDaily.Text = "Günlük";
             RadioButtonDaily.UseVisualStyleBackColor = true;
             // 
-            // ButtonGenerate
-            // 
-            ButtonGenerate.BackColor = Color.FromArgb(0, 131, 200);
-            ButtonGenerate.Dock = DockStyle.Top;
-            ButtonGenerate.ForeColor = Color.White;
-            ButtonGenerate.Location = new Point(6, 522);
-            ButtonGenerate.Name = "ButtonGenerate";
-            ButtonGenerate.Size = new Size(200, 40);
-            ButtonGenerate.TabIndex = 2;
-            ButtonGenerate.Text = "OLUŞTUR";
-            ButtonGenerate.UseVisualStyleBackColor = false;
-            // 
             // GroupBoxLogLevel
             // 
+            GroupBoxLogLevel.Controls.Add(CheckBoxLogDebug);
             GroupBoxLogLevel.Controls.Add(CheckBoxLogInfo);
             GroupBoxLogLevel.Controls.Add(CheckBoxLogWarning);
             GroupBoxLogLevel.Controls.Add(CheckBoxLogError);
             GroupBoxLogLevel.Controls.Add(CheckBoxLogCritical);
             GroupBoxLogLevel.Dock = DockStyle.Fill;
-            GroupBoxLogLevel.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            GroupBoxLogLevel.Location = new Point(6, 462);
+            GroupBoxLogLevel.FlatStyle = FlatStyle.Flat;
+            GroupBoxLogLevel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            GroupBoxLogLevel.ForeColor = Color.FromArgb(0, 120, 215);
+            GroupBoxLogLevel.Location = new Point(6, 416);
             GroupBoxLogLevel.Name = "GroupBoxLogLevel";
-            GroupBoxLogLevel.Size = new Size(200, 94);
+            GroupBoxLogLevel.Size = new Size(200, 144);
             GroupBoxLogLevel.TabIndex = 6;
             GroupBoxLogLevel.TabStop = false;
             GroupBoxLogLevel.Text = "LOG SEVİYESİ";
             GroupBoxLogLevel.Visible = false;
+            // 
+            // CheckBoxLogDebug
+            // 
+            CheckBoxLogDebug.AutoSize = true;
+            CheckBoxLogDebug.Checked = true;
+            CheckBoxLogDebug.CheckState = CheckState.Checked;
+            CheckBoxLogDebug.ForeColor = Color.Black;
+            CheckBoxLogDebug.Location = new Point(10, 22);
+            CheckBoxLogDebug.Name = "CheckBoxLogDebug";
+            CheckBoxLogDebug.Size = new Size(63, 19);
+            CheckBoxLogDebug.TabIndex = 4;
+            CheckBoxLogDebug.Text = "Debug";
+            CheckBoxLogDebug.UseVisualStyleBackColor = true;
             // 
             // CheckBoxLogInfo
             // 
             CheckBoxLogInfo.AutoSize = true;
             CheckBoxLogInfo.Checked = true;
             CheckBoxLogInfo.CheckState = CheckState.Checked;
-            CheckBoxLogInfo.Location = new Point(6, 22);
+            CheckBoxLogInfo.ForeColor = Color.Black;
+            CheckBoxLogInfo.Location = new Point(10, 45);
             CheckBoxLogInfo.Name = "CheckBoxLogInfo";
-            CheckBoxLogInfo.Size = new Size(47, 19);
+            CheckBoxLogInfo.Size = new Size(49, 19);
             CheckBoxLogInfo.TabIndex = 0;
             CheckBoxLogInfo.Text = "Info";
             CheckBoxLogInfo.UseVisualStyleBackColor = true;
@@ -392,9 +409,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             CheckBoxLogWarning.AutoSize = true;
             CheckBoxLogWarning.Checked = true;
             CheckBoxLogWarning.CheckState = CheckState.Checked;
-            CheckBoxLogWarning.Location = new Point(70, 22);
+            CheckBoxLogWarning.ForeColor = Color.Black;
+            CheckBoxLogWarning.Location = new Point(10, 68);
             CheckBoxLogWarning.Name = "CheckBoxLogWarning";
-            CheckBoxLogWarning.Size = new Size(72, 19);
+            CheckBoxLogWarning.Size = new Size(73, 19);
             CheckBoxLogWarning.TabIndex = 1;
             CheckBoxLogWarning.Text = "Warning";
             CheckBoxLogWarning.UseVisualStyleBackColor = true;
@@ -404,9 +422,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             CheckBoxLogError.AutoSize = true;
             CheckBoxLogError.Checked = true;
             CheckBoxLogError.CheckState = CheckState.Checked;
-            CheckBoxLogError.Location = new Point(6, 47);
+            CheckBoxLogError.ForeColor = Color.Black;
+            CheckBoxLogError.Location = new Point(10, 91);
             CheckBoxLogError.Name = "CheckBoxLogError";
-            CheckBoxLogError.Size = new Size(53, 19);
+            CheckBoxLogError.Size = new Size(54, 19);
             CheckBoxLogError.TabIndex = 2;
             CheckBoxLogError.Text = "Error";
             CheckBoxLogError.UseVisualStyleBackColor = true;
@@ -416,16 +435,32 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             CheckBoxLogCritical.AutoSize = true;
             CheckBoxLogCritical.Checked = true;
             CheckBoxLogCritical.CheckState = CheckState.Checked;
-            CheckBoxLogCritical.Location = new Point(70, 47);
+            CheckBoxLogCritical.ForeColor = Color.Black;
+            CheckBoxLogCritical.Location = new Point(10, 114);
             CheckBoxLogCritical.Name = "CheckBoxLogCritical";
             CheckBoxLogCritical.Size = new Size(64, 19);
             CheckBoxLogCritical.TabIndex = 3;
             CheckBoxLogCritical.Text = "Critical";
             CheckBoxLogCritical.UseVisualStyleBackColor = true;
             // 
+            // ButtonGenerate
+            // 
+            ButtonGenerate.BackColor = Color.FromArgb(0, 131, 200);
+            ButtonGenerate.Cursor = Cursors.Hand;
+            ButtonGenerate.Dock = DockStyle.Top;
+            ButtonGenerate.FlatAppearance.BorderSize = 0;
+            ButtonGenerate.FlatStyle = FlatStyle.Flat;
+            ButtonGenerate.ForeColor = Color.White;
+            ButtonGenerate.Location = new Point(6, 566);
+            ButtonGenerate.Name = "ButtonGenerate";
+            ButtonGenerate.Size = new Size(200, 40);
+            ButtonGenerate.TabIndex = 2;
+            ButtonGenerate.Text = "OLUŞTUR";
+            ButtonGenerate.UseVisualStyleBackColor = false;
+            // 
             // tableLayoutPanel4
             // 
-            tableLayoutPanel4.BackColor = Color.FromArgb(235, 235, 235);
+            tableLayoutPanel4.BackColor = Color.FromArgb(248, 249, 250);
             tableLayoutPanel4.ColumnCount = 1;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel4.Controls.Add(DataGridViewDatas, 0, 0);
@@ -441,34 +476,44 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // 
             DataGridViewDatas.AllowUserToDeleteRows = false;
             DataGridViewDatas.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(250, 251, 252);
+            DataGridViewDatas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             DataGridViewDatas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataGridViewDatas.BackgroundColor = Color.White;
             DataGridViewDatas.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 131, 200);
-            dataGridViewCellStyle1.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            DataGridViewDatas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            DataGridViewDatas.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            DataGridViewDatas.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            DataGridViewDatas.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 120, 215);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 120, 215);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            DataGridViewDatas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             DataGridViewDatas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridViewDatas.Dock = DockStyle.Fill;
+            DataGridViewDatas.EnableHeadersVisualStyles = false;
+            DataGridViewDatas.GridColor = Color.FromArgb(224, 224, 224);
             DataGridViewDatas.Location = new Point(1, 1);
             DataGridViewDatas.Margin = new Padding(1);
             DataGridViewDatas.Name = "DataGridViewDatas";
             DataGridViewDatas.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            DataGridViewDatas.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            DataGridViewDatas.RowTemplate.Height = 25;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(33, 37, 41);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(232, 240, 254);
+            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(33, 37, 41);
+            DataGridViewDatas.RowsDefaultCellStyle = dataGridViewCellStyle3;
             DataGridViewDatas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DataGridViewDatas.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             DataGridViewDatas.Size = new Size(926, 575);
             DataGridViewDatas.TabIndex = 0;
             // 
             // tableLayoutPanel5
             // 
-            tableLayoutPanel5.BackColor = Color.FromArgb(235, 235, 235);
+            tableLayoutPanel5.BackColor = Color.FromArgb(248, 249, 250);
             tableLayoutPanel5.ColumnCount = 1;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.Controls.Add(tableLayoutPanel6, 0, 0);
@@ -502,7 +547,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // 
             ButtonSaveAsExcel.BackgroundImage = Properties.Resources.microsoft_excel_2019_32px;
             ButtonSaveAsExcel.BackgroundImageLayout = ImageLayout.Zoom;
+            ButtonSaveAsExcel.Cursor = Cursors.Hand;
             ButtonSaveAsExcel.Dock = DockStyle.Fill;
+            ButtonSaveAsExcel.FlatAppearance.BorderSize = 0;
+            ButtonSaveAsExcel.FlatStyle = FlatStyle.Flat;
             ButtonSaveAsExcel.Location = new Point(865, 3);
             ButtonSaveAsExcel.Name = "ButtonSaveAsExcel";
             ButtonSaveAsExcel.Size = new Size(26, 26);
@@ -513,7 +561,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             // 
             ButtonSaveAsPdf.BackgroundImage = Properties.Resources.pdf_32px;
             ButtonSaveAsPdf.BackgroundImageLayout = ImageLayout.Zoom;
+            ButtonSaveAsPdf.Cursor = Cursors.Hand;
             ButtonSaveAsPdf.Dock = DockStyle.Fill;
+            ButtonSaveAsPdf.FlatAppearance.BorderSize = 0;
+            ButtonSaveAsPdf.FlatStyle = FlatStyle.Flat;
             ButtonSaveAsPdf.Location = new Point(897, 3);
             ButtonSaveAsPdf.Name = "ButtonSaveAsPdf";
             ButtonSaveAsPdf.Size = new Size(26, 26);
@@ -525,20 +576,17 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 677);
             Controls.Add(tableLayoutPanel1);
             Name = "ReportingPage";
-            Text = "ReportingPage";
+            Size = new Size(1170, 677);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             GroupBoxReportTypes.ResumeLayout(false);
-            GroupBoxReportTypes.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             GroupBoxDate.ResumeLayout(false);
-            groupBox5.ResumeLayout(false);
-            groupBox4.ResumeLayout(false);
+            GroupBoxDate.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             GroupBoxLogLevel.ResumeLayout(false);
@@ -564,10 +612,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
         private RadioButton RadioButtonMonthly;
         private RadioButton RadioButtonWeekly;
         private RadioButton RadioButtonDaily;
-        private GroupBox groupBox4;
         private DateTimePicker DateTimePickerFirstTime;
         private DateTimePicker DateTimePickerFirstDate;
-        private GroupBox groupBox5;
         private DateTimePicker DateTimePickerLastTime;
         private DateTimePicker DateTimePickerLastDate;
         private RadioButton RadioButtonSortByFirst;
@@ -585,5 +631,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
         private CheckBox CheckBoxLogWarning;
         private CheckBox CheckBoxLogError;
         private CheckBox CheckBoxLogCritical;
+        private CheckBox CheckBoxLogDebug;
+        private Label LabelStartDate;
+        private Label LabelEndDate;
     }
 }

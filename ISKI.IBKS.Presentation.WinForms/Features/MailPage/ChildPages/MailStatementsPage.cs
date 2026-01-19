@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,226 +14,216 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
     public partial class MailStatementsPage : UserControl
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        private Guid? _selectedUserId = null;
+        private List<AlarmDefinition> _allAlarms = new();
+        private Dictionary<Guid, string> _alarmUserNames = new();
 
         public MailStatementsPage(IServiceScopeFactory scopeFactory)
         {
-            InitializeComponent();
             _scopeFactory = scopeFactory;
+            InitializeComponent();
             
-            Load += MailStatementsPage_Load;
-            ComboBoxSelectedUser.SelectedIndexChanged += ComboBoxSelectedUser_SelectedIndexChanged;
-            
-            // Standard Checkbox handling pattern
-            DataGridViewMailStatements.CurrentCellDirtyStateChanged += DataGridViewMailStatements_CurrentCellDirtyStateChanged;
-            DataGridViewMailStatements.CellValueChanged += DataGridViewMailStatements_CellValueChanged;
+            // Attach event handlers
+            Load += MailStatementsEditPage_Load;
+            TextBoxSearch.TextChanged += TextBoxSearch_TextChanged;
+            ButtonAddNew.Click += ButtonAddNew_Click;
+            DataGridViewAlarms.CellContentClick += DataGridViewAlarms_CellContentClick;
         }
 
         public MailStatementsPage()
         {
-            InitializeComponent();
             _scopeFactory = null!;
+            InitializeComponent();
         }
 
-        private async void MailStatementsPage_Load(object? sender, EventArgs e)
+        private async void MailStatementsEditPage_Load(object? sender, EventArgs e)
         {
             if (_scopeFactory == null) return;
-            
-            // Allow checkbox interaction
-            DataGridViewMailStatements.ReadOnly = false;
-            foreach (DataGridViewColumn col in DataGridViewMailStatements.Columns)
-            {
-                if (col.Name == "ComboBoxSec") col.ReadOnly = false;
-                else col.ReadOnly = true; 
-            }
-
-            await LoadUsersAsync();
+            await LoadDefinitionsAsync();
         }
 
-        private async Task LoadUsersAsync()
+        private async Task LoadDefinitionsAsync()
         {
             try
             {
                 using var scope = _scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                var users = await dbContext.AlarmUsers.Where(u => u.IsActive).ToListAsync();
-
-                ComboBoxSelectedUser.DataSource = users;
-                ComboBoxSelectedUser.DisplayMember = "FullName";
-                ComboBoxSelectedUser.ValueMember = "Id";
-                ComboBoxSelectedUser.SelectedIndex = -1;
+                
+                _allAlarms = await dbContext.AlarmDefinitions.OrderBy(a => a.Name).ToListAsync();
+                
+                // Load alarm user subscriptions with user names
+                var subscriptions = await dbContext.AlarmUserSubscriptions
+                    .Include(s => s.AlarmUser)
+                    .Where(s => s.IsActive)
+                    .ToListAsync();
+                
+                _alarmUserNames = subscriptions
+                    .GroupBy(s => s.AlarmDefinitionId)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => string.Join(", ", g.Select(s => s.AlarmUser.FullName).Take(3)) + 
+                             (g.Count() > 3 ? $" +{g.Count() - 3}" : "")
+                    );
+                
+                ApplyFilter();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kullanıcılar yüklenirken hata: {ex.Message}");
+                MessageBox.Show($"Alarmlar yüklenirken hata: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private async void ComboBoxSelectedUser_SelectedIndexChanged(object? sender, EventArgs e)
+        private void ApplyFilter()
         {
-            if (ComboBoxSelectedUser.SelectedValue is Guid userId)
+            var searchText = TextBoxSearch.Text.Trim().ToLower();
+            var filtered = string.IsNullOrEmpty(searchText)
+                ? _allAlarms
+                : _allAlarms.Where(a => 
+                    a.Name.ToLower().Contains(searchText) || 
+                    a.Description.ToLower().Contains(searchText) ||
+                    a.SensorName.ToLower().Contains(searchText)).ToList();
+
+            DataGridViewAlarms.DataSource = filtered.Select(a => new AlarmDisplayModel
             {
-                _selectedUserId = userId;
-                await LoadSubscriptionsAsync(userId);
-            }
-            else
+                Id = a.Id,
+                Name = a.Name,
+                AlarmUsers = _alarmUserNames.TryGetValue(a.Id, out var users) ? users : "-",
+                Description = a.Description,
+                Type = GetTypeTurkish(a.Type),
+                Priority = GetPriorityTurkish(a.Priority),
+                Status = a.IsActive ? "Aktif" : "Pasif"
+            }).ToList();
+
+            // Configure columns - headers are set in Designer
+            if (DataGridViewAlarms.Columns.Count > 0)
             {
-                _selectedUserId = null;
-                DataGridViewMailStatements.DataSource = null;
+                // No need to hide Id column as it is not auto-generated
             }
         }
 
-        private async Task LoadSubscriptionsAsync(Guid userId)
+        private static string GetTypeTurkish(AlarmType type)
         {
-            try
+            return type switch
             {
-                // Temporarily detach event to prevent firing during load
-                DataGridViewMailStatements.CellValueChanged -= DataGridViewMailStatements_CellValueChanged;
-
-                using var scope = _scopeFactory.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                
-                var alarms = await dbContext.AlarmDefinitions.Where(a => a.IsActive).OrderBy(a => a.SensorName).ToListAsync();
-                var subs = await dbContext.AlarmUserSubscriptions.Where(s => s.AlarmUserId == userId && s.IsActive).ToListAsync();
-                var subIds = subs.Select(s => s.AlarmDefinitionId).ToHashSet();
-
-                // Use BindingList for better two-way binding support
-                var list = new BindingList<SubscriptionViewModel>(alarms.Select(a => new SubscriptionViewModel
-                {
-                    AlarmId = a.Id,
-                    SensorName = a.SensorName, 
-                    AlarmName = a.Name,
-                    IsSelected = subIds.Contains(a.Id)
-                }).ToList());
-
-                DataGridViewMailStatements.AutoGenerateColumns = false;
-                DataGridViewMailStatements.DataSource = list;
-                
-                // Map columns
-                if (DataGridViewMailStatements.Columns.Contains("ComboBoxSec"))
-                {
-                    DataGridViewMailStatements.Columns["ComboBoxSec"].DataPropertyName = "IsSelected";
-                    DataGridViewMailStatements.Columns["ComboBoxSec"].ReadOnly = false; 
-                }
-                
-                // Add hidden columns for IDs if not present 
-                if (!DataGridViewMailStatements.Columns.Contains("AlarmId"))
-                {
-                    DataGridViewMailStatements.Columns.Add(new DataGridViewTextBoxColumn 
-                    { 
-                        Name = "AlarmId", 
-                        DataPropertyName = "AlarmId",
-                        Visible = false 
-                    });
-                }
-                
-                if (!DataGridViewMailStatements.Columns.Contains("SensorName"))
-                {
-                     DataGridViewMailStatements.Columns.Add(new DataGridViewTextBoxColumn 
-                    { 
-                        Name = "SensorName", 
-                        DataPropertyName = "SensorName",
-                        HeaderText = "Parametre",
-                        ReadOnly = true
-                    });
-                }
-                
-                if (!DataGridViewMailStatements.Columns.Contains("AlarmName"))
-                {
-                     DataGridViewMailStatements.Columns.Add(new DataGridViewTextBoxColumn 
-                    { 
-                        Name = "AlarmName", 
-                        DataPropertyName = "AlarmName",
-                        HeaderText = "Alarm Adı",
-                        ReadOnly = true
-                    });
-                }
-
-                 if (DataGridViewMailStatements.Columns.Contains("SensorName")) DataGridViewMailStatements.Columns["SensorName"].HeaderText = "Parametre";
-                 if (DataGridViewMailStatements.Columns.Contains("AlarmName")) DataGridViewMailStatements.Columns["AlarmName"].HeaderText = "Alarm Adı";
-            }
-            catch (Exception ex)
-            {
-                 MessageBox.Show($"Abonelikler yüklenirken hata: {ex.Message}");
-            }
-            finally
-            {
-                // Re-attach event
-                DataGridViewMailStatements.CellValueChanged += DataGridViewMailStatements_CellValueChanged;
-            }
+                AlarmType.Threshold => "Eşik Değer",
+                AlarmType.Digital => "Dijital",
+                AlarmType.System => "Sistem",
+                _ => type.ToString()
+            };
         }
 
-        private void DataGridViewMailStatements_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
+        private static string GetPriorityTurkish(AlarmPriority priority)
         {
-            if (DataGridViewMailStatements.IsCurrentCellDirty)
+            return priority switch
             {
-                // This triggers the CellValueChanged event immediately when checkbox is clicked
-                DataGridViewMailStatements.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            }
+                AlarmPriority.Low => "Düşük",
+                AlarmPriority.Medium => "Orta",
+                AlarmPriority.High => "Yüksek",
+                AlarmPriority.Critical => "Kritik",
+                _ => priority.ToString()
+            };
         }
 
-        private async void DataGridViewMailStatements_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
+        private void TextBoxSearch_TextChanged(object? sender, EventArgs e)
         {
-            if (_selectedUserId == null) return;
+            ApplyFilter();
+        }
+
+        private void ButtonAddNew_Click(object? sender, EventArgs e)
+        {
+            ShowEditDialog(null);
+        }
+
+        private void DataGridViewAlarms_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore header row and non-button columns
             if (e.RowIndex < 0) return;
+            if (e.ColumnIndex < 0) return;
+            
+            var column = DataGridViewAlarms.Columns[e.ColumnIndex];
+            
+            // Only handle button column clicks
+            if (column is not DataGridViewButtonColumn) return;
 
-            // Only act if the checkbox column changed
-            if (DataGridViewMailStatements.Columns[e.ColumnIndex].Name == "ComboBoxSec")
+            var columnName = column.Name;
+            var row = DataGridViewAlarms.Rows[e.RowIndex];
+            
+            if (row.DataBoundItem is not AlarmDisplayModel item) return;
+
+            var id = item.Id;
+            var name = item.Name;
+
+            if (columnName == "EditColumn")
             {
-                var row = DataGridViewMailStatements.Rows[e.RowIndex];
-                var item = (SubscriptionViewModel)row.DataBoundItem;
-                
-                // Item is already updated by binding thanks to CommitEdit
-                bool isSelected = item.IsSelected;
-                
-                try
+                ShowEditDialog(id);
+            }
+            else if (columnName == "DeleteColumn")
+            {
+                DeleteAlarmAsync(id);
+            }
+            else if (columnName == "UsersColumn")
+            {
+                ShowUsersDialog(id, name);
+            }
+        }
+
+        private void ShowEditDialog(Guid? alarmId)
+        {
+            using var dialog = new AlarmEditDialog(_scopeFactory, alarmId);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _ = LoadDefinitionsAsync();
+            }
+        }
+
+        private void ShowUsersDialog(Guid alarmId, string alarmName)
+        {
+            using var dialog = new AlarmUsersEditDialog(_scopeFactory, alarmId, alarmName);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _ = LoadDefinitionsAsync();
+            }
+        }
+
+        private async void DeleteAlarmAsync(Guid id)
+        {
+            if (MessageBox.Show("Bu alarm tanımını silmek istediğinize emin misiniz?", "Onay", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            try
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
+                var alarm = await dbContext.AlarmDefinitions.FindAsync(id);
+                if (alarm != null)
                 {
-                    using var scope = _scopeFactory.CreateScope();
-                    var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
+                    // Also remove subscriptions
+                    var subscriptions = await dbContext.AlarmUserSubscriptions
+                        .Where(s => s.AlarmDefinitionId == id)
+                        .ToListAsync();
+                    dbContext.AlarmUserSubscriptions.RemoveRange(subscriptions);
                     
-                    var alarmName = item.AlarmName;
-                    var userName = ComboBoxSelectedUser.Text; // Assuming DisplayMember is FullName
-                    
-                    if (isSelected)
-                    {
-                        // Add
-                        if (!await dbContext.AlarmUserSubscriptions.AnyAsync(s => s.AlarmUserId == _selectedUserId && s.AlarmDefinitionId == item.AlarmId))
-                        {
-                            dbContext.AlarmUserSubscriptions.Add(new AlarmUserSubscription(item.AlarmId, _selectedUserId.Value));
-                            await dbContext.SaveChangesAsync();
-                            
-                            MessageBox.Show($"'{alarmName}' alarmı '{userName}' kullanıcısına başarıyla tanımlandı.", "İşlem Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                    else
-                    {
-                        // Remove
-                        var sub = await dbContext.AlarmUserSubscriptions.FirstOrDefaultAsync(s => s.AlarmUserId == _selectedUserId && s.AlarmDefinitionId == item.AlarmId);
-                        if (sub != null)
-                        {
-                            dbContext.AlarmUserSubscriptions.Remove(sub);
-                            await dbContext.SaveChangesAsync();
-                            
-                            MessageBox.Show($"'{alarmName}' alarmı '{userName}' kullanıcısından kaldırıldı.", "İşlem Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
+                    dbContext.AlarmDefinitions.Remove(alarm);
+                    await dbContext.SaveChangesAsync();
+                    await LoadDefinitionsAsync();
+                    MessageBox.Show("Alarm silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"İşlem hatası: {ex.Message}");
-                    // Revert UI if persistence failed? 
-                    // Ideally yes, but keeping it simple for now. 
-                    // Could detach event, toggle back, reattach.
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Silme hatası: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
 
-    public class SubscriptionViewModel
+    public class AlarmDisplayModel
     {
-        public Guid AlarmId { get; set; }
-        public string SensorName { get; set; } = "";
-        public string AlarmName { get; set; } = "";
-        public bool IsSelected { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; } = "";
+        public string AlarmUsers { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Type { get; set; } = "";
+        public string Priority { get; set; } = "";
+        public string Status { get; set; } = "";
     }
 }

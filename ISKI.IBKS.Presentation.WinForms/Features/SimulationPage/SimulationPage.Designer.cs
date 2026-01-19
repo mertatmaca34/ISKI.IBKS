@@ -109,7 +109,7 @@
             LabelNem.Anchor = AnchorStyles.Top;
             LabelNem.AutoSize = true;
             LabelNem.BackColor = Color.Transparent;
-            LabelNem.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelNem.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelNem.ForeColor = Color.Lime;
             LabelNem.Location = new Point(30, 20);
             LabelNem.Name = "LabelNem";
@@ -123,7 +123,7 @@
             label27.Anchor = AnchorStyles.Bottom;
             label27.AutoSize = true;
             label27.BackColor = Color.Transparent;
-            label27.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label27.Font = new Font("Arial", 9F, FontStyle.Bold);
             label27.Location = new Point(20, 5);
             label27.Name = "label27";
             label27.Size = new Size(33, 15);
@@ -150,7 +150,7 @@
             LabelSicaklik.Anchor = AnchorStyles.Top;
             LabelSicaklik.AutoSize = true;
             LabelSicaklik.BackColor = Color.Transparent;
-            LabelSicaklik.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelSicaklik.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelSicaklik.ForeColor = Color.Lime;
             LabelSicaklik.Location = new Point(30, 20);
             LabelSicaklik.Name = "LabelSicaklik";
@@ -164,7 +164,7 @@
             label25.Anchor = AnchorStyles.Bottom;
             label25.AutoSize = true;
             label25.BackColor = Color.Transparent;
-            label25.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label25.Font = new Font("Arial", 9F, FontStyle.Bold);
             label25.Location = new Point(11, 5);
             label25.Name = "label25";
             label25.Size = new Size(52, 15);
@@ -191,7 +191,7 @@
             LabelFrekans.Anchor = AnchorStyles.Top;
             LabelFrekans.AutoSize = true;
             LabelFrekans.BackColor = Color.Transparent;
-            LabelFrekans.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelFrekans.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelFrekans.ForeColor = Color.Lime;
             LabelFrekans.Location = new Point(30, 20);
             LabelFrekans.Name = "LabelFrekans";
@@ -205,7 +205,7 @@
             label23.Anchor = AnchorStyles.Bottom;
             label23.AutoSize = true;
             label23.BackColor = Color.Transparent;
-            label23.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label23.Font = new Font("Arial", 9F, FontStyle.Bold);
             label23.Location = new Point(10, 5);
             label23.Name = "label23";
             label23.Size = new Size(53, 15);
@@ -232,7 +232,7 @@
             LabelAktifPompa.Anchor = AnchorStyles.Top;
             LabelAktifPompa.AutoSize = true;
             LabelAktifPompa.BackColor = Color.Transparent;
-            LabelAktifPompa.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelAktifPompa.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelAktifPompa.ForeColor = Color.Lime;
             LabelAktifPompa.Location = new Point(21, 20);
             LabelAktifPompa.Name = "LabelAktifPompa";
@@ -246,7 +246,7 @@
             label21.Anchor = AnchorStyles.Bottom;
             label21.AutoSize = true;
             label21.BackColor = Color.Transparent;
-            label21.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label21.Font = new Font("Arial", 9F, FontStyle.Bold);
             label21.Location = new Point(11, 5);
             label21.Name = "label21";
             label21.Size = new Size(51, 15);
@@ -273,7 +273,7 @@
             LabelHariciDebi2.Anchor = AnchorStyles.Top;
             LabelHariciDebi2.AutoSize = true;
             LabelHariciDebi2.BackColor = Color.Transparent;
-            LabelHariciDebi2.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelHariciDebi2.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelHariciDebi2.ForeColor = Color.Lime;
             LabelHariciDebi2.Location = new Point(30, 20);
             LabelHariciDebi2.Name = "LabelHariciDebi2";
@@ -287,7 +287,7 @@
             label19.Anchor = AnchorStyles.Bottom;
             label19.AutoSize = true;
             label19.BackColor = Color.Transparent;
-            label19.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label19.Font = new Font("Arial", 9F, FontStyle.Bold);
             label19.Location = new Point(9, 5);
             label19.Name = "label19";
             label19.Size = new Size(56, 15);
@@ -314,7 +314,7 @@
             LabelHariciDebi.Anchor = AnchorStyles.Top;
             LabelHariciDebi.AutoSize = true;
             LabelHariciDebi.BackColor = Color.Transparent;
-            LabelHariciDebi.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelHariciDebi.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelHariciDebi.ForeColor = Color.Lime;
             LabelHariciDebi.Location = new Point(30, 20);
             LabelHariciDebi.Name = "LabelHariciDebi";
@@ -328,7 +328,7 @@
             label17.Anchor = AnchorStyles.Bottom;
             label17.AutoSize = true;
             label17.BackColor = Color.Transparent;
-            label17.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label17.Font = new Font("Arial", 9F, FontStyle.Bold);
             label17.Location = new Point(14, 5);
             label17.Name = "label17";
             label17.Size = new Size(46, 15);
@@ -355,7 +355,7 @@
             LabelDesarjDebi.Anchor = AnchorStyles.Top;
             LabelDesarjDebi.AutoSize = true;
             LabelDesarjDebi.BackColor = Color.Transparent;
-            LabelDesarjDebi.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelDesarjDebi.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelDesarjDebi.ForeColor = Color.Lime;
             LabelDesarjDebi.Location = new Point(30, 20);
             LabelDesarjDebi.Name = "LabelDesarjDebi";
@@ -369,7 +369,7 @@
             label15.Anchor = AnchorStyles.Bottom;
             label15.AutoSize = true;
             label15.BackColor = Color.Transparent;
-            label15.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label15.Font = new Font("Arial", 9F, FontStyle.Bold);
             label15.Location = new Point(7, 5);
             label15.Name = "label15";
             label15.Size = new Size(60, 15);
@@ -396,7 +396,7 @@
             LabelDebi.Anchor = AnchorStyles.Top;
             LabelDebi.AutoSize = true;
             LabelDebi.BackColor = Color.Transparent;
-            LabelDebi.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelDebi.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelDebi.ForeColor = Color.Lime;
             LabelDebi.Location = new Point(30, 20);
             LabelDebi.Name = "LabelDebi";
@@ -410,7 +410,7 @@
             label13.Anchor = AnchorStyles.Bottom;
             label13.AutoSize = true;
             label13.BackColor = Color.Transparent;
-            label13.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label13.Font = new Font("Arial", 9F, FontStyle.Bold);
             label13.Location = new Point(21, 5);
             label13.Name = "label13";
             label13.Size = new Size(32, 15);
@@ -437,7 +437,7 @@
             LabelAkisHizi.Anchor = AnchorStyles.Top;
             LabelAkisHizi.AutoSize = true;
             LabelAkisHizi.BackColor = Color.Transparent;
-            LabelAkisHizi.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelAkisHizi.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelAkisHizi.ForeColor = Color.Lime;
             LabelAkisHizi.Location = new Point(30, 20);
             LabelAkisHizi.Name = "LabelAkisHizi";
@@ -451,7 +451,7 @@
             label11.Anchor = AnchorStyles.Bottom;
             label11.AutoSize = true;
             label11.BackColor = Color.Transparent;
-            label11.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label11.Font = new Font("Arial", 9F, FontStyle.Bold);
             label11.Location = new Point(9, 5);
             label11.Name = "label11";
             label11.Size = new Size(55, 15);
@@ -478,7 +478,7 @@
             LabelOksijen.Anchor = AnchorStyles.Top;
             LabelOksijen.AutoSize = true;
             LabelOksijen.BackColor = Color.Transparent;
-            LabelOksijen.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelOksijen.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelOksijen.ForeColor = Color.Lime;
             LabelOksijen.Location = new Point(30, 20);
             LabelOksijen.Name = "LabelOksijen";
@@ -492,7 +492,7 @@
             label9.Anchor = AnchorStyles.Bottom;
             label9.AutoSize = true;
             label9.BackColor = Color.Transparent;
-            label9.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.Font = new Font("Arial", 9F, FontStyle.Bold);
             label9.Location = new Point(12, 5);
             label9.Name = "label9";
             label9.Size = new Size(50, 15);
@@ -519,7 +519,7 @@
             LabelIletkenlik.Anchor = AnchorStyles.Top;
             LabelIletkenlik.AutoSize = true;
             LabelIletkenlik.BackColor = Color.Transparent;
-            LabelIletkenlik.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelIletkenlik.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelIletkenlik.ForeColor = Color.Lime;
             LabelIletkenlik.Location = new Point(30, 20);
             LabelIletkenlik.Name = "LabelIletkenlik";
@@ -533,7 +533,7 @@
             label7.Anchor = AnchorStyles.Bottom;
             label7.AutoSize = true;
             label7.BackColor = Color.Transparent;
-            label7.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.Font = new Font("Arial", 9F, FontStyle.Bold);
             label7.Location = new Point(8, 5);
             label7.Name = "label7";
             label7.Size = new Size(58, 15);
@@ -560,7 +560,7 @@
             LabelPh.Anchor = AnchorStyles.Top;
             LabelPh.AutoSize = true;
             LabelPh.BackColor = Color.Transparent;
-            LabelPh.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelPh.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelPh.ForeColor = Color.Lime;
             LabelPh.Location = new Point(30, 20);
             LabelPh.Name = "LabelPh";
@@ -574,7 +574,7 @@
             label5.Anchor = AnchorStyles.Bottom;
             label5.AutoSize = true;
             label5.BackColor = Color.Transparent;
-            label5.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Font = new Font("Arial", 9F, FontStyle.Bold);
             label5.Location = new Point(26, 5);
             label5.Name = "label5";
             label5.Size = new Size(22, 15);
@@ -601,7 +601,7 @@
             LabelKoi.Anchor = AnchorStyles.Top;
             LabelKoi.AutoSize = true;
             LabelKoi.BackColor = Color.Transparent;
-            LabelKoi.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelKoi.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelKoi.ForeColor = Color.Lime;
             LabelKoi.Location = new Point(30, 20);
             LabelKoi.Name = "LabelKoi";
@@ -615,7 +615,7 @@
             label3.Anchor = AnchorStyles.Bottom;
             label3.AutoSize = true;
             label3.BackColor = Color.Transparent;
-            label3.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Font = new Font("Arial", 9F, FontStyle.Bold);
             label3.Location = new Point(23, 5);
             label3.Name = "label3";
             label3.Size = new Size(27, 15);
@@ -657,7 +657,7 @@
             label1.Anchor = AnchorStyles.Bottom;
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Font = new Font("Arial", 9F, FontStyle.Bold);
             label1.Location = new Point(20, 5);
             label1.Name = "label1";
             label1.Size = new Size(33, 15);
@@ -669,7 +669,7 @@
             LabelAkm.Anchor = AnchorStyles.Top;
             LabelAkm.AutoSize = true;
             LabelAkm.BackColor = Color.Transparent;
-            LabelAkm.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelAkm.Font = new Font("Arial", 9F, FontStyle.Bold);
             LabelAkm.ForeColor = Color.Lime;
             LabelAkm.Location = new Point(30, 20);
             LabelAkm.Name = "LabelAkm";
@@ -700,6 +700,12 @@
             PictureBoxPump1.TabIndex = 1;
             PictureBoxPump1.TabStop = false;
             // 
+            // TimerSimulation
+            // 
+            TimerSimulation.Enabled = true;
+            TimerSimulation.Interval = 5000;
+            TimerSimulation.Tick += SimulationTimer_Tick;
+            // 
             // PanelDoor
             // 
             PanelDoor.BackColor = Color.Transparent;
@@ -710,20 +716,14 @@
             PanelDoor.Size = new Size(127, 63);
             PanelDoor.TabIndex = 0;
             // 
-            // TimerSimulation
-            // 
-            TimerSimulation.Enabled = true;
-            TimerSimulation.Interval = 5000;
-            TimerSimulation.Tick += SimulationTimer_Tick;
-            // 
             // SimulationPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.WhiteSmoke;
             BackgroundImage = Properties.Resources.system_auto1;
             BackgroundImageLayout = ImageLayout.Center;
-            ClientSize = new Size(1170, 677);
             Controls.Add(PanelWaterTank);
             Controls.Add(tableLayoutPanel10);
             Controls.Add(tableLayoutPanel9);
@@ -744,7 +744,7 @@
             Controls.Add(PanelDoor);
             DoubleBuffered = true;
             Name = "SimulationPage";
-            Text = "SimulationPage";
+            Size = new Size(1170, 677);
             Load += SimulationPage_Load;
             tableLayoutPanel14.ResumeLayout(false);
             tableLayoutPanel14.PerformLayout();

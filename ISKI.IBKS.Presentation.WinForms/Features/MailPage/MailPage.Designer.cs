@@ -34,7 +34,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             menuStrip1 = new MenuStrip();
             ButtonMailStatements = new ToolStripMenuItem();
             ButtonMailUsers = new ToolStripMenuItem();
-            ButtonEditMailStatements = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -49,7 +48,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             // menuStrip1
             // 
             menuStrip1.BackColor = Color.White;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ButtonMailStatements, ButtonMailUsers, ButtonEditMailStatements });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ButtonMailStatements, ButtonMailUsers });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1170, 56);
@@ -60,7 +59,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             // 
             ButtonMailStatements.Checked = true;
             ButtonMailStatements.CheckState = CheckState.Indeterminate;
-            ButtonMailStatements.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonMailStatements.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonMailStatements.Image = Properties.Resources.mail_statements_48px;
             ButtonMailStatements.ImageScaling = ToolStripItemImageScaling.None;
             ButtonMailStatements.Name = "ButtonMailStatements";
@@ -69,32 +68,22 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             // 
             // ButtonMailUsers
             // 
-            ButtonMailUsers.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonMailUsers.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonMailUsers.Image = Properties.Resources.mail_user48px;
             ButtonMailUsers.ImageScaling = ToolStripItemImageScaling.None;
             ButtonMailUsers.Name = "ButtonMailUsers";
             ButtonMailUsers.Size = new Size(150, 52);
             ButtonMailUsers.Text = "KULLANICILAR";
             // 
-            // ButtonEditMailStatements
-            // 
-            ButtonEditMailStatements.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            ButtonEditMailStatements.Image = Properties.Resources.mail_statement_edit48px;
-            ButtonEditMailStatements.ImageScaling = ToolStripItemImageScaling.None;
-            ButtonEditMailStatements.Name = "ButtonEditMailStatements";
-            ButtonEditMailStatements.Size = new Size(203, 52);
-            ButtonEditMailStatements.Text = "MAİL DURUMU DÜZENLE";
-            // 
             // MailPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 677);
             Controls.Add(PanelContent);
             Controls.Add(menuStrip1);
             Name = "MailPage";
-            Text = "MailPage";
+            Size = new Size(1170, 677);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -107,6 +96,5 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
         private MenuStrip menuStrip1;
         private ToolStripMenuItem ButtonMailStatements;
         private ToolStripMenuItem ButtonMailUsers;
-        private ToolStripMenuItem ButtonEditMailStatements;
     }
 }

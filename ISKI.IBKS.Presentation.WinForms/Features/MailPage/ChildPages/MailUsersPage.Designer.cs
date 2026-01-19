@@ -119,13 +119,13 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
             DataGridViewUsers.BorderStyle = BorderStyle.None;
             DataGridViewUsers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            headerStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            headerStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             headerStyle.BackColor = Color.FromArgb(248, 249, 250);
             headerStyle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point);
             headerStyle.ForeColor = Color.FromArgb(73, 80, 87);
             headerStyle.SelectionBackColor = Color.FromArgb(248, 249, 250);
             headerStyle.SelectionForeColor = Color.FromArgb(73, 80, 87);
-            headerStyle.Padding = new Padding(5, 0, 0, 0);
+            headerStyle.Padding = new Padding(0);
             DataGridViewUsers.ColumnHeadersDefaultCellStyle = headerStyle;
             DataGridViewUsers.ColumnHeadersHeight = 42;
             DataGridViewUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -143,12 +143,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
             DataGridViewUsers.ReadOnly = true;
             DataGridViewUsers.RowHeadersVisible = false;
             
-            cellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            cellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             cellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             cellStyle.ForeColor = Color.FromArgb(33, 37, 41);
             cellStyle.SelectionBackColor = Color.FromArgb(232, 240, 254);
             cellStyle.SelectionForeColor = Color.FromArgb(33, 37, 41);
-            cellStyle.Padding = new Padding(5, 0, 0, 0);
+            cellStyle.Padding = new Padding(0);
             DataGridViewUsers.RowsDefaultCellStyle = cellStyle;
             
             DataGridViewUsers.RowTemplate.Height = 38;

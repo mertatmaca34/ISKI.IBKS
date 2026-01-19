@@ -25,7 +25,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
         {
             ButtonMailStatements.Click += (s, e) => LoadControl<MailStatementsPage>();
             ButtonMailUsers.Click += (s, e) => LoadControl<MailUsersPage>();
-            ButtonEditMailStatements.Click += (s, e) => LoadControl<MailStatementsEditPage>();
         }
 
         private void LoadControl<T>() where T : UserControl

@@ -4,15 +4,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
 {
     partial class MailStatementsPage
     {
-        /// <summary> 
-        ///Gerekli tasarımcı değişkeni.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        ///Kullanılan tüm kaynakları temizleyin.
-        /// </summary>
-        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -24,199 +17,246 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            titleBarControl1 = new TitleBarControl();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            tableLayoutPanel4 = new TableLayoutPanel();
-            label1 = new Label();
-            ComboBoxSelectedUser = new ComboBox();
-            tableLayoutPanel5 = new TableLayoutPanel();
-            DataGridViewMailStatements = new DataGridView();
-            ComboBoxSec = new DataGridViewCheckBoxColumn();
-            tableLayoutPanel1.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
-            tableLayoutPanel3.SuspendLayout();
-            tableLayoutPanel4.SuspendLayout();
-            tableLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)DataGridViewMailStatements).BeginInit();
+            DataGridViewCellStyle headerStyle = new DataGridViewCellStyle();
+            DataGridViewCellStyle cellStyle = new DataGridViewCellStyle();
+            
+            TableLayoutPanelMain = new TableLayoutPanel();
+            TitleBarControl = new TitleBarControl();
+            TableLayoutPanelToolbar = new TableLayoutPanel();
+            TextBoxSearch = new TextBox();
+            ButtonAddNew = new Button();
+            DataGridViewAlarms = new DataGridView();
+            ColumnName = new DataGridViewTextBoxColumn();
+            ColumnAlarmUsers = new DataGridViewTextBoxColumn();
+            UsersColumn = new DataGridViewButtonColumn();
+            ColumnDescription = new DataGridViewTextBoxColumn();
+            ColumnType = new DataGridViewTextBoxColumn();
+            ColumnPriority = new DataGridViewTextBoxColumn();
+            ColumnStatus = new DataGridViewTextBoxColumn();
+            EditColumn = new DataGridViewButtonColumn();
+            DeleteColumn = new DataGridViewButtonColumn();
+
+            TableLayoutPanelMain.SuspendLayout();
+            TableLayoutPanelToolbar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DataGridViewAlarms).BeginInit();
             SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel5, 0, 1);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 100F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Size = new Size(1170, 621);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // tableLayoutPanel2
-            // 
-            tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Controls.Add(titleBarControl1, 0, 0);
-            tableLayoutPanel2.Controls.Add(tableLayoutPanel3, 0, 1);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(8, 8);
-            tableLayoutPanel2.Margin = new Padding(8, 8, 8, 3);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(1154, 89);
-            tableLayoutPanel2.TabIndex = 0;
-            // 
-            // titleBarControl1
-            // 
-            titleBarControl1.BackColor = Color.FromArgb(235, 235, 235);
-            titleBarControl1.Dock = DockStyle.Fill;
-            titleBarControl1.Location = new Point(3, 3);
-            titleBarControl1.Name = "titleBarControl1";
-            titleBarControl1.Padding = new Padding(1);
-            titleBarControl1.Size = new Size(1148, 32);
-            titleBarControl1.TabIndex = 2;
-            titleBarControl1.TitleBarText = "MAİL GÖNDERİLECEK KULLANICI";
-            // 
-            // tableLayoutPanel3
-            // 
-            tableLayoutPanel3.BackColor = Color.FromArgb(235, 235, 235);
-            tableLayoutPanel3.ColumnCount = 1;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Controls.Add(tableLayoutPanel4, 0, 0);
-            tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(3, 41);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 1;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Size = new Size(1148, 45);
-            tableLayoutPanel3.TabIndex = 3;
-            // 
-            // tableLayoutPanel4
-            // 
-            tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel4.ColumnCount = 2;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel4.Controls.Add(label1, 0, 0);
-            tableLayoutPanel4.Controls.Add(ComboBoxSelectedUser, 1, 0);
-            tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(1, 1);
-            tableLayoutPanel4.Margin = new Padding(1);
-            tableLayoutPanel4.Name = "tableLayoutPanel4";
-            tableLayoutPanel4.RowCount = 1;
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Size = new Size(1146, 43);
-            tableLayoutPanel4.TabIndex = 0;
-            // 
-            // label1
-            // 
-            label1.Anchor = AnchorStyles.None;
-            label1.AutoSize = true;
-            label1.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(229, 12);
-            label1.Name = "label1";
-            label1.Size = new Size(115, 18);
-            label1.TabIndex = 0;
-            label1.Text = "Seçili Kullanıcı: ";
-            // 
-            // ComboBoxSelectedUser
-            // 
-            ComboBoxSelectedUser.Anchor = AnchorStyles.None;
-            ComboBoxSelectedUser.DropDownStyle = ComboBoxStyle.DropDownList;
-            ComboBoxSelectedUser.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            ComboBoxSelectedUser.FormattingEnabled = true;
-            ComboBoxSelectedUser.Location = new Point(702, 8);
-            ComboBoxSelectedUser.Name = "ComboBoxSelectedUser";
-            ComboBoxSelectedUser.Size = new Size(314, 26);
-            ComboBoxSelectedUser.TabIndex = 1;
-            // 
-            // tableLayoutPanel5
-            // 
-            tableLayoutPanel5.BackColor = Color.FromArgb(235, 235, 235);
-            tableLayoutPanel5.ColumnCount = 1;
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Controls.Add(DataGridViewMailStatements, 0, 0);
-            tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(11, 103);
-            tableLayoutPanel5.Margin = new Padding(11, 3, 11, 11);
-            tableLayoutPanel5.Name = "tableLayoutPanel5";
-            tableLayoutPanel5.RowCount = 1;
-            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Size = new Size(1148, 507);
-            tableLayoutPanel5.TabIndex = 1;
-            // 
-            // DataGridViewMailStatements
-            // 
-            DataGridViewMailStatements.AllowUserToAddRows = false;
-            DataGridViewMailStatements.AllowUserToDeleteRows = false;
-            DataGridViewMailStatements.AllowUserToResizeRows = false;
-            DataGridViewMailStatements.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            DataGridViewMailStatements.BackgroundColor = Color.White;
-            DataGridViewMailStatements.BorderStyle = BorderStyle.None;
-            DataGridViewMailStatements.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DataGridViewMailStatements.Columns.AddRange(new DataGridViewColumn[] { ComboBoxSec });
-            DataGridViewMailStatements.Dock = DockStyle.Fill;
-            DataGridViewMailStatements.Location = new Point(1, 1);
-            DataGridViewMailStatements.Margin = new Padding(1);
-            DataGridViewMailStatements.MultiSelect = false;
-            DataGridViewMailStatements.Name = "DataGridViewMailStatements";
-            DataGridViewMailStatements.ReadOnly = true;
-            DataGridViewMailStatements.RowHeadersVisible = false;
-            DataGridViewMailStatements.RowTemplate.Height = 25;
-            DataGridViewMailStatements.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DataGridViewMailStatements.Size = new Size(1146, 505);
-            DataGridViewMailStatements.TabIndex = 0;
-            // 
-            // ComboBoxSec
-            // 
-            ComboBoxSec.FillWeight = 30F;
-            ComboBoxSec.HeaderText = "Seç";
-            ComboBoxSec.Name = "ComboBoxSec";
-            ComboBoxSec.ReadOnly = true;
-            // 
-            // MailStatementsPage
-            // 
+
+            // TableLayoutPanelMain
+            TableLayoutPanelMain.ColumnCount = 1;
+            TableLayoutPanelMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            TableLayoutPanelMain.Controls.Add(TitleBarControl, 0, 0);
+            TableLayoutPanelMain.Controls.Add(TableLayoutPanelToolbar, 0, 1);
+            TableLayoutPanelMain.Controls.Add(DataGridViewAlarms, 0, 2);
+            TableLayoutPanelMain.Dock = DockStyle.Fill;
+            TableLayoutPanelMain.Location = new Point(0, 0);
+            TableLayoutPanelMain.Name = "TableLayoutPanelMain";
+            TableLayoutPanelMain.Padding = new Padding(10);
+            TableLayoutPanelMain.RowCount = 3;
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            TableLayoutPanelMain.Size = new Size(1170, 621);
+            TableLayoutPanelMain.TabIndex = 0;
+
+            // TitleBarControl
+            TitleBarControl.BackColor = Color.FromArgb(235, 235, 235);
+            TitleBarControl.Dock = DockStyle.Fill;
+            TitleBarControl.Location = new Point(13, 13);
+            TitleBarControl.Name = "TitleBarControl";
+            TitleBarControl.Padding = new Padding(1);
+            TitleBarControl.Size = new Size(1144, 34);
+            TitleBarControl.TabIndex = 0;
+            TitleBarControl.TitleBarText = "Alarm Tanımları";
+
+            // TableLayoutPanelToolbar
+            TableLayoutPanelToolbar.BackColor = Color.White;
+            TableLayoutPanelToolbar.ColumnCount = 3;
+            TableLayoutPanelToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            TableLayoutPanelToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 250F));
+            TableLayoutPanelToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180F));
+            TableLayoutPanelToolbar.Controls.Add(TextBoxSearch, 1, 0);
+            TableLayoutPanelToolbar.Controls.Add(ButtonAddNew, 2, 0);
+            TableLayoutPanelToolbar.Dock = DockStyle.Fill;
+            TableLayoutPanelToolbar.Location = new Point(13, 53);
+            TableLayoutPanelToolbar.Name = "TableLayoutPanelToolbar";
+            TableLayoutPanelToolbar.RowCount = 1;
+            TableLayoutPanelToolbar.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            TableLayoutPanelToolbar.Size = new Size(1144, 44);
+            TableLayoutPanelToolbar.TabIndex = 1;
+
+            // TextBoxSearch
+            TextBoxSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            TextBoxSearch.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBoxSearch.Location = new Point(717, 9);
+            TextBoxSearch.Name = "TextBoxSearch";
+            TextBoxSearch.PlaceholderText = "Ara...";
+            TextBoxSearch.Size = new Size(244, 25);
+            TextBoxSearch.TabIndex = 0;
+
+            // ButtonAddNew
+            ButtonAddNew.Anchor = AnchorStyles.Right;
+            ButtonAddNew.BackColor = Color.FromArgb(0, 131, 200);
+            ButtonAddNew.FlatAppearance.BorderSize = 0;
+            ButtonAddNew.FlatStyle = FlatStyle.Flat;
+            ButtonAddNew.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            ButtonAddNew.ForeColor = Color.White;
+            ButtonAddNew.Location = new Point(970, 7);
+            ButtonAddNew.Name = "ButtonAddNew";
+            ButtonAddNew.Size = new Size(171, 30);
+            ButtonAddNew.TabIndex = 1;
+            ButtonAddNew.Text = "Yeni Alarm Ekle";
+            ButtonAddNew.UseVisualStyleBackColor = false;
+
+            // DataGridViewAlarms
+            DataGridViewAlarms.AllowUserToAddRows = false;
+            DataGridViewAlarms.AllowUserToDeleteRows = false;
+            DataGridViewAlarms.AllowUserToResizeRows = false;
+            DataGridViewAlarms.AutoGenerateColumns = false;
+            DataGridViewAlarms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridViewAlarms.BackgroundColor = Color.White;
+            DataGridViewAlarms.BorderStyle = BorderStyle.None;
+            DataGridViewAlarms.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            headerStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            headerStyle.BackColor = Color.FromArgb(248, 249, 250);
+            headerStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            headerStyle.ForeColor = Color.FromArgb(73, 80, 87);
+            headerStyle.SelectionBackColor = Color.FromArgb(248, 249, 250);
+            headerStyle.SelectionForeColor = Color.FromArgb(73, 80, 87);
+            headerStyle.Padding = new Padding(0);
+            DataGridViewAlarms.ColumnHeadersDefaultCellStyle = headerStyle;
+            DataGridViewAlarms.ColumnHeadersHeight = 45;
+            DataGridViewAlarms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            DataGridViewAlarms.EnableHeadersVisualStyles = false;
+
+            DataGridViewAlarms.Columns.AddRange(new DataGridViewColumn[] { ColumnName, ColumnAlarmUsers, UsersColumn, ColumnDescription, ColumnType, ColumnPriority, ColumnStatus, EditColumn, DeleteColumn });
+            DataGridViewAlarms.Dock = DockStyle.Fill;
+            DataGridViewAlarms.GridColor = Color.FromArgb(233, 236, 239);
+            DataGridViewAlarms.Location = new Point(13, 103);
+            DataGridViewAlarms.MultiSelect = false;
+            DataGridViewAlarms.Name = "DataGridViewAlarms";
+            DataGridViewAlarms.ReadOnly = true;
+            DataGridViewAlarms.RowHeadersVisible = false;
+            
+            cellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            cellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            cellStyle.ForeColor = Color.FromArgb(33, 37, 41);
+            cellStyle.SelectionBackColor = Color.FromArgb(232, 240, 254);
+            cellStyle.SelectionForeColor = Color.FromArgb(33, 37, 41);
+            cellStyle.Padding = new Padding(0);
+            DataGridViewAlarms.RowsDefaultCellStyle = cellStyle;
+            
+            DataGridViewAlarms.RowTemplate.Height = 40;
+            DataGridViewAlarms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DataGridViewAlarms.Size = new Size(1144, 505);
+            DataGridViewAlarms.TabIndex = 2;
+
+            // ColumnName
+            ColumnName.DataPropertyName = "Name";
+            ColumnName.HeaderText = "İsim";
+            ColumnName.Name = "Name";
+            ColumnName.ReadOnly = true;
+            ColumnName.FillWeight = 100F;
+
+            // ColumnAlarmUsers
+            ColumnAlarmUsers.DataPropertyName = "AlarmUsers";
+            ColumnAlarmUsers.HeaderText = "Alarm Kullanıcıları";
+            ColumnAlarmUsers.Name = "AlarmUsers";
+            ColumnAlarmUsers.ReadOnly = true;
+            ColumnAlarmUsers.FillWeight = 160F;
+            ColumnAlarmUsers.DefaultCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            ColumnAlarmUsers.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            ColumnAlarmUsers.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // UsersColumn
+            UsersColumn.HeaderText = "";
+            UsersColumn.Name = "UsersColumn";
+            UsersColumn.ReadOnly = true;
+            UsersColumn.Text = "✏️";
+            UsersColumn.UseColumnTextForButtonValue = true;
+            UsersColumn.FillWeight = 35F;
+            UsersColumn.FlatStyle = FlatStyle.Flat;
+            UsersColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // ColumnDescription
+            ColumnDescription.DataPropertyName = "Description";
+            ColumnDescription.HeaderText = "Açıklama";
+            ColumnDescription.Name = "Description";
+            ColumnDescription.ReadOnly = true;
+            ColumnDescription.FillWeight = 130F;
+
+            // ColumnType
+            ColumnType.DataPropertyName = "Type";
+            ColumnType.HeaderText = "Tip";
+            ColumnType.Name = "Type";
+            ColumnType.ReadOnly = true;
+            ColumnType.FillWeight = 80F;
+
+            // ColumnPriority
+            ColumnPriority.DataPropertyName = "Priority";
+            ColumnPriority.HeaderText = "Öncelik";
+            ColumnPriority.Name = "Priority";
+            ColumnPriority.ReadOnly = true;
+            ColumnPriority.FillWeight = 70F;
+
+            // ColumnStatus
+            ColumnStatus.DataPropertyName = "Status";
+            ColumnStatus.HeaderText = "Durum";
+            ColumnStatus.Name = "Status";
+            ColumnStatus.ReadOnly = true;
+            ColumnStatus.FillWeight = 70F;
+
+            // EditColumn
+            EditColumn.HeaderText = "";
+            EditColumn.Name = "EditColumn";
+            EditColumn.ReadOnly = true;
+            EditColumn.Text = "✏️";
+            EditColumn.UseColumnTextForButtonValue = true;
+            EditColumn.FillWeight = 40F;
+            EditColumn.FlatStyle = FlatStyle.Flat;
+
+            // DeleteColumn
+            DeleteColumn.HeaderText = "";
+            DeleteColumn.Name = "DeleteColumn";
+            DeleteColumn.ReadOnly = true;
+            DeleteColumn.Text = "🗑️";
+            DeleteColumn.UseColumnTextForButtonValue = true;
+            DeleteColumn.FillWeight = 40F;
+            DeleteColumn.FlatStyle = FlatStyle.Flat;
+
+            // MailStatementsEditPage
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 621);
-            Controls.Add(tableLayoutPanel1);
-            Name = "MailStatementsPage";
-            Text = "MailStatementsPage";
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel3.ResumeLayout(false);
-            tableLayoutPanel4.ResumeLayout(false);
-            tableLayoutPanel4.PerformLayout();
-            tableLayoutPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)DataGridViewMailStatements).EndInit();
+            BackColor = Color.FromArgb(248, 249, 250);
+            Controls.Add(TableLayoutPanelMain);
+            Name = "MailStatementsEditPage";
+            Size = new Size(1170, 621);
+
+            TableLayoutPanelMain.ResumeLayout(false);
+            TableLayoutPanelToolbar.ResumeLayout(false);
+            TableLayoutPanelToolbar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)DataGridViewAlarms).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
-        private TableLayoutPanel tableLayoutPanel2;
-        private TitleBarControl titleBarControl1;
-        private TableLayoutPanel tableLayoutPanel3;
-        private TableLayoutPanel tableLayoutPanel4;
-        private Label label1;
-        private ComboBox ComboBoxSelectedUser;
-        private TableLayoutPanel tableLayoutPanel5;
-        private DataGridView DataGridViewMailStatements;
-        private DataGridViewCheckBoxColumn ComboBoxSec;
+        private TableLayoutPanel TableLayoutPanelMain;
+        private TitleBarControl TitleBarControl;
+        private TableLayoutPanel TableLayoutPanelToolbar;
+        private TextBox TextBoxSearch;
+        private Button ButtonAddNew;
+        private DataGridView DataGridViewAlarms;
+        private DataGridViewTextBoxColumn ColumnName;
+        private DataGridViewTextBoxColumn ColumnDescription;
+        private DataGridViewTextBoxColumn ColumnType;
+        private DataGridViewTextBoxColumn ColumnPriority;
+        private DataGridViewTextBoxColumn ColumnStatus;
+        private DataGridViewButtonColumn EditColumn;
+        private DataGridViewButtonColumn DeleteColumn;
+        private DataGridViewTextBoxColumn ColumnAlarmUsers;
+        private DataGridViewButtonColumn UsersColumn;
     }
 }
