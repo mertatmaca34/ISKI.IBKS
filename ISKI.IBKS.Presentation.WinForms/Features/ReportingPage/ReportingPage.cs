@@ -71,6 +71,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             {
                 DataGridViewDatas.CellFormatting += DataGridViewDatas_CellFormatting;
             }
+
+            // Show/hide log level filter based on report type
+            if (ComboBoxReportType != null)
+            {
+                ComboBoxReportType.SelectedIndexChanged += (s, e) =>
+                {
+                    if (GroupBoxLogLevel != null)
+                    {
+                        GroupBoxLogLevel.Visible = ComboBoxReportType.SelectedItem?.ToString() == "Kayıt";
+                    }
+                };
+            }
         }
 
         private void DataGridViewDatas_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
@@ -318,10 +330,17 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
                     dt.Columns.Add("Açıklama");
                     dt.Columns.Add("Seviye");
 
-                    // Info logları hariç tut - sadece Warning ve Error göster
+                    // Build list of selected log levels
+                    var selectedLevels = new List<Domain.Entities.LogLevel>();
+                    if (CheckBoxLogInfo?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Info);
+                    if (CheckBoxLogWarning?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Warning);
+                    if (CheckBoxLogError?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Error);
+                    if (CheckBoxLogCritical?.Checked == true) selectedLevels.Add(Domain.Entities.LogLevel.Critical);
+
+                    // Filter logs by selected levels
                     var logQuery = dbContext.LogEntries
                         .Where(x => x.LogCreatedDate >= startDate && x.LogCreatedDate <= endDate
-                                 && x.Level != Domain.Entities.LogLevel.Info && x.Level != Domain.Entities.LogLevel.Debug);
+                                 && selectedLevels.Contains(x.Level));
 
                     logQuery = sortNewestFirst
                         ? logQuery.OrderByDescending(x => x.LogCreatedDate)

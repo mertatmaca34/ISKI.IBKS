@@ -35,6 +35,9 @@ namespace ISKI.IBKS.Presentation.WinForms
                     var context = services.GetRequiredService<IbksDbContext>();
                     // Veritabanı oluşturma ve migrasyonları uygulama
                     context.Database.MigrateAsync().GetAwaiter().GetResult();
+                    
+                    // Veri tohumlama (Seed)
+                    ISKI.IBKS.Persistence.Seeders.AlarmSeeder.SeedAsync(context).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -99,15 +102,8 @@ namespace ISKI.IBKS.Presentation.WinForms
                 .ConfigureAndUseLogging()
                 .ConfigureServices((context, services) =>
                 {
-                    // Load configuration files from Infrastructure/Configuration within repository
-                    var infraConfigDir = Path.Combine(AppContext.BaseDirectory, "Presentation.WinForms", "Configuration");
-
-                    // If running from build output where files are not copied, try project relative path
-                    if (!Directory.Exists(infraConfigDir))
-                    {
-                        var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-                        infraConfigDir = Path.Combine(projectRoot, "ISKI.IBKS.Presentation.WinForms", "Configuration");
-                    }
+                    // Configuration dosyaları build output altındaki Configuration klasöründe bulunur
+                    var infraConfigDir = Path.Combine(AppContext.BaseDirectory, "Configuration");
 
                     // Klasör yoksa oluştur (SetupWizard kaydedebilsin diye)
                     if (!Directory.Exists(infraConfigDir))

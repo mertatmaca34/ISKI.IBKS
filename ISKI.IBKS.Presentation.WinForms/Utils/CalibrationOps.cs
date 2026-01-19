@@ -25,7 +25,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Utils
         private readonly double _tolerance = 1.10;
 
         // Calibration data
-        private Calibration? _calibration;
         private double _zeroRef, _zeroMeas, _zeroDiff, _zeroStd;
         private double _spanRef, _spanMeas, _spanDiff, _spanStd;
         private double _resultFactor;

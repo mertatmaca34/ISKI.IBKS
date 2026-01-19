@@ -24,7 +24,7 @@ public static class StatusPalette
     public static Color Get(DigitalSignalStatus status) => status switch
     {
         DigitalSignalStatus.Normal => SimGreen,
-        DigitalSignalStatus.Critical => SimGreen,
+        DigitalSignalStatus.Critical => SimRed,
         DigitalSignalStatus.Undefined => Color.Gray,
         _ => Color.Gray
     };

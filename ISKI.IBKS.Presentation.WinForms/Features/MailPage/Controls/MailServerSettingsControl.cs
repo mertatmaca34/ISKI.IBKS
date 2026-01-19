@@ -4,23 +4,23 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.Controls
 {
     public partial class MailServerSettingsControl : UserControl
     {
-        private TextBox TextBoxSmtpHost;
-        private NumericUpDown NumericUpDownSmtpPort;
-        private TextBox TextBoxSmtpUsername;
-        private TextBox TextBoxSmtpPassword;
-        private CheckBox CheckBoxUseSsl;
-        private TextBox TextBoxFromAddress;
-        private Button ButtonTestMail;
-        private Label LabelMailStatus;
-        private Button ButtonSaveMail;
-        private GroupBox groupBoxMailServer;
+        private TextBox TextBoxSmtpHost = null!;
+        private NumericUpDown NumericUpDownSmtpPort = null!;
+        private TextBox TextBoxSmtpUsername = null!;
+        private TextBox TextBoxSmtpPassword = null!;
+        private CheckBox CheckBoxUseSsl = null!;
+        private TextBox TextBoxFromAddress = null!;
+        private Button ButtonTestMail = null!;
+        private Label LabelMailStatus = null!;
+        private Button ButtonSaveMail = null!;
+        private GroupBox groupBoxMailServer = null!;
         
         // Labels
-        private Label LabelSmtpHost;
-        private Label LabelSmtpPort;
-        private Label LabelSmtpUsername;
-        private Label LabelSmtpPassword;
-        private Label LabelFromAddress; 
+        private Label LabelSmtpHost = null!;
+        private Label LabelSmtpPort = null!;
+        private Label LabelSmtpUsername = null!;
+        private Label LabelSmtpPassword = null!;
+        private Label LabelFromAddress = null!; 
 
         private readonly string _configPath;
 

@@ -29,6 +29,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
         public CalibrationSettingsPage()
         {
             InitializeComponent();
+            _scopeFactory = null!;
         }
 
         private async void CalibrationSettingsPage_Load(object? sender, EventArgs e)
@@ -47,13 +48,23 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
 
                 if (settings != null)
                 {
+                    // pH settings
                     CalibrationSettingsBarPh.ZeroRef = settings.PhZeroReference.ToString();
+                    CalibrationSettingsBarPh.ZeroTime = settings.PhZeroDuration.ToString();
                     CalibrationSettingsBarPh.SpanRef = settings.PhSpanReference.ToString();
+                    CalibrationSettingsBarPh.SpanTime = settings.PhSpanDuration.ToString();
                     
+                    // Conductivity settings
                     CalibrationSettingsBarIletkenlik.ZeroRef = settings.ConductivityZeroReference.ToString();
+                    CalibrationSettingsBarIletkenlik.ZeroTime = settings.ConductivityZeroDuration.ToString();
                     CalibrationSettingsBarIletkenlik.SpanRef = settings.ConductivitySpanReference.ToString();
+                    CalibrationSettingsBarIletkenlik.SpanTime = settings.ConductivitySpanDuration.ToString();
                     
-                    // AKM / KOI not supported in Entity yet
+                    // AKM / KOI - load if available
+                    CalibrationSettingsBarAkm.ZeroTime = settings.AkmZeroDuration.ToString();
+                    CalibrationSettingsBarKoi.ZeroTime = settings.KoiZeroDuration.ToString();
+                    
+                    // AKM / KOI reference values not fully supported yet
                     CalibrationSettingsBarAkm.Enabled = false;
                     CalibrationSettingsBarKoi.Enabled = false;
                 }
@@ -76,26 +87,33 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
 
                 if (settings == null)
                 {
-                    // Create default if not exists? Usually exists.
-                    // If not, we might need to create one with default GUID
+                    // Create default if not exists
                     settings = new StationSettings(Guid.NewGuid(), "Varsayılan İstasyon");
                     dbContext.StationSettings.Add(settings);
                 }
 
-                double phZ = 7.0, phS = 4.0, condZ = 0, condS = 1413;
-                double.TryParse(CalibrationSettingsBarPh.ZeroRef, out phZ);
-                double.TryParse(CalibrationSettingsBarPh.SpanRef, out phS);
-                double.TryParse(CalibrationSettingsBarIletkenlik.ZeroRef, out condZ);
-                double.TryParse(CalibrationSettingsBarIletkenlik.SpanRef, out condS);
+                // Parse reference values
+                double phZeroRef = 7.0, phSpanRef = 4.0, condZeroRef = 0, condSpanRef = 1413;
+                double.TryParse(CalibrationSettingsBarPh.ZeroRef, out phZeroRef);
+                double.TryParse(CalibrationSettingsBarPh.SpanRef, out phSpanRef);
+                double.TryParse(CalibrationSettingsBarIletkenlik.ZeroRef, out condZeroRef);
+                double.TryParse(CalibrationSettingsBarIletkenlik.SpanRef, out condSpanRef);
 
-                // Preserve Durations as existing from DB or default
-                // Since I can't read durations from UI (UI doesn't have duration inputs shown in Designer code I saw),
-                // I will use existing values from settings object if available.
+                // Parse duration values from UI
+                int phZeroDuration = 60, phSpanDuration = 60, condZeroDuration = 60, condSpanDuration = 60;
+                int akmZeroDuration = 60, koiZeroDuration = 60;
+                
+                int.TryParse(CalibrationSettingsBarPh.ZeroTime, out phZeroDuration);
+                int.TryParse(CalibrationSettingsBarPh.SpanTime, out phSpanDuration);
+                int.TryParse(CalibrationSettingsBarIletkenlik.ZeroTime, out condZeroDuration);
+                int.TryParse(CalibrationSettingsBarIletkenlik.SpanTime, out condSpanDuration);
+                int.TryParse(CalibrationSettingsBarAkm.ZeroTime, out akmZeroDuration);
+                int.TryParse(CalibrationSettingsBarKoi.ZeroTime, out koiZeroDuration);
                 
                 settings.UpdateCalibrationSettings(
-                    settings.PhZeroDuration, phZ, settings.PhSpanDuration, phS,
-                    settings.ConductivityZeroDuration, condZ, settings.ConductivitySpanDuration, condS,
-                    settings.AkmZeroDuration, 0, settings.KoiZeroDuration, 0
+                    phZeroDuration, phZeroRef, phSpanDuration, phSpanRef,
+                    condZeroDuration, condZeroRef, condSpanDuration, condSpanRef,
+                    akmZeroDuration, 0, koiZeroDuration, 0
                 );
 
                 await dbContext.SaveChangesAsync();

@@ -30,6 +30,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             tableLayoutPanel1 = new TableLayoutPanel();
             HomePageButton = new NavigationBarButton();
             SimulationPageButton = new NavigationBarButton();
@@ -268,9 +269,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main
             ClientSize = new Size(1264, 681);
             Controls.Add(panel1);
             Controls.Add(tableLayoutPanel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MainForm";
+            Text = "İSKİ - İSKİ BAKANLIK KABİNİ SİSTEMİ";
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }

@@ -1,0 +1,11 @@
+{
+  "MailSettings": {
+    "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": "587",
+    "Username": "sender@gmail.com",
+    "Password": "app-password-here",
+    "UseSsl": "true",
+    "FromAddress": "sender@gmail.com",
+    "FromName": "IBKS Alarm Sistemi"
+  }
+}

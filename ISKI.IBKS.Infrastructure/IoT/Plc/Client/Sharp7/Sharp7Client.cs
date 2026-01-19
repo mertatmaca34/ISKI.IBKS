@@ -58,6 +58,42 @@ public class Sharp7Client : IPlcClient
         }
     }
 
+    public void ForceReconnect(string ipAddress, int rack, int slot)
+    {
+        // Önce mevcut bağlantıyı kapat (hata olsa bile devam et)
+        try
+        {
+            if (S7Client.Connected)
+            {
+                S7Client.Disconnect();
+            }
+        }
+        catch
+        {
+            // Disconnect hatalarını yoksay
+        }
+
+        // Yeni S7Client oluştur (eski bağlantı durumunu temizle)
+        S7Client = new S7Client
+        {
+            ConnTimeout = 5000,
+            SendTimeout = 5000
+        };
+
+        _connectedTime = null;
+
+        // Yeniden bağlan
+        var res = S7Client.ConnectTo(ipAddress, rack, slot);
+
+        if (res != 0)
+        {
+            var errorText = S7Client.ErrorText(res);
+            throw new PlcConnectionException(ipAddress, rack, slot, errorText);
+        }
+
+        _connectedTime = DateTime.Now;
+    }
+
     public byte[] ReadBytes(int dbNumber, int startByteAddress, byte[] buffer)
     {
         if (S7Client.Connected)

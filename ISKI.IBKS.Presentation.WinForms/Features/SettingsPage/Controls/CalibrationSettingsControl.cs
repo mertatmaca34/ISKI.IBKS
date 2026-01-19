@@ -7,16 +7,16 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
 {
     public partial class CalibrationSettingsControl : UserControl
     {
-        private TextBox TextBoxPhZero;
-        private TextBox TextBoxPhSpan;
-        private TextBox TextBoxCondZero;
-        private TextBox TextBoxCondSpan;
-        private Button ButtonSave;
-        private GroupBox groupBoxCalibration;
-        private Label LabelPhZero;
-        private Label LabelPhSpan;
-        private Label LabelCondZero;
-        private Label LabelCondSpan;
+        private TextBox TextBoxPhZero = null!;
+        private TextBox TextBoxPhSpan = null!;
+        private TextBox TextBoxCondZero = null!;
+        private TextBox TextBoxCondSpan = null!;
+        private Button ButtonSave = null!;
+        private GroupBox groupBoxCalibration = null!;
+        private Label LabelPhZero = null!;
+        private Label LabelPhSpan = null!;
+        private Label LabelCondZero = null!;
+        private Label LabelCondSpan = null!;
 
         private readonly IServiceScopeFactory _scopeFactory;
 

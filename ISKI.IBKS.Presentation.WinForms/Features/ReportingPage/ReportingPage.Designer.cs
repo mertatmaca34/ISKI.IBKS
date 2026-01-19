@@ -60,6 +60,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             tableLayoutPanel6 = new TableLayoutPanel();
             ButtonSaveAsExcel = new Button();
             ButtonSaveAsPdf = new Button();
+            GroupBoxLogLevel = new GroupBox();
+            CheckBoxLogInfo = new CheckBox();
+            CheckBoxLogWarning = new CheckBox();
+            CheckBoxLogError = new CheckBox();
+            CheckBoxLogCritical = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -69,6 +74,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             groupBox5.SuspendLayout();
             groupBox4.SuspendLayout();
             groupBox1.SuspendLayout();
+            GroupBoxLogLevel.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridViewDatas).BeginInit();
             tableLayoutPanel5.SuspendLayout();
@@ -131,18 +137,21 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             tableLayoutPanel3.Controls.Add(groupBox3, 0, 3);
             tableLayoutPanel3.Controls.Add(GroupBoxDate, 0, 2);
             tableLayoutPanel3.Controls.Add(groupBox1, 0, 1);
-            tableLayoutPanel3.Controls.Add(ButtonGenerate, 0, 4);
+            tableLayoutPanel3.Controls.Add(GroupBoxLogLevel, 0, 5);
+            tableLayoutPanel3.Controls.Add(ButtonGenerate, 0, 6);
             tableLayoutPanel3.Dock = DockStyle.Fill;
             tableLayoutPanel3.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
             tableLayoutPanel3.Location = new Point(1, 1);
             tableLayoutPanel3.Margin = new Padding(1);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.Padding = new Padding(3);
-            tableLayoutPanel3.RowCount = 5;
+            tableLayoutPanel3.RowCount = 7;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 176F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 100F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.Size = new Size(212, 615);
             tableLayoutPanel3.TabIndex = 2;
@@ -343,12 +352,76 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             ButtonGenerate.BackColor = Color.FromArgb(0, 131, 200);
             ButtonGenerate.Dock = DockStyle.Top;
             ButtonGenerate.ForeColor = Color.White;
-            ButtonGenerate.Location = new Point(6, 422);
+            ButtonGenerate.Location = new Point(6, 522);
             ButtonGenerate.Name = "ButtonGenerate";
             ButtonGenerate.Size = new Size(200, 40);
             ButtonGenerate.TabIndex = 2;
             ButtonGenerate.Text = "OLUŞTUR";
             ButtonGenerate.UseVisualStyleBackColor = false;
+            // 
+            // GroupBoxLogLevel
+            // 
+            GroupBoxLogLevel.Controls.Add(CheckBoxLogInfo);
+            GroupBoxLogLevel.Controls.Add(CheckBoxLogWarning);
+            GroupBoxLogLevel.Controls.Add(CheckBoxLogError);
+            GroupBoxLogLevel.Controls.Add(CheckBoxLogCritical);
+            GroupBoxLogLevel.Dock = DockStyle.Fill;
+            GroupBoxLogLevel.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            GroupBoxLogLevel.Location = new Point(6, 462);
+            GroupBoxLogLevel.Name = "GroupBoxLogLevel";
+            GroupBoxLogLevel.Size = new Size(200, 94);
+            GroupBoxLogLevel.TabIndex = 6;
+            GroupBoxLogLevel.TabStop = false;
+            GroupBoxLogLevel.Text = "LOG SEVİYESİ";
+            GroupBoxLogLevel.Visible = false;
+            // 
+            // CheckBoxLogInfo
+            // 
+            CheckBoxLogInfo.AutoSize = true;
+            CheckBoxLogInfo.Checked = true;
+            CheckBoxLogInfo.CheckState = CheckState.Checked;
+            CheckBoxLogInfo.Location = new Point(6, 22);
+            CheckBoxLogInfo.Name = "CheckBoxLogInfo";
+            CheckBoxLogInfo.Size = new Size(47, 19);
+            CheckBoxLogInfo.TabIndex = 0;
+            CheckBoxLogInfo.Text = "Info";
+            CheckBoxLogInfo.UseVisualStyleBackColor = true;
+            // 
+            // CheckBoxLogWarning
+            // 
+            CheckBoxLogWarning.AutoSize = true;
+            CheckBoxLogWarning.Checked = true;
+            CheckBoxLogWarning.CheckState = CheckState.Checked;
+            CheckBoxLogWarning.Location = new Point(70, 22);
+            CheckBoxLogWarning.Name = "CheckBoxLogWarning";
+            CheckBoxLogWarning.Size = new Size(72, 19);
+            CheckBoxLogWarning.TabIndex = 1;
+            CheckBoxLogWarning.Text = "Warning";
+            CheckBoxLogWarning.UseVisualStyleBackColor = true;
+            // 
+            // CheckBoxLogError
+            // 
+            CheckBoxLogError.AutoSize = true;
+            CheckBoxLogError.Checked = true;
+            CheckBoxLogError.CheckState = CheckState.Checked;
+            CheckBoxLogError.Location = new Point(6, 47);
+            CheckBoxLogError.Name = "CheckBoxLogError";
+            CheckBoxLogError.Size = new Size(53, 19);
+            CheckBoxLogError.TabIndex = 2;
+            CheckBoxLogError.Text = "Error";
+            CheckBoxLogError.UseVisualStyleBackColor = true;
+            // 
+            // CheckBoxLogCritical
+            // 
+            CheckBoxLogCritical.AutoSize = true;
+            CheckBoxLogCritical.Checked = true;
+            CheckBoxLogCritical.CheckState = CheckState.Checked;
+            CheckBoxLogCritical.Location = new Point(70, 47);
+            CheckBoxLogCritical.Name = "CheckBoxLogCritical";
+            CheckBoxLogCritical.Size = new Size(64, 19);
+            CheckBoxLogCritical.TabIndex = 3;
+            CheckBoxLogCritical.Text = "Critical";
+            CheckBoxLogCritical.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel4
             // 
@@ -468,6 +541,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
             groupBox4.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            GroupBoxLogLevel.ResumeLayout(false);
+            GroupBoxLogLevel.PerformLayout();
             tableLayoutPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DataGridViewDatas).EndInit();
             tableLayoutPanel5.ResumeLayout(false);
@@ -505,5 +580,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.ReportingPage
         private TableLayoutPanel tableLayoutPanel6;
         private Button ButtonSaveAsPdf;
         private Button ButtonSaveAsExcel;
+        private GroupBox GroupBoxLogLevel;
+        private CheckBox CheckBoxLogInfo;
+        private CheckBox CheckBoxLogWarning;
+        private CheckBox CheckBoxLogError;
+        private CheckBox CheckBoxLogCritical;
     }
 }

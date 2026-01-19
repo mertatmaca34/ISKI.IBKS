@@ -7,9 +7,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.Controls
 {
     public partial class EditMailStatementsControl : UserControl
     {
-        private DataGridView DataGridViewAlarms;
-        private Button ButtonRefresh;
-        private GroupBox groupBoxAlarms;
+        private DataGridView DataGridViewAlarms = null!;
+        private Button ButtonRefresh = null!;
+        private GroupBox groupBoxAlarms = null!;
 
         private readonly IServiceScopeFactory _scopeFactory;
 

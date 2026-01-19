@@ -1,0 +1,14 @@
+{
+  "Calibration": {
+    "Ph": {
+      "ZeroRef": 7,
+      "SpanRef": 4,
+      "Duration": 60
+    },
+    "Iletkenlik": {
+      "ZeroRef": 0,
+      "SpanRef": 1413,
+      "Duration": 60
+    }
+  }
+}

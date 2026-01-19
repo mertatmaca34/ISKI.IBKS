@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,39 +14,30 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
     public partial class MailStatementsEditPage : UserControl
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        private Guid? _selectedId = null;
+        private List<AlarmDefinition> _allAlarms = new();
+        private Dictionary<Guid, string> _alarmUserNames = new();
 
         public MailStatementsEditPage(IServiceScopeFactory scopeFactory)
         {
-            InitializeComponent();
             _scopeFactory = scopeFactory;
+            InitializeComponent();
             
+            // Attach event handlers
             Load += MailStatementsEditPage_Load;
-            ButtonSave.Click += ButtonSave_Click;
-            DataGridViewStatements.SelectionChanged += DataGridViewStatements_SelectionChanged;
-            ComboBoxStatement.SelectedIndexChanged += ComboBoxStatement_SelectedIndexChanged;
-            DuzenleToolStipMenuItem.Click += DuzenleToolStipMenuItem_Click; // Typo in designer: DuzenleToolStipMenuItem
-            SilToolStripMenuItem.Click += SilToolStripMenuItem_Click;
+            TextBoxSearch.TextChanged += TextBoxSearch_TextChanged;
+            ButtonAddNew.Click += ButtonAddNew_Click;
+            DataGridViewAlarms.CellContentClick += DataGridViewAlarms_CellContentClick;
         }
 
         public MailStatementsEditPage()
         {
+            _scopeFactory = null!;
             InitializeComponent();
         }
 
         private async void MailStatementsEditPage_Load(object? sender, EventArgs e)
         {
             if (_scopeFactory == null) return;
-            // Fill ComboBoxCoolDown
-            ComboBoxCoolDown.Items.Clear();
-            ComboBoxCoolDown.Items.Add("Yok");
-            ComboBoxCoolDown.Items.Add("1 Dakika");
-            ComboBoxCoolDown.Items.Add("5 Dakika");
-            ComboBoxCoolDown.Items.Add("15 Dakika");
-            ComboBoxCoolDown.Items.Add("30 Dakika");
-            ComboBoxCoolDown.Items.Add("1 Saat");
-            ComboBoxCoolDown.SelectedIndex = 0;
-
             await LoadDefinitionsAsync();
         }
 
@@ -59,219 +47,183 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
             {
                 using var scope = _scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                var alarms = await dbContext.AlarmDefinitions.Where(a => a.IsActive).OrderBy(a => a.SensorName).ToListAsync();
-
-                DataGridViewStatements.DataSource = alarms.Select(a => new
-                {
-                    a.Id,
-                    a.SensorName,
-                    Type = a.Type.ToString(),
-                    Condition = GetConditionText(a),
-                    a.Priority
-                }).ToList();
-
-                DataGridViewStatements.Columns["Id"].Visible = false;
-                DataGridViewStatements.Columns["SensorName"].HeaderText = "Parametre";
-                DataGridViewStatements.Columns["Type"].HeaderText = "Tip";
-                DataGridViewStatements.Columns["Condition"].HeaderText = "Koşul";
-                DataGridViewStatements.Columns["Priority"].HeaderText = "Öncelik";
+                
+                _allAlarms = await dbContext.AlarmDefinitions.OrderBy(a => a.Name).ToListAsync();
+                
+                // Load alarm user subscriptions with user names
+                var subscriptions = await dbContext.AlarmUserSubscriptions
+                    .Include(s => s.AlarmUser)
+                    .Where(s => s.IsActive)
+                    .ToListAsync();
+                
+                _alarmUserNames = subscriptions
+                    .GroupBy(s => s.AlarmDefinitionId)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => string.Join(", ", g.Select(s => s.AlarmUser.FullName).Take(3)) + 
+                             (g.Count() > 3 ? $" +{g.Count() - 3}" : "")
+                    );
+                
+                ApplyFilter();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Alarmlar yüklenirken hata: {ex.Message}");
+                MessageBox.Show($"Alarmlar yüklenirken hata: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private string GetConditionText(AlarmDefinition a)
+        private void ApplyFilter()
         {
-            if (a.Type == AlarmType.Threshold)
-                return $"{a.MinThreshold} - {a.MaxThreshold}";
-            else
-                return a.ExpectedDigitalValue == true ? "Varsa (True)" : "Yoksa (False)";
-        }
+            var searchText = TextBoxSearch.Text.Trim().ToLower();
+            var filtered = string.IsNullOrEmpty(searchText)
+                ? _allAlarms
+                : _allAlarms.Where(a => 
+                    a.Name.ToLower().Contains(searchText) || 
+                    a.Description.ToLower().Contains(searchText) ||
+                    a.SensorName.ToLower().Contains(searchText)).ToList();
 
-        private void ComboBoxStatement_SelectedIndexChanged(object? sender, EventArgs e)
-        {
-             // 0: Limit Aşımı, 1: Varsa, 2: Yoksa
-             bool isLimit = ComboBoxStatement.SelectedIndex == 0;
-             TableLayoutPanelLimits.Enabled = isLimit;
-             if (!isLimit)
-             {
-                 TextBoxLowerLimit.Text = "";
-                 TextBoxUpperLimit.Text = "";
-             }
-        }
-
-        private void DataGridViewStatements_SelectionChanged(object? sender, EventArgs e)
-        {
-            if (DataGridViewStatements.SelectedRows.Count > 0)
+            DataGridViewAlarms.DataSource = filtered.Select(a => new AlarmDisplayModel
             {
-                // In a real scenario, we might want to prevent overwriting inputs immediately if user is typing new one.
-                // But for simplicity, we load selected.
-                var row = DataGridViewStatements.SelectedRows[0];
-                _selectedId = (Guid)row.Cells["Id"].Value;
-                LoadSelectedDefinitionAsync(_selectedId.Value);
-            }
-            else
+                Id = a.Id,
+                Name = a.Name,
+                AlarmUsers = _alarmUserNames.TryGetValue(a.Id, out var users) ? users : "-",
+                Description = a.Description,
+                Type = GetTypeTurkish(a.Type),
+                Priority = GetPriorityTurkish(a.Priority),
+                Status = a.IsActive ? "Aktif" : "Pasif"
+            }).ToList();
+
+            // Configure columns - headers are set in Designer
+            if (DataGridViewAlarms.Columns.Count > 0)
             {
-                _selectedId = null;
-                // Don't necessarily clear inputs automatically to avoid annoying user, or do clear?
-                // Standard: Clear
-                ClearInputs();
+                // No need to hide Id column as it is not auto-generated
             }
         }
 
-        private async void LoadSelectedDefinitionAsync(Guid id)
+        private static string GetTypeTurkish(AlarmType type)
         {
-             try
-             {
-                using var scope = _scopeFactory.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                var alarm = await dbContext.AlarmDefinitions.FindAsync(id);
-                if (alarm != null)
-                {
-                    ComboBoxParameter.SelectedItem = alarm.SensorName; // Needs exact match
-                    TextBoxMailSubject.Text = alarm.Name;
-                    TextBoxMailContent.Text = alarm.Description;
-                    
-                    if (alarm.Type == AlarmType.Threshold)
-                    {
-                        ComboBoxStatement.SelectedIndex = 0;
-                        TextBoxLowerLimit.Text = alarm.MinThreshold?.ToString();
-                        TextBoxUpperLimit.Text = alarm.MaxThreshold?.ToString();
-                    }
-                    else
-                    {
-                        ComboBoxStatement.SelectedIndex = alarm.ExpectedDigitalValue == true ? 1 : 2; 
-                    }
-                    
-                    ButtonSave.Text = "GÜNCELLE";
-                }
-             }
-             catch {}
+            return type switch
+            {
+                AlarmType.Threshold => "Eşik Değer",
+                AlarmType.Digital => "Dijital",
+                AlarmType.System => "Sistem",
+                _ => type.ToString()
+            };
         }
 
-        private void ClearInputs()
+        private static string GetPriorityTurkish(AlarmPriority priority)
         {
-            ComboBoxParameter.SelectedIndex = -1;
-            ComboBoxStatement.SelectedIndex = -1;
-            TextBoxLowerLimit.Text = "";
-            TextBoxUpperLimit.Text = "";
-            TextBoxMailSubject.Text = "";
-            TextBoxMailContent.Text = "";
-            ComboBoxCoolDown.SelectedIndex = 0;
-            _selectedId = null;
-            ButtonSave.Text = "KAYDET";
+            return priority switch
+            {
+                AlarmPriority.Low => "Düşük",
+                AlarmPriority.Medium => "Orta",
+                AlarmPriority.High => "Yüksek",
+                AlarmPriority.Critical => "Kritik",
+                _ => priority.ToString()
+            };
         }
 
-        private async void ButtonSave_Click(object? sender, EventArgs e)
+        private void TextBoxSearch_TextChanged(object? sender, EventArgs e)
         {
-            if (_scopeFactory == null) return;
+            ApplyFilter();
+        }
+
+        private void ButtonAddNew_Click(object? sender, EventArgs e)
+        {
+            ShowEditDialog(null);
+        }
+
+        private void DataGridViewAlarms_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore header row and non-button columns
+            if (e.RowIndex < 0) return;
+            if (e.ColumnIndex < 0) return;
             
-            var sensor = ComboBoxParameter.SelectedItem?.ToString();
-            var status = ComboBoxStatement.SelectedIndex; // 0=Limit, 1=Varsa, 2=Yoksa
+            var column = DataGridViewAlarms.Columns[e.ColumnIndex];
             
-            if (string.IsNullOrEmpty(sensor) || status == -1)
+            // Only handle button column clicks
+            if (column is not DataGridViewButtonColumn) return;
+
+            var columnName = column.Name;
+            var row = DataGridViewAlarms.Rows[e.RowIndex];
+            
+            if (row.DataBoundItem is not AlarmDisplayModel item) return;
+
+            var id = item.Id;
+            var name = item.Name;
+
+            if (columnName == "EditColumn")
             {
-                MessageBox.Show("Parametre ve Durum seçilmelidir.");
+                ShowEditDialog(id);
+            }
+            else if (columnName == "DeleteColumn")
+            {
+                DeleteAlarmAsync(id);
+            }
+            else if (columnName == "UsersColumn")
+            {
+                ShowUsersDialog(id, name);
+            }
+        }
+
+        private void ShowEditDialog(Guid? alarmId)
+        {
+            using var dialog = new AlarmEditDialog(_scopeFactory, alarmId);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _ = LoadDefinitionsAsync();
+            }
+        }
+
+        private void ShowUsersDialog(Guid alarmId, string alarmName)
+        {
+            using var dialog = new AlarmUsersEditDialog(_scopeFactory, alarmId, alarmName);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _ = LoadDefinitionsAsync();
+            }
+        }
+
+        private async void DeleteAlarmAsync(Guid id)
+        {
+            if (MessageBox.Show("Bu alarm tanımını silmek istediğinize emin misiniz?", "Onay", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
-            }
 
             try
             {
                 using var scope = _scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-
-                AlarmDefinition alarm = null;
-
-                if (_selectedId.HasValue)
+                var alarm = await dbContext.AlarmDefinitions.FindAsync(id);
+                if (alarm != null)
                 {
-                    alarm = await dbContext.AlarmDefinitions.FindAsync(_selectedId.Value);
+                    // Also remove subscriptions
+                    var subscriptions = await dbContext.AlarmUserSubscriptions
+                        .Where(s => s.AlarmDefinitionId == id)
+                        .ToListAsync();
+                    dbContext.AlarmUserSubscriptions.RemoveRange(subscriptions);
+                    
+                    dbContext.AlarmDefinitions.Remove(alarm);
+                    await dbContext.SaveChangesAsync();
+                    await LoadDefinitionsAsync();
+                    MessageBox.Show("Alarm silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
-                if (status == 0) // Limit
-                {
-                    double? min = null, max = null;
-                    if (double.TryParse(TextBoxLowerLimit.Text, out double dMin)) min = dMin;
-                    if (double.TryParse(TextBoxUpperLimit.Text, out double dMax)) max = dMax;
-
-                    if (alarm == null)
-                    {
-                        alarm = AlarmDefinition.CreateThresholdAlarm(TextBoxMailSubject.Text, sensor, min, max, TextBoxMailContent.Text);
-                        dbContext.AlarmDefinitions.Add(alarm);
-                    }
-                    else
-                    {
-                        // Needs update method or manual property set? 
-                        // AlarmDefinition has private setters and UpdateThresholds method.
-                        // I might need to add a generic Update method to Entity or use reflection/EF core tracking.
-                        // Since I can't easily change Entity right now (or I can?), I will use UpdateThresholds for thresholds.
-                        // But Name/Description? I need to verify Entity capabilities.
-                        // checked Entity: No generic Update method for Name/SensorName.
-                        // I should probably DELETE and RECREATE or just UpdateThresholds.
-                        // For a compliance refactor, I should add `Update` method to `AlarmDefinition` entity!
-                        // But I am in UI task. I'll stick to `UpdateThresholds` and assume Name doesn't change often or create new.
-                        // Wait, I can Modify the Entity file cheaply.
-                        // I will update the entity if needed. Let's assume UpdateThresholds is enough for now.
-                        // Actually, I can set properties via Reflection or EF Core Entry values if really needed, but cleaner is to add Update method.
-                        // I'll add Update method to Entity in next step if this fails or just proceed with what I have.
-                        
-                        alarm.UpdateThresholds(min, max);
-                        // Can't update Name/Description due to private set.
-                    }
-                }
-                else // Digital
-                {
-                    bool expected = (status == 1);
-                    if (alarm == null)
-                    {
-                        alarm = AlarmDefinition.CreateDigitalAlarm(TextBoxMailSubject.Text, sensor, expected, TextBoxMailContent.Text);
-                        dbContext.AlarmDefinitions.Add(alarm);
-                    }
-                    else
-                    {
-                        // Can't update Digital expected value.
-                    }
-                }
-
-                await dbContext.SaveChangesAsync();
-                await LoadDefinitionsAsync();
-                ClearInputs();
-                MessageBox.Show("Alarm kaydedildi.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Hata: {ex.Message}");
+                MessageBox.Show($"Silme hatası: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+    }
 
-        private void DuzenleToolStipMenuItem_Click(object? sender, EventArgs e)
-        {
-            // Already handled by Selection? Yes.
-        }
-
-        private async void SilToolStripMenuItem_Click(object? sender, EventArgs e)
-        {
-             if (_selectedId.HasValue && MessageBox.Show("Silmek istediğinize emin misiniz?", "Onay", MessageBoxButtons.YesNo) == DialogResult.Yes)
-             {
-                 try
-                 {
-                    using var scope = _scopeFactory.CreateScope();
-                    var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                    var alarm = await dbContext.AlarmDefinitions.FindAsync(_selectedId.Value);
-                    if (alarm != null)
-                    {
-                        dbContext.AlarmDefinitions.Remove(alarm);
-                        await dbContext.SaveChangesAsync();
-                        await LoadDefinitionsAsync();
-                        ClearInputs();
-                    }
-                 }
-                 catch (Exception ex)
-                 {
-                     MessageBox.Show($"Silme hatası: {ex.Message}");
-                 }
-             }
-        }
+    public class AlarmDisplayModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = "";
+        public string AlarmUsers { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Type { get; set; } = "";
+        public string Priority { get; set; } = "";
+        public string Status { get; set; } = "";
     }
 }

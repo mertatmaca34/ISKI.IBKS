@@ -52,6 +52,11 @@ public class AlarmUserSubscriptionEntityTypeConfiguration : IEntityTypeConfigura
         builder.HasIndex(s => new { s.AlarmDefinitionId, s.AlarmUserId }).IsUnique();
         builder.HasIndex(s => s.IsActive);
 
+        builder.HasOne(s => s.AlarmUser)
+               .WithMany()
+               .HasForeignKey(s => s.AlarmUserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
         builder.ToTable("AlarmUserSubscriptions");
     }
 }

@@ -26,21 +26,31 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
             
             Load += MailStatementsPage_Load;
             ComboBoxSelectedUser.SelectedIndexChanged += ComboBoxSelectedUser_SelectedIndexChanged;
-            DataGridViewMailStatements.CellContentClick += DataGridViewMailStatements_CellContentClick;
+            
+            // Standard Checkbox handling pattern
+            DataGridViewMailStatements.CurrentCellDirtyStateChanged += DataGridViewMailStatements_CurrentCellDirtyStateChanged;
+            DataGridViewMailStatements.CellValueChanged += DataGridViewMailStatements_CellValueChanged;
         }
 
         public MailStatementsPage()
         {
             InitializeComponent();
+            _scopeFactory = null!;
         }
 
         private async void MailStatementsPage_Load(object? sender, EventArgs e)
         {
             if (_scopeFactory == null) return;
-            await LoadUsersAsync();
             
-            // Adjust Grid Columns if needed
-            // ComboBoxSec is the CheckBoxColumn. 
+            // Allow checkbox interaction
+            DataGridViewMailStatements.ReadOnly = false;
+            foreach (DataGridViewColumn col in DataGridViewMailStatements.Columns)
+            {
+                if (col.Name == "ComboBoxSec") col.ReadOnly = false;
+                else col.ReadOnly = true; 
+            }
+
+            await LoadUsersAsync();
         }
 
         private async Task LoadUsersAsync()
@@ -80,6 +90,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
         {
             try
             {
+                // Temporarily detach event to prevent firing during load
+                DataGridViewMailStatements.CellValueChanged -= DataGridViewMailStatements_CellValueChanged;
+
                 using var scope = _scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
                 
@@ -87,62 +100,112 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
                 var subs = await dbContext.AlarmUserSubscriptions.Where(s => s.AlarmUserId == userId && s.IsActive).ToListAsync();
                 var subIds = subs.Select(s => s.AlarmDefinitionId).ToHashSet();
 
-                var list = alarms.Select(a => new SubscriptionViewModel
+                // Use BindingList for better two-way binding support
+                var list = new BindingList<SubscriptionViewModel>(alarms.Select(a => new SubscriptionViewModel
                 {
                     AlarmId = a.Id,
-                    SensorName = a.SensorName, // Parametre
-                    AlarmName = a.Name, // Durum/Ad
+                    SensorName = a.SensorName, 
+                    AlarmName = a.Name,
                     IsSelected = subIds.Contains(a.Id)
-                }).ToList();
+                }).ToList());
 
+                DataGridViewMailStatements.AutoGenerateColumns = false;
                 DataGridViewMailStatements.DataSource = list;
                 
                 // Map columns
-                // "ComboBoxSec" is the checkbox column name in Designer.
-                // We map IsSelected to it.
-                // The DataSource binding might AutoGenerate columns.
-                // We should ensure DataPropertyName of ComboBoxSec is "IsSelected".
-                // Since we can't edit Designer, we set it here.
                 if (DataGridViewMailStatements.Columns.Contains("ComboBoxSec"))
                 {
                     DataGridViewMailStatements.Columns["ComboBoxSec"].DataPropertyName = "IsSelected";
+                    DataGridViewMailStatements.Columns["ComboBoxSec"].ReadOnly = false; 
                 }
                 
-                DataGridViewMailStatements.Columns["AlarmId"].Visible = false;
-                DataGridViewMailStatements.Columns["SensorName"].HeaderText = "Parametre";
-                DataGridViewMailStatements.Columns["AlarmName"].HeaderText = "Alarm Adı";
-                // ComboBoxSec (Seç) should be visible.
+                // Add hidden columns for IDs if not present 
+                if (!DataGridViewMailStatements.Columns.Contains("AlarmId"))
+                {
+                    DataGridViewMailStatements.Columns.Add(new DataGridViewTextBoxColumn 
+                    { 
+                        Name = "AlarmId", 
+                        DataPropertyName = "AlarmId",
+                        Visible = false 
+                    });
+                }
+                
+                if (!DataGridViewMailStatements.Columns.Contains("SensorName"))
+                {
+                     DataGridViewMailStatements.Columns.Add(new DataGridViewTextBoxColumn 
+                    { 
+                        Name = "SensorName", 
+                        DataPropertyName = "SensorName",
+                        HeaderText = "Parametre",
+                        ReadOnly = true
+                    });
+                }
+                
+                if (!DataGridViewMailStatements.Columns.Contains("AlarmName"))
+                {
+                     DataGridViewMailStatements.Columns.Add(new DataGridViewTextBoxColumn 
+                    { 
+                        Name = "AlarmName", 
+                        DataPropertyName = "AlarmName",
+                        HeaderText = "Alarm Adı",
+                        ReadOnly = true
+                    });
+                }
+
+                 if (DataGridViewMailStatements.Columns.Contains("SensorName")) DataGridViewMailStatements.Columns["SensorName"].HeaderText = "Parametre";
+                 if (DataGridViewMailStatements.Columns.Contains("AlarmName")) DataGridViewMailStatements.Columns["AlarmName"].HeaderText = "Alarm Adı";
             }
             catch (Exception ex)
             {
                  MessageBox.Show($"Abonelikler yüklenirken hata: {ex.Message}");
             }
+            finally
+            {
+                // Re-attach event
+                DataGridViewMailStatements.CellValueChanged += DataGridViewMailStatements_CellValueChanged;
+            }
         }
 
-        private async void DataGridViewMailStatements_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        private void DataGridViewMailStatements_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
+        {
+            if (DataGridViewMailStatements.IsCurrentCellDirty)
+            {
+                // This triggers the CellValueChanged event immediately when checkbox is clicked
+                DataGridViewMailStatements.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private async void DataGridViewMailStatements_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             if (_selectedUserId == null) return;
             if (e.RowIndex < 0) return;
 
+            // Only act if the checkbox column changed
             if (DataGridViewMailStatements.Columns[e.ColumnIndex].Name == "ComboBoxSec")
             {
                 var row = DataGridViewMailStatements.Rows[e.RowIndex];
                 var item = (SubscriptionViewModel)row.DataBoundItem;
-                bool newValue = !item.IsSelected; // Toggle
                 
-                // Update DB immediately
+                // Item is already updated by binding thanks to CommitEdit
+                bool isSelected = item.IsSelected;
+                
                 try
                 {
                     using var scope = _scopeFactory.CreateScope();
                     var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
                     
-                    if (newValue)
+                    var alarmName = item.AlarmName;
+                    var userName = ComboBoxSelectedUser.Text; // Assuming DisplayMember is FullName
+                    
+                    if (isSelected)
                     {
                         // Add
                         if (!await dbContext.AlarmUserSubscriptions.AnyAsync(s => s.AlarmUserId == _selectedUserId && s.AlarmDefinitionId == item.AlarmId))
                         {
                             dbContext.AlarmUserSubscriptions.Add(new AlarmUserSubscription(item.AlarmId, _selectedUserId.Value));
                             await dbContext.SaveChangesAsync();
+                            
+                            MessageBox.Show($"'{alarmName}' alarmı '{userName}' kullanıcısına başarıyla tanımlandı.", "İşlem Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                     else
@@ -153,17 +216,17 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
                         {
                             dbContext.AlarmUserSubscriptions.Remove(sub);
                             await dbContext.SaveChangesAsync();
+                            
+                            MessageBox.Show($"'{alarmName}' alarmı '{userName}' kullanıcısından kaldırıldı.", "İşlem Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
-
-                    // Update UI model
-                    item.IsSelected = newValue;
-                    DataGridViewMailStatements.RefreshEdit(); // Force refresh checkbox
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"İşlem hatası: {ex.Message}");
-                    // Revert UI check if needed, but Grid handles check state display via value.
+                    // Revert UI if persistence failed? 
+                    // Ideally yes, but keeping it simple for now. 
+                    // Could detach event, toggle back, reattach.
                 }
             }
         }

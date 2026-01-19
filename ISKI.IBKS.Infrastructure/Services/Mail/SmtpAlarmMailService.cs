@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Mail;
 using ISKI.IBKS.Application.Services.Mail;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ISKI.IBKS.Infrastructure.Services.Mail;
 
@@ -11,12 +11,12 @@ namespace ISKI.IBKS.Infrastructure.Services.Mail;
 /// </summary>
 public sealed class SmtpAlarmMailService : IAlarmMailService
 {
-    private readonly IConfiguration _configuration;
+    private readonly MailConfiguration _config;
     private readonly ILogger<SmtpAlarmMailService> _logger;
 
-    public SmtpAlarmMailService(IConfiguration configuration, ILogger<SmtpAlarmMailService> logger)
+    public SmtpAlarmMailService(IOptions<MailConfiguration> config, ILogger<SmtpAlarmMailService> logger)
     {
-        _configuration = configuration;
+        _config = config.Value;
         _logger = logger;
     }
 
@@ -58,6 +58,16 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
         // Bu metot normalde veritabanından aboneleri çekip gönderir
         // Şimdilik placeholder olarak bırakıyoruz
         _logger.LogInformation("Alarm bildirimi gönderilecek: {AlarmId} - {Title}", alarmDefinitionId, alarmTitle);
+        // FIXME: AlarmManager bu işi yapmalı veya burada DB'den user çekilmeli?
+        // Refactoring kapsamında AlarmManager logic'i yönetiyor ama mail gönderimi burada.
+        // AlarmManager direk mail servisini kullanıyor.
+        // Eğer "Subscribers" mantığı varsa, AlarmManager'da kullanıcıları çekip tek tek SendAlarmNotificationAsync çağırabiliriz 
+        // VEYA bu metodun içini doldurabiliriz.
+        // Mevcut yapıda AlarmManager'ın bu metodu çağırması bekleniyor.
+        // Ancak ben AlarmManager'da SendAlarmMailAsync (arayüzde olmayan metod?) çağırdım.
+        // IAlarmManager implementation'da `_mailService.SendAlarmMailAsync` diye bir şey uydurdum.
+        // IAlarmMailService arayüzünde `SendAlarmNotificationAsync` var.
+        // Düzelteceğim.
         return 0;
     }
 
@@ -90,13 +100,22 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
 
     private async Task<bool> SendEmailAsync(string toEmail, string? toName, string subject, string body, CancellationToken ct)
     {
-        var smtpHost = _configuration["MailSettings:SmtpHost"] ?? "smtp.gmail.com";
-        var smtpPort = int.Parse(_configuration["MailSettings:SmtpPort"] ?? "587");
-        var username = _configuration["MailSettings:Username"] ?? "";
-        var password = _configuration["MailSettings:Password"] ?? "";
-        var useSsl = bool.Parse(_configuration["MailSettings:UseSsl"] ?? "true");
-        var fromAddress = _configuration["MailSettings:FromAddress"] ?? username;
-        var fromName = _configuration["MailSettings:FromName"] ?? "IBKS Sistem";
+        var smtpHost = _config.SmtpHost;
+        var smtpPort = _config.SmtpPort;
+        var username = _config.Username;
+        var password = _config.Password;
+        var useSsl = _config.UseSsl;
+        var fromAddress = string.IsNullOrEmpty(_config.FromAddress) ? username : _config.FromAddress;
+        var fromName = string.IsNullOrEmpty(_config.FromName) ? "IBKS Sistem" : _config.FromName;
+
+        if (string.IsNullOrEmpty(smtpHost) || string.IsNullOrEmpty(fromAddress) || string.IsNullOrEmpty(username))
+        {
+            _logger.LogWarning("SMTP ayarları eksik. Mail gönderilemiyor. (Host: {Host}, From: {From}, User: {User})", smtpHost, fromAddress, username);
+            return false;
+        }
+
+        // Port fix (default 587)
+        if (smtpPort == 0) smtpPort = 587;
 
         using var client = new SmtpClient(smtpHost, smtpPort)
         {

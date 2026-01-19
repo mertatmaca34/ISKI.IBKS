@@ -35,6 +35,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             ButtonApiSettings = new ToolStripMenuItem();
             ButtonPlcSettings = new ToolStripMenuItem();
             ButtonCalibrationSettings = new ToolStripMenuItem();
+            ButtonMailServerSettings = new ToolStripMenuItem();
             PanelContent = new Panel();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -42,7 +43,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             // menuStrip1
             // 
             menuStrip1.BackColor = Color.White;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ButtonStationSettings, ButtonApiSettings, ButtonPlcSettings, ButtonCalibrationSettings });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ButtonStationSettings, ButtonApiSettings, ButtonPlcSettings, ButtonCalibrationSettings, ButtonMailServerSettings });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1170, 56);
@@ -85,6 +86,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             ButtonCalibrationSettings.Size = new Size(181, 52);
             ButtonCalibrationSettings.Text = "Kalibrasyon Ayarları";
             // 
+            // ButtonMailServerSettings
+            // 
+            ButtonMailServerSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonMailServerSettings.Image = Properties.Resources.mail_server48px;
+            ButtonMailServerSettings.ImageScaling = ToolStripItemImageScaling.None;
+            ButtonMailServerSettings.Name = "ButtonMailServerSettings";
+            ButtonMailServerSettings.Size = new Size(173, 52);
+            ButtonMailServerSettings.Text = "Mail Sunucu Ayarları";
+            // 
             // PanelContent
             // 
             PanelContent.Dock = DockStyle.Fill;
@@ -116,6 +126,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
         private ToolStripMenuItem ButtonApiSettings;
         private ToolStripMenuItem ButtonPlcSettings;
         private ToolStripMenuItem ButtonCalibrationSettings;
+        private ToolStripMenuItem ButtonMailServerSettings;
         private Panel PanelContent;
     }
 }

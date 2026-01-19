@@ -43,13 +43,17 @@ public sealed class AlarmUser : AuditableEntity<Guid>
         ReceiveEmailNotifications = true;
     }
 
-    public void Update(string fullName, string email, string? phoneNumber, string? department, string? title)
+    public void Update(string fullName, string email, string? phoneNumber, string? department, string? title,
+        bool isActive, bool receiveEmailNotifications, AlarmPriority minimumPriorityLevel)
     {
         FullName = fullName;
         Email = email;
         PhoneNumber = phoneNumber;
         Department = department;
         Title = title;
+        IsActive = isActive;
+        ReceiveEmailNotifications = receiveEmailNotifications;
+        MinimumPriorityLevel = minimumPriorityLevel;
     }
 
     public void Deactivate() => IsActive = false;
@@ -70,6 +74,7 @@ public sealed class AlarmUserSubscription : Entity<Guid>
 {
     public Guid AlarmDefinitionId { get; private set; }
     public Guid AlarmUserId { get; private set; }
+    public AlarmUser AlarmUser { get; private set; } = null!;
     public bool IsActive { get; private set; } = true;
 
     private AlarmUserSubscription() { }

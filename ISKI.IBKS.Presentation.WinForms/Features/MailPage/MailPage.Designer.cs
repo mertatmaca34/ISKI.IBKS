@@ -35,7 +35,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             ButtonMailStatements = new ToolStripMenuItem();
             ButtonMailUsers = new ToolStripMenuItem();
             ButtonEditMailStatements = new ToolStripMenuItem();
-            ButtonMailServerSettings = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -50,7 +49,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             // menuStrip1
             // 
             menuStrip1.BackColor = Color.White;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ButtonMailStatements, ButtonMailUsers, ButtonEditMailStatements, ButtonMailServerSettings });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ButtonMailStatements, ButtonMailUsers, ButtonEditMailStatements });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1170, 56);
@@ -86,15 +85,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
             ButtonEditMailStatements.Size = new Size(203, 52);
             ButtonEditMailStatements.Text = "MAİL DURUMU DÜZENLE";
             // 
-            // ButtonMailServerSettings
-            // 
-            ButtonMailServerSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            ButtonMailServerSettings.Image = Properties.Resources.mail_server48px;
-            ButtonMailServerSettings.ImageScaling = ToolStripItemImageScaling.None;
-            ButtonMailServerSettings.Name = "ButtonMailServerSettings";
-            ButtonMailServerSettings.Size = new Size(173, 52);
-            ButtonMailServerSettings.Text = "SUNUCU AYARLARI";
-            // 
             // MailPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -118,6 +108,5 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage
         private ToolStripMenuItem ButtonMailStatements;
         private ToolStripMenuItem ButtonMailUsers;
         private ToolStripMenuItem ButtonEditMailStatements;
-        private ToolStripMenuItem ButtonMailServerSettings;
     }
 }

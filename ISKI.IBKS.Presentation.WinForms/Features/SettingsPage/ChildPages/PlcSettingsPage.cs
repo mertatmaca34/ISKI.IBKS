@@ -29,6 +29,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
         public PlcSettingsPage()
         {
             InitializeComponent();
+            _scopeFactory = null!;
         }
 
         private async void PlcSettingsPage_Load(object? sender, EventArgs e)

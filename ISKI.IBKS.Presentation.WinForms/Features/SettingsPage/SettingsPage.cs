@@ -23,6 +23,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             ButtonApiSettings.Click += (s, e) => LoadControl<ApiSettingsPage>();
             ButtonPlcSettings.Click += (s, e) => LoadControl<PlcSettingsPage>();
             ButtonCalibrationSettings.Click += (s, e) => LoadControl<CalibrationSettingsPage>();
+            ButtonMailServerSettings.Click += (s, e) => LoadControl<MailServerSettingsPage>();
         }
 
         private void LoadControl<T>() where T : UserControl

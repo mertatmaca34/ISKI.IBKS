@@ -7,7 +7,11 @@ using ISKI.IBKS.Application.Features.Plc.Abstractions;
 using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 using ISKI.IBKS.Application.Features.StationStatus.Services;
 using ISKI.IBKS.Application.Options;
-using ISKI.IBKS.Infrastructure.Application.Features.StationStatus;
+using ISKI.IBKS.Infrastructure.Application.Features.StationStatus; // Restored
+using ISKI.IBKS.Infrastructure.Services.DataCollection;
+using ISKI.IBKS.Infrastructure.Services.Mail;
+using ISKI.IBKS.Application.Features.Alarms;
+using ISKI.IBKS.Infrastructure.Services.Alarms;
 using ISKI.IBKS.Infrastructure.IoT.Plc;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
 using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
@@ -36,6 +40,7 @@ public static class DependencyInjection
         services.Configure<PlcSettings>(configuration.GetSection("Plc"));
         services.Configure<SAISOptions>(configuration.GetSection("SAIS"));
         services.Configure<UiMappingOptions>(configuration.GetSection("UiMapping"));
+        services.Configure<MailConfiguration>(configuration.GetSection("MailSettings"));
         
         // Persistence
         services.AddPersistence(configuration);
@@ -85,6 +90,7 @@ public static class DependencyInjection
 
         // Application Services
         services.AddScoped<IAlarmMailService, ISKI.IBKS.Infrastructure.Services.Mail.SmtpAlarmMailService>();
+        services.AddScoped<IAlarmManager, AlarmManager>();
         services.AddSingleton<IDataCollectionService, ISKI.IBKS.Infrastructure.Services.DataCollection.DataCollectionService>();
 
         return services;

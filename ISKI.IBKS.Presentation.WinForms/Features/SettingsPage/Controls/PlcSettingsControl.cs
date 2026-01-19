@@ -5,16 +5,16 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
 {
     public partial class PlcSettingsControl : UserControl
     {
-        private TextBox TextBoxPlcIp;
-        private NumericUpDown NumericUpDownRack;
-        private NumericUpDown NumericUpDownSlot;
-        private Button ButtonTestPlc;
-        private Label LabelPlcStatus;
-        private Button ButtonSavePlc;
-        private Label LabelPlcIp;
-        private Label LabelRack;
-        private Label LabelSlot;
-        private GroupBox groupBoxPlcConnection;
+        private TextBox TextBoxPlcIp = null!;
+        private NumericUpDown NumericUpDownRack = null!;
+        private NumericUpDown NumericUpDownSlot = null!;
+        private Button ButtonTestPlc = null!;
+        private Label LabelPlcStatus = null!;
+        private Button ButtonSavePlc = null!;
+        private Label LabelPlcIp = null!;
+        private Label LabelRack = null!;
+        private Label LabelSlot = null!;
+        private GroupBox groupBoxPlcConnection = null!;
 
         private readonly string _configPath;
 

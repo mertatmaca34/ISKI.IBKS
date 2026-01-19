@@ -32,11 +32,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea3 = new ChartArea();
-            Legend legend3 = new Legend();
-            Series series5 = new Series();
-            Series series6 = new Series();
-            Title title3 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Legend legend1 = new Legend();
+            Series series1 = new Series();
+            Series series2 = new Series();
+            Title title1 = new Title();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             tableLayoutPanel23 = new TableLayoutPanel();
@@ -91,14 +91,14 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel6 = new TableLayoutPanel();
             label3 = new Label();
             LabelAkmLastCalibration = new Label();
-            titleBarControl1 = new Common.Controls.TitleBarControl();
+            titleBarControl1 = new TitleBarControl();
             tableLayoutPanel27 = new TableLayoutPanel();
-            TitleBarControlActiveCalibration = new Common.Controls.TitleBarControl();
-            CalibrationStatusBarZero = new Controls.CalibrationStatusBarZeroControl();
-            CalibrationStatusBarSpan = new Controls.CalibrationStatusBarSpanControl();
+            TitleBarControlActiveCalibration = new TitleBarControl();
+            CalibrationStatusBarZero = new CalibrationStatusBarZeroControl();
+            CalibrationStatusBarSpan = new CalibrationStatusBarSpanControl();
             tableLayoutPanel28 = new TableLayoutPanel();
-            TitleBarControlTimeRemain = new Common.Controls.TitleBarControl();
-            titleBarControl3 = new Common.Controls.TitleBarControl();
+            TitleBarControlTimeRemain = new TitleBarControl();
+            titleBarControl3 = new TitleBarControl();
             tableLayoutPanel29 = new TableLayoutPanel();
             ChartCalibration = new Chart();
             tableLayoutPanel7 = new TableLayoutPanel();
@@ -168,9 +168,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
             tableLayoutPanel1.Size = new Size(1170, 677);
             tableLayoutPanel1.TabIndex = 0;
             // 
@@ -193,7 +193,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.Size = new Size(569, 306);
+            tableLayoutPanel2.Size = new Size(569, 242);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel23
@@ -203,12 +203,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel23.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel23.Controls.Add(tableLayoutPanel24, 0, 0);
             tableLayoutPanel23.Dock = DockStyle.Fill;
-            tableLayoutPanel23.Location = new Point(3, 108);
+            tableLayoutPanel23.Location = new Point(3, 92);
             tableLayoutPanel23.Name = "tableLayoutPanel23";
             tableLayoutPanel23.RowCount = 1;
             tableLayoutPanel23.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel23.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel23.Size = new Size(563, 61);
+            tableLayoutPanel23.Size = new Size(563, 45);
             tableLayoutPanel23.TabIndex = 7;
             // 
             // tableLayoutPanel24
@@ -233,7 +233,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel24.Name = "tableLayoutPanel24";
             tableLayoutPanel24.RowCount = 1;
             tableLayoutPanel24.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel24.Size = new Size(561, 59);
+            tableLayoutPanel24.Size = new Size(561, 43);
             tableLayoutPanel24.TabIndex = 0;
             // 
             // panel16
@@ -243,7 +243,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel16.Location = new Point(0, 0);
             panel16.Margin = new Padding(0);
             panel16.Name = "panel16";
-            panel16.Size = new Size(8, 59);
+            panel16.Size = new Size(8, 43);
             panel16.TabIndex = 2;
             // 
             // tableLayoutPanel25
@@ -258,15 +258,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel25.RowCount = 2;
             tableLayoutPanel25.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel25.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel25.Size = new Size(170, 53);
+            tableLayoutPanel25.Size = new Size(170, 37);
             tableLayoutPanel25.TabIndex = 2;
             // 
             // label21
             // 
             label21.Anchor = AnchorStyles.Top;
             label21.AutoSize = true;
-            label21.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label21.Location = new Point(23, 26);
+            label21.Font = new Font("Arial", 8.25F);
+            label21.Location = new Point(23, 18);
             label21.Name = "label21";
             label21.Size = new Size(124, 14);
             label21.TabIndex = 2;
@@ -276,8 +276,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label22.Anchor = AnchorStyles.Bottom;
             label22.AutoSize = true;
-            label22.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label22.Location = new Point(69, 8);
+            label22.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            label22.Location = new Point(69, 0);
             label22.Name = "label22";
             label22.Size = new Size(32, 18);
             label22.TabIndex = 2;
@@ -289,10 +289,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonKoiZero.Dock = DockStyle.Fill;
             ButtonKoiZero.FlatAppearance.BorderSize = 0;
             ButtonKoiZero.ForeColor = Color.White;
-            ButtonKoiZero.Location = new Point(395, 15);
-            ButtonKoiZero.Margin = new Padding(15);
+            ButtonKoiZero.Location = new Point(385, 5);
+            ButtonKoiZero.Margin = new Padding(5);
             ButtonKoiZero.Name = "ButtonKoiZero";
-            ButtonKoiZero.Size = new Size(151, 29);
+            ButtonKoiZero.Size = new Size(171, 33);
             ButtonKoiZero.TabIndex = 4;
             ButtonKoiZero.Text = "ZERO";
             ButtonKoiZero.UseVisualStyleBackColor = false;
@@ -302,18 +302,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             panel19.Anchor = AnchorStyles.None;
             panel19.BackColor = Color.FromArgb(235, 235, 235);
-            panel19.Location = new Point(188, 4);
+            panel19.Location = new Point(188, 3);
             panel19.Name = "panel19";
-            panel19.Size = new Size(1, 50);
+            panel19.Size = new Size(1, 37);
             panel19.TabIndex = 2;
             // 
             // panel20
             // 
             panel20.Anchor = AnchorStyles.None;
             panel20.BackColor = Color.FromArgb(235, 235, 235);
-            panel20.Location = new Point(374, 4);
+            panel20.Location = new Point(374, 3);
             panel20.Name = "panel20";
-            panel20.Size = new Size(1, 50);
+            panel20.Size = new Size(1, 37);
             panel20.TabIndex = 2;
             // 
             // tableLayoutPanel26
@@ -328,15 +328,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel26.RowCount = 2;
             tableLayoutPanel26.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel26.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel26.Size = new Size(170, 53);
+            tableLayoutPanel26.Size = new Size(170, 37);
             tableLayoutPanel26.TabIndex = 3;
             // 
             // label23
             // 
             label23.Anchor = AnchorStyles.Top;
             label23.AutoSize = true;
-            label23.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label23.Location = new Point(28, 26);
+            label23.Font = new Font("Arial", 8.25F);
+            label23.Location = new Point(28, 18);
             label23.Name = "label23";
             label23.Size = new Size(114, 14);
             label23.TabIndex = 2;
@@ -346,8 +346,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             LabelKoiLastCalibration.Anchor = AnchorStyles.Bottom;
             LabelKoiLastCalibration.AutoSize = true;
-            LabelKoiLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelKoiLastCalibration.Location = new Point(78, 8);
+            LabelKoiLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            LabelKoiLastCalibration.Location = new Point(78, 0);
             LabelKoiLastCalibration.Name = "LabelKoiLastCalibration";
             LabelKoiLastCalibration.Size = new Size(13, 18);
             LabelKoiLastCalibration.TabIndex = 2;
@@ -360,12 +360,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel19.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel19.Controls.Add(tableLayoutPanel20, 0, 0);
             tableLayoutPanel19.Dock = DockStyle.Fill;
-            tableLayoutPanel19.Location = new Point(3, 242);
+            tableLayoutPanel19.Location = new Point(3, 194);
             tableLayoutPanel19.Name = "tableLayoutPanel19";
             tableLayoutPanel19.RowCount = 1;
             tableLayoutPanel19.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel19.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel19.Size = new Size(563, 61);
+            tableLayoutPanel19.Size = new Size(563, 45);
             tableLayoutPanel19.TabIndex = 6;
             // 
             // tableLayoutPanel20
@@ -399,7 +399,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel20.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel20.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel20.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel20.Size = new Size(561, 59);
+            tableLayoutPanel20.Size = new Size(561, 43);
             tableLayoutPanel20.TabIndex = 0;
             // 
             // ButtonIletkenlikSpan
@@ -408,10 +408,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonIletkenlikSpan.Dock = DockStyle.Fill;
             ButtonIletkenlikSpan.FlatAppearance.BorderSize = 0;
             ButtonIletkenlikSpan.ForeColor = Color.White;
-            ButtonIletkenlikSpan.Location = new Point(485, 15);
-            ButtonIletkenlikSpan.Margin = new Padding(10, 15, 15, 15);
+            ButtonIletkenlikSpan.Location = new Point(480, 5);
+            ButtonIletkenlikSpan.Margin = new Padding(5);
             ButtonIletkenlikSpan.Name = "ButtonIletkenlikSpan";
-            ButtonIletkenlikSpan.Size = new Size(61, 29);
+            ButtonIletkenlikSpan.Size = new Size(76, 33);
             ButtonIletkenlikSpan.TabIndex = 5;
             ButtonIletkenlikSpan.Text = "SPAN";
             ButtonIletkenlikSpan.UseVisualStyleBackColor = false;
@@ -424,7 +424,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel14.Location = new Point(0, 0);
             panel14.Margin = new Padding(0);
             panel14.Name = "panel14";
-            panel14.Size = new Size(8, 59);
+            panel14.Size = new Size(8, 43);
             panel14.TabIndex = 2;
             // 
             // tableLayoutPanel21
@@ -439,15 +439,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel21.RowCount = 2;
             tableLayoutPanel21.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel21.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel21.Size = new Size(170, 53);
+            tableLayoutPanel21.Size = new Size(170, 37);
             tableLayoutPanel21.TabIndex = 2;
             // 
             // label17
             // 
             label17.Anchor = AnchorStyles.Top;
             label17.AutoSize = true;
-            label17.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label17.Location = new Point(22, 26);
+            label17.Font = new Font("Arial", 8.25F);
+            label17.Location = new Point(22, 18);
             label17.Name = "label17";
             label17.Size = new Size(125, 14);
             label17.TabIndex = 2;
@@ -457,8 +457,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label18.Anchor = AnchorStyles.Bottom;
             label18.AutoSize = true;
-            label18.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label18.Location = new Point(49, 8);
+            label18.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            label18.Location = new Point(49, 0);
             label18.Name = "label18";
             label18.Size = new Size(72, 18);
             label18.TabIndex = 2;
@@ -470,10 +470,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonIletkenlikZero.Dock = DockStyle.Fill;
             ButtonIletkenlikZero.FlatAppearance.BorderSize = 0;
             ButtonIletkenlikZero.ForeColor = Color.White;
-            ButtonIletkenlikZero.Location = new Point(395, 15);
-            ButtonIletkenlikZero.Margin = new Padding(15, 15, 10, 15);
+            ButtonIletkenlikZero.Location = new Point(385, 5);
+            ButtonIletkenlikZero.Margin = new Padding(5);
             ButtonIletkenlikZero.Name = "ButtonIletkenlikZero";
-            ButtonIletkenlikZero.Size = new Size(60, 29);
+            ButtonIletkenlikZero.Size = new Size(75, 33);
             ButtonIletkenlikZero.TabIndex = 4;
             ButtonIletkenlikZero.Text = "ZERO";
             ButtonIletkenlikZero.UseVisualStyleBackColor = false;
@@ -485,7 +485,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel15.BackColor = Color.FromArgb(235, 235, 235);
             panel15.Location = new Point(188, 3);
             panel15.Name = "panel15";
-            panel15.Size = new Size(1, 53);
+            panel15.Size = new Size(1, 37);
             panel15.TabIndex = 2;
             // 
             // panel17
@@ -494,7 +494,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel17.BackColor = Color.FromArgb(235, 235, 235);
             panel17.Location = new Point(374, 3);
             panel17.Name = "panel17";
-            panel17.Size = new Size(1, 53);
+            panel17.Size = new Size(1, 37);
             panel17.TabIndex = 2;
             // 
             // tableLayoutPanel22
@@ -509,15 +509,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel22.RowCount = 2;
             tableLayoutPanel22.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel22.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel22.Size = new Size(170, 53);
+            tableLayoutPanel22.Size = new Size(170, 37);
             tableLayoutPanel22.TabIndex = 3;
             // 
             // label19
             // 
             label19.Anchor = AnchorStyles.Top;
             label19.AutoSize = true;
-            label19.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label19.Location = new Point(28, 26);
+            label19.Font = new Font("Arial", 8.25F);
+            label19.Location = new Point(28, 18);
             label19.Name = "label19";
             label19.Size = new Size(114, 14);
             label19.TabIndex = 2;
@@ -527,8 +527,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             LabelIletkenlikLastCalibration.Anchor = AnchorStyles.Bottom;
             LabelIletkenlikLastCalibration.AutoSize = true;
-            LabelIletkenlikLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelIletkenlikLastCalibration.Location = new Point(78, 8);
+            LabelIletkenlikLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            LabelIletkenlikLastCalibration.Location = new Point(78, 0);
             LabelIletkenlikLastCalibration.Name = "LabelIletkenlikLastCalibration";
             LabelIletkenlikLastCalibration.Size = new Size(13, 18);
             LabelIletkenlikLastCalibration.TabIndex = 2;
@@ -540,7 +540,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel18.BackColor = Color.FromArgb(235, 235, 235);
             panel18.Location = new Point(469, 3);
             panel18.Name = "panel18";
-            panel18.Size = new Size(1, 53);
+            panel18.Size = new Size(1, 37);
             panel18.TabIndex = 2;
             // 
             // tableLayoutPanel15
@@ -550,12 +550,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel15.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel15.Controls.Add(tableLayoutPanel16, 0, 0);
             tableLayoutPanel15.Dock = DockStyle.Fill;
-            tableLayoutPanel15.Location = new Point(3, 175);
+            tableLayoutPanel15.Location = new Point(3, 143);
             tableLayoutPanel15.Name = "tableLayoutPanel15";
             tableLayoutPanel15.RowCount = 1;
             tableLayoutPanel15.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel15.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel15.Size = new Size(563, 61);
+            tableLayoutPanel15.Size = new Size(563, 45);
             tableLayoutPanel15.TabIndex = 5;
             // 
             // tableLayoutPanel16
@@ -589,7 +589,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel16.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel16.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel16.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel16.Size = new Size(561, 59);
+            tableLayoutPanel16.Size = new Size(561, 43);
             tableLayoutPanel16.TabIndex = 0;
             // 
             // ButtonPhSpan
@@ -598,10 +598,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonPhSpan.Dock = DockStyle.Fill;
             ButtonPhSpan.FlatAppearance.BorderSize = 0;
             ButtonPhSpan.ForeColor = Color.White;
-            ButtonPhSpan.Location = new Point(485, 15);
-            ButtonPhSpan.Margin = new Padding(10, 15, 15, 15);
+            ButtonPhSpan.Location = new Point(480, 5);
+            ButtonPhSpan.Margin = new Padding(5);
             ButtonPhSpan.Name = "ButtonPhSpan";
-            ButtonPhSpan.Size = new Size(61, 29);
+            ButtonPhSpan.Size = new Size(76, 33);
             ButtonPhSpan.TabIndex = 5;
             ButtonPhSpan.Text = "SPAN";
             ButtonPhSpan.UseVisualStyleBackColor = false;
@@ -614,7 +614,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel10.Location = new Point(0, 0);
             panel10.Margin = new Padding(0);
             panel10.Name = "panel10";
-            panel10.Size = new Size(8, 59);
+            panel10.Size = new Size(8, 43);
             panel10.TabIndex = 2;
             // 
             // tableLayoutPanel17
@@ -629,15 +629,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel17.RowCount = 2;
             tableLayoutPanel17.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel17.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel17.Size = new Size(170, 53);
+            tableLayoutPanel17.Size = new Size(170, 37);
             tableLayoutPanel17.TabIndex = 2;
             // 
             // label13
             // 
             label13.Anchor = AnchorStyles.Top;
             label13.AutoSize = true;
-            label13.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label13.Location = new Point(36, 26);
+            label13.Font = new Font("Arial", 8.25F);
+            label13.Location = new Point(36, 18);
             label13.Name = "label13";
             label13.Size = new Size(98, 14);
             label13.TabIndex = 2;
@@ -647,8 +647,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label14.Anchor = AnchorStyles.Bottom;
             label14.AutoSize = true;
-            label14.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label14.Location = new Point(71, 8);
+            label14.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            label14.Location = new Point(71, 0);
             label14.Name = "label14";
             label14.Size = new Size(27, 18);
             label14.TabIndex = 2;
@@ -660,10 +660,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonPhZero.Dock = DockStyle.Fill;
             ButtonPhZero.FlatAppearance.BorderSize = 0;
             ButtonPhZero.ForeColor = Color.White;
-            ButtonPhZero.Location = new Point(395, 15);
-            ButtonPhZero.Margin = new Padding(15, 15, 10, 15);
+            ButtonPhZero.Location = new Point(385, 5);
+            ButtonPhZero.Margin = new Padding(5);
             ButtonPhZero.Name = "ButtonPhZero";
-            ButtonPhZero.Size = new Size(60, 29);
+            ButtonPhZero.Size = new Size(75, 33);
             ButtonPhZero.TabIndex = 4;
             ButtonPhZero.Text = "ZERO";
             ButtonPhZero.UseVisualStyleBackColor = false;
@@ -673,18 +673,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             panel11.Anchor = AnchorStyles.None;
             panel11.BackColor = Color.FromArgb(235, 235, 235);
-            panel11.Location = new Point(188, 4);
+            panel11.Location = new Point(188, 3);
             panel11.Name = "panel11";
-            panel11.Size = new Size(1, 50);
+            panel11.Size = new Size(1, 37);
             panel11.TabIndex = 2;
             // 
             // panel12
             // 
             panel12.Anchor = AnchorStyles.None;
             panel12.BackColor = Color.FromArgb(235, 235, 235);
-            panel12.Location = new Point(374, 4);
+            panel12.Location = new Point(374, 3);
             panel12.Name = "panel12";
-            panel12.Size = new Size(1, 50);
+            panel12.Size = new Size(1, 37);
             panel12.TabIndex = 2;
             // 
             // tableLayoutPanel18
@@ -699,15 +699,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel18.RowCount = 2;
             tableLayoutPanel18.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel18.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel18.Size = new Size(170, 53);
+            tableLayoutPanel18.Size = new Size(170, 37);
             tableLayoutPanel18.TabIndex = 3;
             // 
             // label15
             // 
             label15.Anchor = AnchorStyles.Top;
             label15.AutoSize = true;
-            label15.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label15.Location = new Point(28, 26);
+            label15.Font = new Font("Arial", 8.25F);
+            label15.Location = new Point(28, 18);
             label15.Name = "label15";
             label15.Size = new Size(114, 14);
             label15.TabIndex = 2;
@@ -717,8 +717,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             LabelPhLastCalibration.Anchor = AnchorStyles.Bottom;
             LabelPhLastCalibration.AutoSize = true;
-            LabelPhLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelPhLastCalibration.Location = new Point(78, 8);
+            LabelPhLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            LabelPhLastCalibration.Location = new Point(78, 0);
             LabelPhLastCalibration.Name = "LabelPhLastCalibration";
             LabelPhLastCalibration.Size = new Size(13, 18);
             LabelPhLastCalibration.TabIndex = 2;
@@ -728,9 +728,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             panel13.Anchor = AnchorStyles.None;
             panel13.BackColor = Color.FromArgb(235, 235, 235);
-            panel13.Location = new Point(469, 4);
+            panel13.Location = new Point(469, 3);
             panel13.Name = "panel13";
-            panel13.Size = new Size(1, 50);
+            panel13.Size = new Size(1, 37);
             panel13.TabIndex = 2;
             // 
             // tableLayoutPanel3
@@ -746,7 +746,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel3.Size = new Size(563, 61);
+            tableLayoutPanel3.Size = new Size(563, 45);
             tableLayoutPanel3.TabIndex = 3;
             // 
             // tableLayoutPanel4
@@ -771,7 +771,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 1;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Size = new Size(561, 59);
+            tableLayoutPanel4.Size = new Size(561, 43);
             tableLayoutPanel4.TabIndex = 0;
             // 
             // panel1
@@ -781,7 +781,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(8, 59);
+            panel1.Size = new Size(8, 43);
             panel1.TabIndex = 2;
             // 
             // tableLayoutPanel5
@@ -796,15 +796,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel5.RowCount = 2;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Size = new Size(170, 53);
+            tableLayoutPanel5.Size = new Size(170, 37);
             tableLayoutPanel5.TabIndex = 2;
             // 
             // label1
             // 
             label1.Anchor = AnchorStyles.Top;
             label1.AutoSize = true;
-            label1.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(37, 26);
+            label1.Font = new Font("Arial", 8.25F);
+            label1.Location = new Point(37, 18);
             label1.Name = "label1";
             label1.Size = new Size(96, 14);
             label1.TabIndex = 2;
@@ -814,8 +814,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label2.Anchor = AnchorStyles.Bottom;
             label2.AutoSize = true;
-            label2.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(66, 8);
+            label2.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            label2.Location = new Point(66, 0);
             label2.Name = "label2";
             label2.Size = new Size(37, 18);
             label2.TabIndex = 2;
@@ -827,10 +827,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             ButtonAkmZero.Dock = DockStyle.Fill;
             ButtonAkmZero.FlatAppearance.BorderSize = 0;
             ButtonAkmZero.ForeColor = Color.White;
-            ButtonAkmZero.Location = new Point(395, 15);
-            ButtonAkmZero.Margin = new Padding(15);
+            ButtonAkmZero.Location = new Point(385, 5);
+            ButtonAkmZero.Margin = new Padding(5);
             ButtonAkmZero.Name = "ButtonAkmZero";
-            ButtonAkmZero.Size = new Size(151, 29);
+            ButtonAkmZero.Size = new Size(171, 33);
             ButtonAkmZero.TabIndex = 4;
             ButtonAkmZero.Text = "ZERO";
             ButtonAkmZero.UseVisualStyleBackColor = false;
@@ -840,18 +840,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.FromArgb(235, 235, 235);
-            panel2.Location = new Point(188, 4);
+            panel2.Location = new Point(188, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1, 50);
+            panel2.Size = new Size(1, 37);
             panel2.TabIndex = 2;
             // 
             // panel3
             // 
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(235, 235, 235);
-            panel3.Location = new Point(374, 4);
+            panel3.Location = new Point(374, 3);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1, 50);
+            panel3.Size = new Size(1, 37);
             panel3.TabIndex = 2;
             // 
             // tableLayoutPanel6
@@ -866,15 +866,15 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel6.RowCount = 2;
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel6.Size = new Size(170, 53);
+            tableLayoutPanel6.Size = new Size(170, 37);
             tableLayoutPanel6.TabIndex = 3;
             // 
             // label3
             // 
             label3.Anchor = AnchorStyles.Top;
             label3.AutoSize = true;
-            label3.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(28, 26);
+            label3.Font = new Font("Arial", 8.25F);
+            label3.Location = new Point(28, 18);
             label3.Name = "label3";
             label3.Size = new Size(114, 14);
             label3.TabIndex = 2;
@@ -884,8 +884,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             LabelAkmLastCalibration.Anchor = AnchorStyles.Bottom;
             LabelAkmLastCalibration.AutoSize = true;
-            LabelAkmLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelAkmLastCalibration.Location = new Point(78, 8);
+            LabelAkmLastCalibration.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            LabelAkmLastCalibration.Location = new Point(78, 0);
             LabelAkmLastCalibration.Name = "LabelAkmLastCalibration";
             LabelAkmLastCalibration.Size = new Size(13, 18);
             LabelAkmLastCalibration.TabIndex = 2;
@@ -918,7 +918,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel27.RowStyles.Add(new RowStyle(SizeType.Percent, 18.75F));
             tableLayoutPanel27.RowStyles.Add(new RowStyle(SizeType.Percent, 18.75F));
             tableLayoutPanel27.RowStyles.Add(new RowStyle(SizeType.Percent, 62.5F));
-            tableLayoutPanel27.Size = new Size(569, 306);
+            tableLayoutPanel27.Size = new Size(569, 242);
             tableLayoutPanel27.TabIndex = 1;
             // 
             // TitleBarControlActiveCalibration
@@ -939,7 +939,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             CalibrationStatusBarZero.Location = new Point(3, 41);
             CalibrationStatusBarZero.Name = "CalibrationStatusBarZero";
             CalibrationStatusBarZero.Padding = new Padding(1);
-            CalibrationStatusBarZero.Size = new Size(563, 44);
+            CalibrationStatusBarZero.Size = new Size(563, 32);
             CalibrationStatusBarZero.TabIndex = 1;
             CalibrationStatusBarZero.ZeroDiff = "-";
             CalibrationStatusBarZero.ZeroMeas = "-";
@@ -950,10 +950,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             CalibrationStatusBarSpan.BackColor = Color.FromArgb(235, 235, 235);
             CalibrationStatusBarSpan.Dock = DockStyle.Fill;
-            CalibrationStatusBarSpan.Location = new Point(3, 91);
+            CalibrationStatusBarSpan.Location = new Point(3, 79);
             CalibrationStatusBarSpan.Name = "CalibrationStatusBarSpan";
             CalibrationStatusBarSpan.Padding = new Padding(1);
-            CalibrationStatusBarSpan.Size = new Size(563, 44);
+            CalibrationStatusBarSpan.Size = new Size(563, 32);
             CalibrationStatusBarSpan.SpanDiff = "-";
             CalibrationStatusBarSpan.SpanMeas = "-";
             CalibrationStatusBarSpan.SpanRef = "-";
@@ -969,7 +969,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel28.Controls.Add(TitleBarControlTimeRemain, 1, 0);
             tableLayoutPanel28.Controls.Add(titleBarControl3, 0, 0);
             tableLayoutPanel28.Dock = DockStyle.Fill;
-            tableLayoutPanel28.Location = new Point(8, 322);
+            tableLayoutPanel28.Location = new Point(8, 258);
             tableLayoutPanel28.Margin = new Padding(8, 0, 8, 0);
             tableLayoutPanel28.Name = "tableLayoutPanel28";
             tableLayoutPanel28.RowCount = 1;
@@ -1009,83 +1009,83 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             tableLayoutPanel29.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel29.Controls.Add(ChartCalibration, 0, 0);
             tableLayoutPanel29.Dock = DockStyle.Fill;
-            tableLayoutPanel29.Location = new Point(8, 362);
+            tableLayoutPanel29.Location = new Point(8, 298);
             tableLayoutPanel29.Margin = new Padding(8);
             tableLayoutPanel29.Name = "tableLayoutPanel29";
             tableLayoutPanel29.RowCount = 1;
             tableLayoutPanel29.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel29.Size = new Size(1154, 307);
+            tableLayoutPanel29.Size = new Size(1154, 371);
             tableLayoutPanel29.TabIndex = 55;
             // 
             // ChartCalibration
             // 
-            chartArea3.Area3DStyle.LightStyle = LightStyle.Realistic;
-            chartArea3.AxisX.InterlacedColor = Color.White;
-            chartArea3.AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
-            chartArea3.AxisX.LineWidth = 3;
-            chartArea3.AxisX.MajorGrid.LineColor = Color.Silver;
-            chartArea3.AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
-            chartArea3.AxisX.ScaleBreakStyle.LineDashStyle = ChartDashStyle.DashDot;
-            chartArea3.AxisX.ScaleBreakStyle.LineWidth = 10;
-            chartArea3.AxisX.ScaleBreakStyle.MaxNumberOfBreaks = 1;
-            chartArea3.AxisY.IsStartedFromZero = false;
-            chartArea3.AxisY.MajorGrid.Interval = 0D;
-            chartArea3.AxisY.MajorGrid.IntervalOffset = 0D;
-            chartArea3.AxisY.MajorGrid.IntervalOffsetType = DateTimeIntervalType.Auto;
-            chartArea3.AxisY.MajorGrid.IntervalType = DateTimeIntervalType.Auto;
-            chartArea3.AxisY.MajorGrid.LineColor = Color.Silver;
-            chartArea3.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
-            chartArea3.AxisY.ScaleBreakStyle.BreakLineStyle = BreakLineStyle.Wave;
-            chartArea3.AxisY.ScaleBreakStyle.CollapsibleSpaceThreshold = 10;
-            chartArea3.AxisY.ScaleBreakStyle.MaxNumberOfBreaks = 1;
-            chartArea3.AxisY.ScaleBreakStyle.Spacing = 5D;
-            chartArea3.AxisY2.Maximum = 10D;
-            chartArea3.AxisY2.Minimum = 5D;
-            chartArea3.AxisY2.ScaleBreakStyle.BreakLineStyle = BreakLineStyle.Wave;
-            chartArea3.AxisY2.ScaleBreakStyle.CollapsibleSpaceThreshold = 10;
-            chartArea3.AxisY2.ScaleBreakStyle.Spacing = 1D;
-            chartArea3.AxisY2.ScaleBreakStyle.StartFromZero = StartFromZero.Yes;
-            chartArea3.BackColor = Color.White;
-            chartArea3.InnerPlotPosition.Auto = false;
-            chartArea3.InnerPlotPosition.Height = 88.59933F;
-            chartArea3.InnerPlotPosition.Width = 94.71543F;
-            chartArea3.InnerPlotPosition.X = 5F;
-            chartArea3.InnerPlotPosition.Y = 2F;
-            chartArea3.Name = "ChartArea1";
-            ChartCalibration.ChartAreas.Add(chartArea3);
+            chartArea1.Area3DStyle.LightStyle = LightStyle.Realistic;
+            chartArea1.AxisX.InterlacedColor = Color.White;
+            chartArea1.AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.LineWidth = 3;
+            chartArea1.AxisX.MajorGrid.LineColor = Color.Silver;
+            chartArea1.AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
+            chartArea1.AxisX.ScaleBreakStyle.LineDashStyle = ChartDashStyle.DashDot;
+            chartArea1.AxisX.ScaleBreakStyle.LineWidth = 10;
+            chartArea1.AxisX.ScaleBreakStyle.MaxNumberOfBreaks = 1;
+            chartArea1.AxisY.IsStartedFromZero = false;
+            chartArea1.AxisY.MajorGrid.Interval = 0D;
+            chartArea1.AxisY.MajorGrid.IntervalOffset = 0D;
+            chartArea1.AxisY.MajorGrid.IntervalOffsetType = DateTimeIntervalType.Auto;
+            chartArea1.AxisY.MajorGrid.IntervalType = DateTimeIntervalType.Auto;
+            chartArea1.AxisY.MajorGrid.LineColor = Color.Silver;
+            chartArea1.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
+            chartArea1.AxisY.ScaleBreakStyle.BreakLineStyle = BreakLineStyle.Wave;
+            chartArea1.AxisY.ScaleBreakStyle.CollapsibleSpaceThreshold = 10;
+            chartArea1.AxisY.ScaleBreakStyle.MaxNumberOfBreaks = 1;
+            chartArea1.AxisY.ScaleBreakStyle.Spacing = 5D;
+            chartArea1.AxisY2.Maximum = 10D;
+            chartArea1.AxisY2.Minimum = 5D;
+            chartArea1.AxisY2.ScaleBreakStyle.BreakLineStyle = BreakLineStyle.Wave;
+            chartArea1.AxisY2.ScaleBreakStyle.CollapsibleSpaceThreshold = 10;
+            chartArea1.AxisY2.ScaleBreakStyle.Spacing = 1D;
+            chartArea1.AxisY2.ScaleBreakStyle.StartFromZero = StartFromZero.Yes;
+            chartArea1.BackColor = Color.White;
+            chartArea1.InnerPlotPosition.Auto = false;
+            chartArea1.InnerPlotPosition.Height = 88.59933F;
+            chartArea1.InnerPlotPosition.Width = 94.71543F;
+            chartArea1.InnerPlotPosition.X = 5F;
+            chartArea1.InnerPlotPosition.Y = 2F;
+            chartArea1.Name = "ChartArea1";
+            ChartCalibration.ChartAreas.Add(chartArea1);
             ChartCalibration.Dock = DockStyle.Fill;
-            legend3.BackColor = Color.WhiteSmoke;
-            legend3.ItemColumnSpacing = 0;
-            legend3.Name = "Legend1";
-            ChartCalibration.Legends.Add(legend3);
+            legend1.BackColor = Color.WhiteSmoke;
+            legend1.ItemColumnSpacing = 0;
+            legend1.Name = "Legend1";
+            ChartCalibration.Legends.Add(legend1);
             ChartCalibration.Location = new Point(1, 1);
             ChartCalibration.Margin = new Padding(1);
             ChartCalibration.Name = "ChartCalibration";
-            series5.BorderWidth = 2;
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = SeriesChartType.Spline;
-            series5.Color = Color.Lime;
-            series5.CustomProperties = "LabelStyle=Center";
-            series5.Legend = "Legend1";
-            series5.MarkerSize = 8;
-            series5.MarkerStyle = MarkerStyle.Circle;
-            series5.Name = "Kalibrasyon Değeri";
-            series5.XValueType = ChartValueType.Double;
-            series5.YValueType = ChartValueType.Double;
-            series6.BorderWidth = 2;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = SeriesChartType.Spline;
-            series6.Color = Color.Blue;
-            series6.Legend = "Legend1";
-            series6.Name = "Referans Değeri";
-            series6.XValueType = ChartValueType.Double;
-            series6.YValueType = ChartValueType.Double;
-            ChartCalibration.Series.Add(series5);
-            ChartCalibration.Series.Add(series6);
-            ChartCalibration.Size = new Size(1152, 305);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = SeriesChartType.Spline;
+            series1.Color = Color.Lime;
+            series1.CustomProperties = "LabelStyle=Center";
+            series1.Legend = "Legend1";
+            series1.MarkerSize = 8;
+            series1.MarkerStyle = MarkerStyle.Circle;
+            series1.Name = "Kalibrasyon Değeri";
+            series1.XValueType = ChartValueType.Double;
+            series1.YValueType = ChartValueType.Double;
+            series2.BorderWidth = 2;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = SeriesChartType.Spline;
+            series2.Color = Color.Blue;
+            series2.Legend = "Legend1";
+            series2.Name = "Referans Değeri";
+            series2.XValueType = ChartValueType.Double;
+            series2.YValueType = ChartValueType.Double;
+            ChartCalibration.Series.Add(series1);
+            ChartCalibration.Series.Add(series2);
+            ChartCalibration.Size = new Size(1152, 369);
             ChartCalibration.TabIndex = 54;
-            title3.Name = "Kalibrasyon Grafiği";
-            ChartCalibration.Titles.Add(title3);
+            title1.Name = "Kalibrasyon Grafiği";
+            ChartCalibration.Titles.Add(title1);
             // 
             // tableLayoutPanel7
             // 
@@ -1154,7 +1154,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label5.Anchor = AnchorStyles.Top;
             label5.AutoSize = true;
-            label5.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.Font = new Font("Arial", 8.25F);
             label5.Location = new Point(3, 46);
             label5.Name = "label5";
             label5.Size = new Size(43, 42);
@@ -1165,7 +1165,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label6.Anchor = AnchorStyles.Bottom;
             label6.AutoSize = true;
-            label6.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Font = new Font("Arial", 11.25F, FontStyle.Bold);
             label6.Location = new Point(4, 28);
             label6.Name = "label6";
             label6.Size = new Size(41, 18);
@@ -1224,7 +1224,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label7.Anchor = AnchorStyles.Top;
             label7.AutoSize = true;
-            label7.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Font = new Font("Arial", 8.25F);
             label7.Location = new Point(5, 46);
             label7.Name = "label7";
             label7.Size = new Size(40, 46);
@@ -1235,7 +1235,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label8.Anchor = AnchorStyles.Bottom;
             label8.AutoSize = true;
-            label8.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.Font = new Font("Arial", 11.25F, FontStyle.Bold);
             label8.Location = new Point(18, 28);
             label8.Name = "label8";
             label8.Size = new Size(13, 18);
@@ -1309,7 +1309,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label9.Anchor = AnchorStyles.Top;
             label9.AutoSize = true;
-            label9.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label9.Font = new Font("Arial", 8.25F);
             label9.Location = new Point(3, 46);
             label9.Name = "label9";
             label9.Size = new Size(1, 14);
@@ -1320,7 +1320,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label10.Anchor = AnchorStyles.Bottom;
             label10.AutoSize = true;
-            label10.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label10.Font = new Font("Arial", 11.25F, FontStyle.Bold);
             label10.Location = new Point(3, 28);
             label10.Name = "label10";
             label10.Size = new Size(1, 18);
@@ -1379,7 +1379,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label11.Anchor = AnchorStyles.Top;
             label11.AutoSize = true;
-            label11.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label11.Font = new Font("Arial", 8.25F);
             label11.Location = new Point(3, 46);
             label11.Name = "label11";
             label11.Size = new Size(1, 14);
@@ -1390,7 +1390,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             label12.Anchor = AnchorStyles.Bottom;
             label12.AutoSize = true;
-            label12.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label12.Font = new Font("Arial", 11.25F, FontStyle.Bold);
             label12.Location = new Point(3, 28);
             label12.Name = "label12";
             label12.Size = new Size(1, 18);
@@ -1402,10 +1402,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 677);
             Controls.Add(tableLayoutPanel1);
             Name = "CalibrationPage";
-            Text = "CalibrationPage";
+            Size = new Size(1170, 677);
             Load += CalibrationPage_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);

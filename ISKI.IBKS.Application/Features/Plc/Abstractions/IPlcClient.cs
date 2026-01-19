@@ -6,6 +6,7 @@ public interface IPlcClient
     public TimeSpan Uptime { get; }
     public void Connect(string ipAddress, int rack, int slot);
     public void Disconnect();
+    public void ForceReconnect(string ipAddress, int rack, int slot);
     public byte[] ReadBytes(int dbNumber, int startByteAddress, byte[] buffer);
     public byte ReadByte(byte[] buffer, int byteOffset);
     public void WriteBytes(int dbNumber, int startByteAddress, byte[] buffer);

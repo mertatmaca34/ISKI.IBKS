@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection; // Added for IServiceScopeFactory and GetRequiredService
 using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.Alarms; // Added
 
 namespace ISKI.IBKS.Infrastructure.Services.DataCollection;
 
@@ -36,6 +37,12 @@ public sealed class DataCollectionService : IDataCollectionService
         _logger = logger;
     }
 
+    private const int MaxRetryAttempts = 3;
+    private const int RetryDelayMs = 2000;
+    private string _lastPlcIp = "10.33.3.253";
+    private int _lastPlcRack = 0;
+    private int _lastPlcSlot = 1;
+
     public async Task<PlcDataSnapshot?> ReadCurrentDataAsync(CancellationToken ct = default)
     {
         // 1. Bağlantı Kontrolü
@@ -46,8 +53,8 @@ public sealed class DataCollectionService : IDataCollectionService
                  // Ayarlar veritabanından veya yapılandırmadan alınmalı
                  // Şimdilik default 10.33.3.253 (Dökümandan)
                  // TODO: Get from Configuration/Db
-                _logger.LogInformation("PLC bağlantısı kuruluyor: 10.33.3.253");
-                _plcClient.Connect("10.33.3.253", 0, 1);
+                _logger.LogInformation("PLC bağlantısı kuruluyor: {PlcIp}", _lastPlcIp);
+                _plcClient.Connect(_lastPlcIp, _lastPlcRack, _lastPlcSlot);
                 _logger.LogInformation("PLC bağlantısı başarıyla kuruldu");
             }
             catch (Exception ex)
@@ -63,43 +70,73 @@ public sealed class DataCollectionService : IDataCollectionService
             }
         }
 
-        try
+        Exception? lastException = null;
+
+        for (int attempt = 1; attempt <= MaxRetryAttempts; attempt++)
         {
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-            
-            var stationSettings = await dbContext.StationSettings.AsNoTracking().FirstOrDefaultAsync(ct);
-            var snapshot = new PlcDataSnapshot 
-            { 
-                ReadTime = DateTime.Now,
-                StationId = stationSettings?.StationId ?? Guid.Empty 
-            };
+            try
+            {
+                return await ReadPlcDataInternalAsync(ct);
+            }
+            catch (Exception ex)
+            {
+                lastException = ex;
+                _logger.LogWarning(ex, "PLC Veri Okuma Hatası (Deneme {Attempt}/{MaxAttempts}): {Message}", 
+                    attempt, MaxRetryAttempts, ex.Message);
 
-            _logger.LogInformation("PLC'den veri blokları okunuyor (DB41, DB42, DB43)...");
-
-            // 2. DB41 (Analog) Okuma - 168 Byte
-            byte[] db41Buffer = new byte[168];
-            db41Buffer = _plcClient.ReadBytes(41, 0, db41Buffer);
-            PlcDataMapper.MapAnalogData(db41Buffer, snapshot);
-
-            // 3. DB42 (Digital) Okuma - 3 Byte
-            byte[] db42Buffer = new byte[3];
-            db42Buffer = _plcClient.ReadBytes(42, 0, db42Buffer);
-            PlcDataMapper.MapDigitalData(db42Buffer, snapshot);
-
-            // 4. DB43 (System) Okuma - 19 Byte
-            byte[] db43Buffer = new byte[19];
-            db43Buffer = _plcClient.ReadBytes(43, 0, db43Buffer);
-            PlcDataMapper.MapSystemData(db43Buffer, snapshot);
-
-            _logger.LogInformation("PLC veri blokları başarıyla okundu ve eşleştirildi");
-            return snapshot;
+                if (attempt < MaxRetryAttempts)
+                {
+                    _logger.LogInformation("PLC bağlantısı yeniden kuruluyor...");
+                    try
+                    {
+                        _plcClient.ForceReconnect(_lastPlcIp, _lastPlcRack, _lastPlcSlot);
+                        _logger.LogInformation("PLC bağlantısı başarıyla yeniden kuruldu. {RetryDelayMs}ms sonra tekrar denenecek.", RetryDelayMs);
+                    }
+                    catch (Exception reconnectEx)
+                    {
+                        _logger.LogError(reconnectEx, "PLC yeniden bağlantı hatası");
+                    }
+                    
+                    await Task.Delay(RetryDelayMs, ct);
+                }
+            }
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "PLC Veri Okuma Hatası: {Message}. PLC bağlantısı ve data blokları kontrol edilmeli.", ex.Message);
-            return null;
-        }
+
+        _logger.LogError(lastException, "PLC Veri Okuma {MaxAttempts} deneme sonrasında başarısız oldu. PLC bağlantısı ve data blokları kontrol edilmeli.", MaxRetryAttempts);
+        return null;
+    }
+
+    private async Task<PlcDataSnapshot?> ReadPlcDataInternalAsync(CancellationToken ct)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
+        
+        var stationSettings = await dbContext.StationSettings.AsNoTracking().FirstOrDefaultAsync(ct);
+        var snapshot = new PlcDataSnapshot 
+        { 
+            ReadTime = DateTime.Now,
+            StationId = stationSettings?.StationId ?? Guid.Empty 
+        };
+
+        _logger.LogInformation("PLC'den veri blokları okunuyor (DB41, DB42, DB43)...");
+
+        // 2. DB41 (Analog) Okuma - 168 Byte
+        byte[] db41Buffer = new byte[168];
+        db41Buffer = _plcClient.ReadBytes(41, 0, db41Buffer);
+        PlcDataMapper.MapAnalogData(db41Buffer, snapshot);
+
+        // 3. DB42 (Digital) Okuma - 3 Byte
+        byte[] db42Buffer = new byte[3];
+        db42Buffer = _plcClient.ReadBytes(42, 0, db42Buffer);
+        PlcDataMapper.MapDigitalData(db42Buffer, snapshot);
+
+        // 4. DB43 (System) Okuma - 19 Byte
+        byte[] db43Buffer = new byte[19];
+        db43Buffer = _plcClient.ReadBytes(43, 0, db43Buffer);
+        PlcDataMapper.MapSystemData(db43Buffer, snapshot);
+
+        _logger.LogInformation("PLC veri blokları başarıyla okundu ve eşleştirildi");
+        return snapshot;
     }
 
     public async Task<SensorData?> SaveSensorDataAsync(PlcDataSnapshot data, CancellationToken ct = default)
@@ -298,61 +335,47 @@ public sealed class DataCollectionService : IDataCollectionService
     public async Task CheckAndTriggerAlarmsAsync(PlcDataSnapshot currentData, CancellationToken ct = default)
     {
         using var scope = _scopeFactory.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-        // mailService is also scoped
-        // var mailService = scope.ServiceProvider.GetRequiredService<IAlarmMailService>();
+        
+        // Use the new Alarm Manager Service
+        var alarmManager = scope.ServiceProvider.GetRequiredService<IAlarmManager>();
+        
+        // Also need caching for "Sampling" logic? 
+        // Wait, "Sampling Logic (Numune Alımı)... It should simply be treated as a 'Digital Alarm' defined in the database."
+        // The requirements say Numune Alımı should be handled by the generic engine.
+        // So I don't need to manually check triggers here anymore if they are defined in DB.
+        // BUT, I do need to update the Cache (StationSnapshotCache) because UI/API might need it?
+        // "DataCollectionService" still needs to update the cache for SAIS etc.
+        // Let's keep the Cache Update part.
+        
+        // 1. Process Alarms via AlarmManager
+        await alarmManager.ProcessAlarmsAsync(currentData, ct);
 
+        // 2. Cache Update & SAIS
+        // The old code also did Rising Edge checks for SAIS Diagnostics (CheckRisingEdge).
+        // Requirement 5 says "Numune Alımı... handled by this generic engine".
+        // This likely refers to the MAIL Notification part of Sampling Trigger (which was sending separate mails).
+        // What about SAIS Diagnostics? These are strictly SAIS requirements. 
+        // I should probably keep the SAIS diagnostics here OR move them to another handler. 
+        // Since I'm refactoring "Alarm and Notification Service", SAIS is "Data Collection / Reporting".
+        // I will keep the SAIS Diagnostic checks here for now to ensure we don't break SAIS, 
+        // but REMOVE the mail sending parts (Digital Alarms checking).
+        
+        var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
         var stationSettings = await dbContext.StationSettings.AsNoTracking().FirstOrDefaultAsync(ct);
         if (stationSettings == null) return;
-
-        // 1. Threshold Alarmları (AlarmDefinition)
-        var alarms = await dbContext.AlarmDefinitions.Where(a => a.IsActive).ToListAsync(ct);
-        foreach (var alarm in alarms)
-        {
-            // Eşik değer kontrolü
-            bool triggered = false;
-            double currentValue = 0;
-
-            if (alarm.SensorName == "Ph") currentValue = currentData.Ph;
-            else if (alarm.SensorName == "Akm") currentValue = currentData.Akm;
-            else if (alarm.SensorName == "Koi") currentValue = currentData.Koi;
-            // ... diğerleri
-
-            if (alarm.Type == AlarmType.Threshold)
-            {
-                if ((alarm.MinThreshold.HasValue && currentValue < alarm.MinThreshold.Value) ||
-                    (alarm.MaxThreshold.HasValue && currentValue > alarm.MaxThreshold.Value))
-                {
-                    triggered = true;
-                }
-            }
-
-            if (triggered)
-            {
-                 // Mail gönder
-                 // await mailService.SendAlarmMailAsync(...)
-                 
-                 // SAIS Diagnostic? Eğer mapping varsa.
-            }
-        }
         
-        // 2. System Diagnostics (Rising Edge Detection) ve Cache Update
         var previousDto = await _snapshotCache.Get(stationSettings.StationId);
-        
-        // Diagnostik Kodları (Doküman Özeti)
-        // 2: Bakım, 3: Oto, 4: Kalibrasyon
-        // Diğerleri için varsayım: 5: Duman, 6: SuBaskini, 7: Kapi, 8: EnerjiYok
         
         if (previousDto != null)
         {
-             await CheckRisingEdge(previousDto.KabinBakimModu, currentData.KabinBakim, 2, stationSettings.StationId, ct);
-             await CheckRisingEdge(previousDto.KabinOtoModu, currentData.KabinOto, 3, stationSettings.StationId, ct);
-             await CheckRisingEdge(previousDto.KabinKalibrasyonModu, currentData.KabinKalibrasyon, 4, stationSettings.StationId, ct);
-             await CheckRisingEdge(previousDto.KabinDumanAlarmi, currentData.KabinDuman, 5, stationSettings.StationId, ct);
-             await CheckRisingEdge(previousDto.KabinSuBaskiniAlarmi, currentData.KabinSuBaskini, 6, stationSettings.StationId, ct);
-             await CheckRisingEdge(previousDto.KabinKapiAlarmi, currentData.KabinKapiAcildi, 7, stationSettings.StationId, ct);
-             await CheckRisingEdge(previousDto.KabinEnerjiAlarmi, currentData.KabinEnerjiYok, 8, stationSettings.StationId, ct);
-             // ... Diğerleri
+             // SAIS Diagnostik Gönderimi (Mevcut kod - Değişmedi)
+            await CheckRisingEdge(previousDto.KabinBakimModu, currentData.KabinBakim, 2, stationSettings.StationId, ct);
+            await CheckRisingEdge(previousDto.KabinOtoModu, currentData.KabinOto, 3, stationSettings.StationId, ct);
+            await CheckRisingEdge(previousDto.KabinKalibrasyonModu, currentData.KabinKalibrasyon, 4, stationSettings.StationId, ct);
+            await CheckRisingEdge(previousDto.KabinDumanAlarmi, currentData.KabinDuman, 5, stationSettings.StationId, ct); // SAIS için
+            await CheckRisingEdge(previousDto.KabinSuBaskiniAlarmi, currentData.KabinSuBaskini, 6, stationSettings.StationId, ct); // SAIS için
+            await CheckRisingEdge(previousDto.KabinKapiAlarmi, currentData.KabinKapiAcildi, 7, stationSettings.StationId, ct); // SAIS için
+            await CheckRisingEdge(previousDto.KabinEnerjiAlarmi, currentData.KabinEnerjiYok, 8, stationSettings.StationId, ct); // SAIS için
         }
 
         // 3. Cache Update
@@ -382,11 +405,24 @@ public sealed class DataCollectionService : IDataCollectionService
             KoiNumuneTetik = currentData.KoiTetik,
             PhNumuneTetik = currentData.PhTetik,
             ManuelTetik = currentData.ManuelTetik,
-            SimNumuneTetik = currentData.SimNumuneTetik
+            SimNumuneTetik = currentData.SimNumuneTetik,
+            
+            // Yeni Eklenen Alanlar
+            KabinSicakligi = currentData.KabinSicaklik,
+            Pompa1TermikAlarmi = currentData.Pompa1Termik,
+            Pompa2TermikAlarmi = currentData.Pompa2Termik,
+            Pompa3TermikAlarmi = currentData.Pompa3Termik,
+            YikamaTankiBosAlarmi = currentData.TankDolu, 
+            KabinNemi = currentData.KabinNem,
+            OlcumCihaziSuSicakligi = currentData.NumuneSicaklik,
+            KabinAcilStopBasiliAlarmi = currentData.KabinAcilStopBasili
         };
 
+        // Cache the new snapshot
         await _snapshotCache.Set(stationSettings.StationId, newDto);
     }
+    
+    // CheckAlarmRisingEdge and SendAlarmMail removed (Replaced by AlarmManager)
     
     private async Task CheckRisingEdge(bool? prev, bool current, int diagCode, Guid stationId, CancellationToken ct)
     {

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,22 +14,23 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
     public partial class MailUsersPage : UserControl
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        private Guid? _selectedUserId = null;
+        private List<AlarmUser> _allUsers = new();
 
         public MailUsersPage(IServiceScopeFactory scopeFactory)
         {
-            InitializeComponent();
             _scopeFactory = scopeFactory;
+            InitializeComponent();
             
+            // Attach event handlers
             Load += MailUsersPage_Load;
-            ButtonSave.Click += ButtonSave_Click;
-            DataGridViewUsers.SelectionChanged += DataGridViewUsers_SelectionChanged;
-            SilToolStripMenuItem.Click += SilToolStripMenuItem_Click;
+            TextBoxSearch.TextChanged += TextBoxSearch_TextChanged;
+            ButtonAddNew.Click += ButtonAddNew_Click;
+            DataGridViewUsers.CellContentClick += DataGridViewUsers_CellContentClick;
         }
 
-        // Default constructor for Designer support
         public MailUsersPage()
         {
+            _scopeFactory = null!;
             InitializeComponent();
         }
 
@@ -48,150 +46,137 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.MailPage.ChildPages
             {
                 using var scope = _scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                var users = await dbContext.AlarmUsers.Where(u => u.IsActive).ToListAsync();
-
-                DataGridViewUsers.DataSource = users.Select(u => new 
-                {
-                    u.Id,
-                    u.FullName,
-                    u.Email,
-                    u.IsActive
-                }).ToList();
-
-                DataGridViewUsers.Columns["Id"].Visible = false;
-                DataGridViewUsers.Columns["FullName"].HeaderText = "Ad Soyad";
-                DataGridViewUsers.Columns["Email"].HeaderText = "E-Posta";
-                DataGridViewUsers.Columns["IsActive"].HeaderText = "Aktif";
+                _allUsers = await dbContext.AlarmUsers.OrderBy(u => u.FullName).ToListAsync();
+                ApplyFilter();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kullanıcılar yüklenirken hata: {ex.Message}");
+                MessageBox.Show($"Kullanıcılar yüklenirken hata: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void DataGridViewUsers_SelectionChanged(object? sender, EventArgs e)
+        private void ApplyFilter()
         {
-            if (DataGridViewUsers.SelectedRows.Count > 0)
+            var searchText = TextBoxSearch.Text.Trim().ToLower();
+            var filtered = string.IsNullOrEmpty(searchText)
+                ? _allUsers
+                : _allUsers.Where(u => 
+                    u.FullName.ToLower().Contains(searchText) || 
+                    u.Email.ToLower().Contains(searchText) ||
+                    (u.Department?.ToLower().Contains(searchText) ?? false) ||
+                    (u.Title?.ToLower().Contains(searchText) ?? false)).ToList();
+
+            DataGridViewUsers.DataSource = filtered.Select(u => new UserDisplayModel
             {
-                var row = DataGridViewUsers.SelectedRows[0];
-                _selectedUserId = (Guid)row.Cells["Id"].Value;
-                var fullName = row.Cells["FullName"].Value.ToString() ?? "";
-                var email = row.Cells["Email"].Value.ToString() ?? "";
-                
-                // Split name if possible or just put in Ad/Soyad
-                var names = fullName.Split(' ');
-                if (names.Length > 1) 
-                {
-                    TextBoxAd.Text = string.Join(" ", names.Take(names.Length - 1));
-                    TextBoxSoyad.Text = names.Last();
-                }
-                else
-                {
-                    TextBoxAd.Text = fullName;
-                    TextBoxSoyad.Text = "";
-                }
-                TextBoxEMail.Text = email;
-                ButtonSave.Text = "GÜNCELLE";
-            }
-            else
+                Id = u.Id,
+                FullName = u.FullName,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber ?? "",
+                Department = u.Department ?? "",
+                Title = u.Title ?? "",
+                Status = u.IsActive ? "Aktif" : "Pasif",
+                EmailNotifications = u.ReceiveEmailNotifications ? "✓" : "✗",
+                MinPriorityLevel = GetPriorityTurkish(u.MinimumPriorityLevel)
+            }).ToList();
+
+            // Configure columns - headers are set in Designer
+            if (DataGridViewUsers.Columns.Count > 0)
             {
-                _selectedUserId = null;
-                ClearInputs();
-                ButtonSave.Text = "KAYDET";
+                DataGridViewUsers.Columns["Id"].Visible = false;
             }
         }
 
-        private void ClearInputs()
+        private static string GetPriorityTurkish(AlarmPriority priority)
         {
-            TextBoxAd.Text = "";
-            TextBoxSoyad.Text = "";
-            TextBoxEMail.Text = "";
-            TextBoxPassword.Text = ""; // Not used in Entity but present in UI? AlarmUser doesn't have password. Ignoring.
-            _selectedUserId = null;
+            return priority switch
+            {
+                AlarmPriority.Low => "Düşük",
+                AlarmPriority.Medium => "Orta",
+                AlarmPriority.High => "Yüksek",
+                AlarmPriority.Critical => "Kritik",
+                _ => priority.ToString()
+            };
         }
 
-        private async void ButtonSave_Click(object? sender, EventArgs e)
+        private void TextBoxSearch_TextChanged(object? sender, EventArgs e)
         {
-            if (_scopeFactory == null) return;
+            ApplyFilter();
+        }
 
-            var ad = TextBoxAd.Text.Trim();
-            var soyad = TextBoxSoyad.Text.Trim();
-            var email = TextBoxEMail.Text.Trim();
+        private void ButtonAddNew_Click(object? sender, EventArgs e)
+        {
+            ShowEditDialog(null);
+        }
 
-            if (string.IsNullOrEmpty(ad) || string.IsNullOrEmpty(email))
+        private void DataGridViewUsers_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore header row and non-button columns
+            if (e.RowIndex < 0) return;
+            if (e.ColumnIndex < 0) return;
+            
+            var column = DataGridViewUsers.Columns[e.ColumnIndex];
+            
+            // Only handle button column clicks
+            if (column is not DataGridViewButtonColumn) return;
+
+            var columnName = column.Name;
+            var id = (Guid)DataGridViewUsers.Rows[e.RowIndex].Cells["Id"].Value;
+
+            if (columnName == "EditColumn")
             {
-                MessageBox.Show("Ad ve E-Posta zorunludur.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowEditDialog(id);
+            }
+            else if (columnName == "DeleteColumn")
+            {
+                DeleteUserAsync(id);
+            }
+        }
+
+        private void ShowEditDialog(Guid? userId)
+        {
+            using var dialog = new UserEditDialog(_scopeFactory, userId);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _ = LoadUsersAsync();
+            }
+        }
+
+        private async void DeleteUserAsync(Guid id)
+        {
+            if (MessageBox.Show("Bu kullanıcıyı silmek istediğinize emin misiniz?", "Onay", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
-            }
-
-            var fullName = $"{ad} {soyad}".Trim();
 
             try
             {
                 using var scope = _scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-
-                if (_selectedUserId.HasValue)
+                var user = await dbContext.AlarmUsers.FindAsync(id);
+                if (user != null)
                 {
-                    // Update
-                    var user = await dbContext.AlarmUsers.FindAsync(_selectedUserId.Value);
-                    if (user != null)
-                    {
-                        user.Update(fullName, email, null, null, null);
-                        await dbContext.SaveChangesAsync();
-                        MessageBox.Show("Kullanıcı güncellendi.");
-                    }
-                }
-                else
-                {
-                    // Add
-                    var newUser = new AlarmUser(fullName, email);
-                    dbContext.AlarmUsers.Add(newUser);
+                    dbContext.AlarmUsers.Remove(user);
                     await dbContext.SaveChangesAsync();
-                    MessageBox.Show("Kullanıcı eklendi.");
+                    await LoadUsersAsync();
+                    MessageBox.Show("Kullanıcı silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
-                await LoadUsersAsync();
-                ClearInputs();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kaydetme hatası: {ex.Message}");
+                MessageBox.Show($"Silme hatası: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+    }
 
-        private async void SilToolStripMenuItem_Click(object? sender, EventArgs e)
-        {
-            if (_scopeFactory == null) return;
-            if (DataGridViewUsers.SelectedRows.Count == 0) return;
-
-            var row = DataGridViewUsers.SelectedRows[0];
-            var id = (Guid)row.Cells["Id"].Value;
-
-            if (MessageBox.Show("Kullanıcıyı silmek istediğinize emin misiniz?", "Onay", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                try
-                {
-                    using var scope = _scopeFactory.CreateScope();
-                    var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                    var user = await dbContext.AlarmUsers.FindAsync(id);
-                    if (user != null)
-                    {
-                        dbContext.AlarmUsers.Remove(user); // or Deactivate? Entity has IsActive logic.
-                        // Ideally Soft Delete or Deactivate. 
-                        // User request "Sil" implies delete or deactivate.
-                        // I'll call Remove, EF Core might handle soft delete if configured (ApplySoftDeleteQueryFilter exists in DbContext so it supports soft delete).
-                        dbContext.AlarmUsers.Remove(user);
-                        await dbContext.SaveChangesAsync();
-                    }
-                    await LoadUsersAsync();
-                    ClearInputs();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Silme hatası: {ex.Message}");
-                }
-            }
-        }
+    public class UserDisplayModel
+    {
+        public Guid Id { get; set; }
+        public string FullName { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string PhoneNumber { get; set; } = "";
+        public string Department { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Status { get; set; } = "";
+        public string EmailNotifications { get; set; } = "";
+        public string MinPriorityLevel { get; set; } = "";
     }
 }

@@ -98,6 +98,21 @@ public sealed class AlarmDefinition : AuditableEntity<Guid>
         MinThreshold = minThreshold;
         MaxThreshold = maxThreshold;
     }
+
+    public void Update(string name, string description, string sensorName, AlarmType type, 
+        double? minThreshold, double? maxThreshold, bool? expectedDigitalValue, 
+        AlarmPriority priority, bool isActive)
+    {
+        Name = name;
+        Description = description;
+        SensorName = sensorName;
+        Type = type;
+        MinThreshold = minThreshold;
+        MaxThreshold = maxThreshold;
+        ExpectedDigitalValue = expectedDigitalValue;
+        Priority = priority;
+        IsActive = isActive;
+    }
 }
 
 public enum AlarmType
