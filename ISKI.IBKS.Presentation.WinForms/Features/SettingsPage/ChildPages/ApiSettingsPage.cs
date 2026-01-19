@@ -42,10 +42,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                     // JSON key is "SAIS", not "SaisSettings"
                     if (doc.RootElement.TryGetProperty("SAIS", out var sais)) 
                     {
-                        // Case-insensitive options or manual check
-                        // JSON property is "UserName", code was "Username"
                         SettingsControlApiUrl.AyarDegeri = GetStringSafe(sais, "BaseUrl");
-                        SettingsControlUsername.AyarDegeri = GetStringSafe(sais, "UserName"); 
+                        SettingsControlUsername.AyarDegeri = GetStringSafe(sais, "Username"); 
                         SettingsControlPassword.AyarDegeri = GetStringSafe(sais, "Password");
                     }
                 }
@@ -64,8 +62,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             }
             // Fallback for case sensitivity or missing keys? 
             // Try "Username" if "UserName" failed, etc.
-             if (propertyName == "UserName" && element.TryGetProperty("Username", out var prop2)) return prop2.GetString() ?? "";
-             
+             if ((propertyName == "Username" || propertyName == "UserName") && element.TryGetProperty("Username", out var prop2)) return prop2.GetString() ?? "";
+             if ((propertyName == "Username" || propertyName == "UserName") && element.TryGetProperty("UserName", out var prop3)) return prop3.GetString() ?? "";
             return "";
         }
 
@@ -94,7 +92,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                 }
 
                 saisObj["BaseUrl"] = SettingsControlApiUrl.AyarDegeri.Trim();
-                saisObj["UserName"] = SettingsControlUsername.AyarDegeri.Trim();
+                saisObj["Username"] = SettingsControlUsername.AyarDegeri.Trim();
                 saisObj["Password"] = SettingsControlPassword.AyarDegeri.Trim();
 
                 var options = new JsonSerializerOptions { WriteIndented = true };

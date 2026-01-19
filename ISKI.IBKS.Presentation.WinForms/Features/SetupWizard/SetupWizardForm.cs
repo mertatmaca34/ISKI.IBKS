@@ -13,13 +13,23 @@ public partial class SetupWizardForm : Form
     private readonly SetupState _state = new();
     private readonly List<ISetupWizardStep> _steps = new();
     private readonly IbksDbContext _dbContext;
+    private readonly ISKI.IBKS.Application.Features.Plc.Abstractions.IPlcClient _plcClient;
+    private readonly ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions.ISaisAuthClient _saisAuthClient;
+    private readonly ISKI.IBKS.Application.Services.Mail.IAlarmMailService _mailService;
     private int _currentStepIndex = 0;
 
     public bool IsCompleted { get; private set; }
 
-    public SetupWizardForm(IbksDbContext dbContext)
+    public SetupWizardForm(
+        IbksDbContext dbContext,
+        ISKI.IBKS.Application.Features.Plc.Abstractions.IPlcClient plcClient,
+        ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions.ISaisAuthClient saisAuthClient,
+        ISKI.IBKS.Application.Services.Mail.IAlarmMailService mailService)
     {
         _dbContext = dbContext;
+        _plcClient = plcClient;
+        _saisAuthClient = saisAuthClient;
+        _mailService = mailService;
         InitializeComponent();
         InitializeSteps();
         SetupEvents();
@@ -168,19 +178,32 @@ public partial class SetupWizardForm : Form
             Path.Combine(configDir, "station.json"),
             JsonSerializer.Serialize(stationConfig, new JsonSerializerOptions { WriteIndented = true }));
 
+        // Save sais.json
+        var saisConfig = new
+        {
+            SAIS = new
+            {
+                BaseUrl = _state.SaisApiUrl,
+                Username = _state.SaisUserName,
+                Password = _state.SaisPassword
+            }
+        };
+        await File.WriteAllTextAsync(
+            Path.Combine(configDir, "sais.json"),
+            JsonSerializer.Serialize(saisConfig, new JsonSerializerOptions { WriteIndented = true }));
+
         // Save mail.json
         var mailConfig = new
         {
-            Mail = new
+            MailSettings = new
             {
-                Smtp = new
-                {
-                    Host = _state.SmtpHost,
-                    Port = _state.SmtpPort,
-                    UserName = _state.SmtpUserName,
-                    Password = _state.SmtpPassword,
-                    UseSsl = _state.SmtpUseSsl
-                }
+                SmtpHost = _state.SmtpHost,
+                SmtpPort = _state.SmtpPort,
+                Username = _state.SmtpUserName,
+                Password = _state.SmtpPassword,
+                UseSsl = _state.SmtpUseSsl,
+                FromAddress = _state.SmtpUserName, // Default to username
+                FromName = "IBKS Sistem"
             }
         };
         await File.WriteAllTextAsync(
@@ -315,37 +338,116 @@ public partial class SetupWizardForm : Form
 
         _contentPanel.Controls.Add(resultPanel);
 
-        // Simulasyon: Check process
-        var checks = new[] 
-        { 
-            "PLC Bağlantısı Başarılı", 
-            "SAIS API Erişimi Başarılı", 
-            "İstasyon Verileri Kaydedildi",
-            "Kalibrasyon Ayarları Aktif",
-            "Mail Sunucusu Hazır"
+        // REAL Verification: Check process
+        var testActions = new List<Func<Task<(bool success, string message)>>>
+        {
+            async () => {
+                try {
+                    _plcClient.ForceReconnect(_state.PlcIpAddress, _state.PlcRack, _state.PlcSlot);
+                    return (true, "PLC Bağlantısı Başarılı");
+                } catch (Exception ex) {
+                    return (false, $"PLC Hatası: {ex.Message}");
+                }
+            },
+            async () => {
+                try {
+                    var response = await _saisAuthClient.LoginAsync(new ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login.LoginRequest {
+                        UserName = _state.LocalApiUserName,
+                        Password = _state.LocalApiPassword
+                    });
+                    return (response.Result, response.Result ? "SAIS API Erişimi Başarılı" : $"SAIS Hatası: {response.Message}");
+                } catch (Exception ex) {
+                    return (false, $"SAIS API Hatası: {ex.Message}");
+                }
+            },
+            async () => {
+                try {
+                    var exists = await _dbContext.StationSettings.AnyAsync(s => s.StationId == _state.StationId);
+                    return (exists, exists ? "İstasyon Verileri Kaydedildi" : "İstasyon Verisi Bulunamadı");
+                } catch (Exception ex) {
+                    return (false, $"DB Hatası: {ex.Message}");
+                }
+            },
+            async () => {
+                try {
+                    var settings = await _dbContext.StationSettings.FirstOrDefaultAsync();
+                    bool valid = settings != null && settings.PhZeroReference == _state.PhZeroRef;
+                    return (valid, valid ? "Kalibrasyon Ayarları Aktif" : "Parametre Uyuşmazlığı");
+                } catch (Exception ex) {
+                    return (false, $"DB Hatası: {ex.Message}");
+                }
+            },
+            async () => {
+                try {
+                    // SMTP bağlantı testi - Gerçek bir bağlantı ve gönderim testi yapar
+                    using (var client = new System.Net.Mail.SmtpClient(_state.SmtpHost, _state.SmtpPort))
+                    {
+                        client.EnableSsl = _state.SmtpUseSsl;
+                        client.Credentials = new System.Net.NetworkCredential(_state.SmtpUserName, _state.SmtpPassword);
+                        client.Timeout = 10000; // 10 saniye timeout
+                        
+                        var fromAddress = _state.SmtpUserName;
+                        // Bazı SMTP sunucuları From adresi ile Username uyuşmazsa hata verir
+                        var mailMessage = new System.Net.Mail.MailMessage(fromAddress, fromAddress)
+                        {
+                            Subject = "IBKS Kurulum Testi",
+                            Body = "Bu mesaj IBKS Kurulum Sihirbazı tarafından bağlantı testi amacıyla otomatik olarak gönderilmiştir."
+                        };
+                        
+                        await client.SendMailAsync(mailMessage);
+                        return (true, "Mail Sunucusu Hazır");
+                    }
+                } catch (Exception ex) {
+                    return (false, $"Mail Hatası: {ex.Message}");
+                }
+            }
         };
 
-        for (int i = 0; i < checks.Length; i++)
+        bool allSuccess = true;
+
+        for (int i = 0; i < testActions.Count; i++)
         {
             var (lblCheck, lblMsg) = labels[i];
             
-            // Simüle etme (gerçek bağlantı kontrolünü burada yapabiliriz)
             lblMsg.ForeColor = Color.Black;
             lblCheck.Text = "⏳";
             lblCheck.ForeColor = Color.Orange;
             
-            await Task.Delay(800); // İşlem süresi simülasyonu
+            // Give UI time to update
+            await Task.Delay(500);
 
-            lblCheck.Text = "✓";
-            lblCheck.ForeColor = Color.FromArgb(46, 204, 113);
-            lblMsg.Text = checks[i];
-            lblMsg.ForeColor = Color.FromArgb(46, 204, 113);
+            var (success, resultMessage) = await testActions[i]();
+            
+            if (success)
+            {
+                lblCheck.Text = "✓";
+                lblCheck.ForeColor = Color.FromArgb(46, 204, 113);
+                lblMsg.Text = resultMessage;
+                lblMsg.ForeColor = Color.FromArgb(46, 204, 113);
+            }
+            else
+            {
+                lblCheck.Text = "❌";
+                lblCheck.ForeColor = Color.FromArgb(231, 76, 60);
+                lblMsg.Text = resultMessage;
+                lblMsg.ForeColor = Color.FromArgb(231, 76, 60);
+                allSuccess = false;
+            }
         }
 
-        // Başarılı
-        _headerPanel.BackColor = Color.FromArgb(46, 204, 113);
-        _lblTitle.Text = "Kurulum Tamamlandı";
-        _lblDescription.Text = "Tüm testler başarılı, uygulama başlatılıyor.";
+        // Finalize
+        if (allSuccess)
+        {
+            _headerPanel.BackColor = Color.FromArgb(46, 204, 113);
+            _lblTitle.Text = "Kurulum Tamamlandı";
+            _lblDescription.Text = "Tüm testler başarılı, uygulama başlatılıyor.";
+        }
+        else
+        {
+            _headerPanel.BackColor = Color.FromArgb(231, 76, 60);
+            _lblTitle.Text = "Kurulum Tamamlandı (Hatalı)";
+            _lblDescription.Text = "Bazı bağlantılar kurulamadı, ancak kurulum kaydedildi.";
+        }
 
 
         var btnContinue = new Button

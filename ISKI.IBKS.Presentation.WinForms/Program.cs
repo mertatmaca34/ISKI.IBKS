@@ -66,7 +66,11 @@ namespace ISKI.IBKS.Presentation.WinForms
                 using var scope = host.Services.CreateScope();
                 // SetupWizardForm için gerekli servisleri DI container'dan alabiliriz
                 var context = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
-                var setupWizard = new SetupWizardForm(context);
+                var plcClient = scope.ServiceProvider.GetRequiredService<ISKI.IBKS.Application.Features.Plc.Abstractions.IPlcClient>();
+                var saisAuthClient = scope.ServiceProvider.GetRequiredService<ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions.ISaisAuthClient>();
+                var mailService = scope.ServiceProvider.GetRequiredService<ISKI.IBKS.Application.Services.Mail.IAlarmMailService>();
+                
+                var setupWizard = new SetupWizardForm(context, plcClient, saisAuthClient, mailService);
                 
                 System.Windows.Forms.Application.Run(setupWizard);
 

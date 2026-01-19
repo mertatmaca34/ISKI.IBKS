@@ -51,11 +51,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                     {
                         if (mail.TryGetProperty("SmtpHost", out var host))
                             TextBoxHost.Text = host.GetString() ?? "";
-                        if (mail.TryGetProperty("SmtpPort", out var port))
-                            TextBoxPort.Text = port.GetString(); // Configuration reads as string usually, but json might be int
-                            // Actually config file has strings in my artifact, but let's be safe
                         
-                        // Handle potential int or string for Port to be safe
+                        // Handle potential int or string for Port
                         if (mail.TryGetProperty("SmtpPort", out var portProp))
                         {
                             if (portProp.ValueKind == JsonValueKind.Number)
@@ -72,8 +69,13 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                         if (mail.TryGetProperty("UseSsl", out var useSsl))
                         {
                              if (useSsl.ValueKind == JsonValueKind.String)
-                                CheckBoxSSL.Checked = bool.Parse(useSsl.GetString() ?? "true");
-                             else
+                             {
+                                if (bool.TryParse(useSsl.GetString(), out bool res))
+                                    CheckBoxSSL.Checked = res;
+                                else
+                                    CheckBoxSSL.Checked = true;
+                             }
+                             else if (useSsl.ValueKind == JsonValueKind.True || useSsl.ValueKind == JsonValueKind.False)
                                 CheckBoxSSL.Checked = useSsl.GetBoolean();
                         }
 
@@ -105,13 +107,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                     MailSettings = new
                     {
                         SmtpHost = TextBoxHost.Text.Trim(),
-                        SmtpPort = portStr, // Save as string to match appsettings style commonly or int?
-                                            // The SmtpAlarmMailService parses it: int.Parse(_configuration["..."])
-                                            // JsonConfigurationProvider reads numbers as strings mostly fine, but let's save as string to be consistent with appsettings replacement
+                        SmtpPort = port,
                         Username = TextBoxUsername.Text.Trim(),
-                        Password = TextBoxPassword.Text, // No trim for password
-                        UseSsl = CheckBoxSSL.Checked.ToString().ToLower(), // Save as string "true"/"false"
-                        FromAddress = TextBoxUsername.Text.Trim(), // Default to Username
+                        Password = TextBoxPassword.Text,
+                        UseSsl = CheckBoxSSL.Checked,
+                        FromAddress = TextBoxUsername.Text.Trim(),
                         FromName = TextBoxFromName.Text.Trim()
                     }
                 };

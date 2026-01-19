@@ -11,17 +11,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ISKI.IBKS.Domain.Entities;
 using ISKI.IBKS.Persistence.Contexts;
+using System.Text.Json;
 
 namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
 {
     public partial class CalibrationSettingsPage : UserControl
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly string _configPath;
 
         public CalibrationSettingsPage(IServiceScopeFactory scopeFactory)
         {
             InitializeComponent();
             _scopeFactory = scopeFactory;
+            _configPath = Path.Combine(AppContext.BaseDirectory, "Configuration");
             Load += CalibrationSettingsPage_Load;
             ButtonSave.Click += ButtonSave_Click;
         }
@@ -67,6 +70,31 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                     // AKM / KOI reference values not fully supported yet
                     CalibrationSettingsBarAkm.Enabled = false;
                     CalibrationSettingsBarKoi.Enabled = false;
+                }
+
+                // Try to overlay from calibration.json if exists
+                var path = Path.Combine(_configPath, "calibration.json");
+                if (File.Exists(path))
+                {
+                    try {
+                        var json = await File.ReadAllTextAsync(path);
+                        var doc = JsonDocument.Parse(json);
+                        if (doc.RootElement.TryGetProperty("Calibration", out var cal))
+                        {
+                            if (cal.TryGetProperty("Ph", out var ph))
+                            {
+                                if (ph.TryGetProperty("ZeroRef", out var zr)) CalibrationSettingsBarPh.ZeroRef = zr.GetDouble().ToString();
+                                if (ph.TryGetProperty("SpanRef", out var sr)) CalibrationSettingsBarPh.SpanRef = sr.GetDouble().ToString();
+                                if (ph.TryGetProperty("Duration", out var dur)) CalibrationSettingsBarPh.ZeroTime = dur.GetInt32().ToString();
+                            }
+                            if (cal.TryGetProperty("Iletkenlik", out var cond))
+                            {
+                                if (cond.TryGetProperty("ZeroRef", out var zr)) CalibrationSettingsBarIletkenlik.ZeroRef = zr.GetDouble().ToString();
+                                if (cond.TryGetProperty("SpanRef", out var sr)) CalibrationSettingsBarIletkenlik.SpanRef = sr.GetDouble().ToString();
+                                if (cond.TryGetProperty("Duration", out var dur)) CalibrationSettingsBarIletkenlik.ZeroTime = dur.GetInt32().ToString();
+                            }
+                        }
+                    } catch { /* Ignore loading errors from file, fall back to DB values */ }
                 }
             }
             catch (Exception ex)
@@ -117,6 +145,31 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
                 );
 
                 await dbContext.SaveChangesAsync();
+
+                // Save to calibration.json
+                var calibrationConfig = new
+                {
+                    Calibration = new
+                    {
+                        Ph = new
+                        {
+                            ZeroRef = phZeroRef,
+                            SpanRef = phSpanRef,
+                            Duration = phZeroDuration
+                        },
+                        Iletkenlik = new
+                        {
+                            ZeroRef = condZeroRef,
+                            SpanRef = condSpanRef,
+                            Duration = condZeroDuration
+                        }
+                    }
+                };
+                
+                var json = System.Text.Json.JsonSerializer.Serialize(calibrationConfig, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+                Directory.CreateDirectory(_configPath);
+                await File.WriteAllTextAsync(Path.Combine(_configPath, "calibration.json"), json);
+
                 MessageBox.Show("Kalibrasyon ayarları kaydedildi.");
             }
             catch (Exception ex)
