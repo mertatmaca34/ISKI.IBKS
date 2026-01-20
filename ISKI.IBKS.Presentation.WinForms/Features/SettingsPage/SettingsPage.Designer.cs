@@ -52,7 +52,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             // 
             // ButtonStationSettings
             // 
-            ButtonStationSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonStationSettings.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonStationSettings.Image = Properties.Resources.place_marker_48px;
             ButtonStationSettings.ImageScaling = ToolStripItemImageScaling.None;
             ButtonStationSettings.Name = "ButtonStationSettings";
@@ -61,7 +61,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             // 
             // ButtonApiSettings
             // 
-            ButtonApiSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonApiSettings.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonApiSettings.Image = Properties.Resources.rest_api_48px;
             ButtonApiSettings.ImageScaling = ToolStripItemImageScaling.None;
             ButtonApiSettings.Name = "ButtonApiSettings";
@@ -70,7 +70,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             // 
             // ButtonPlcSettings
             // 
-            ButtonPlcSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonPlcSettings.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonPlcSettings.Image = Properties.Resources.electronics_48px;
             ButtonPlcSettings.ImageScaling = ToolStripItemImageScaling.None;
             ButtonPlcSettings.Name = "ButtonPlcSettings";
@@ -79,7 +79,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             // 
             // ButtonCalibrationSettings
             // 
-            ButtonCalibrationSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonCalibrationSettings.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonCalibrationSettings.Image = Properties.Resources.azimuth_48px;
             ButtonCalibrationSettings.ImageScaling = ToolStripItemImageScaling.None;
             ButtonCalibrationSettings.Name = "ButtonCalibrationSettings";
@@ -88,15 +88,16 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             // 
             // ButtonMailServerSettings
             // 
-            ButtonMailServerSettings.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ButtonMailServerSettings.Font = new Font("Arial", 9F, FontStyle.Bold);
             ButtonMailServerSettings.Image = Properties.Resources.mail_server48px;
             ButtonMailServerSettings.ImageScaling = ToolStripItemImageScaling.None;
             ButtonMailServerSettings.Name = "ButtonMailServerSettings";
-            ButtonMailServerSettings.Size = new Size(173, 52);
+            ButtonMailServerSettings.Size = new Size(183, 52);
             ButtonMailServerSettings.Text = "Mail Sunucu Ayarları";
             // 
             // PanelContent
             // 
+            PanelContent.BackColor = Color.WhiteSmoke;
             PanelContent.Dock = DockStyle.Fill;
             PanelContent.Location = new Point(0, 56);
             PanelContent.Name = "PanelContent";
@@ -108,11 +109,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 677);
             Controls.Add(PanelContent);
             Controls.Add(menuStrip1);
             Name = "SettingsPage";
-            Text = "SettingsPage";
+            Size = new Size(1170, 677);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

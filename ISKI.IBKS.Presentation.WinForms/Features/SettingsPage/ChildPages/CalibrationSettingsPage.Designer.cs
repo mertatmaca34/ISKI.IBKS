@@ -102,11 +102,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             CalibrationSettingsBarIletkenlik.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CalibrationSettingsBarIletkenlik.BackColor = Color.FromArgb(235, 235, 235);
             CalibrationSettingsBarIletkenlik.Dock = DockStyle.Fill;
-            CalibrationSettingsBarIletkenlik.Location = new Point(3, 233);
+            CalibrationSettingsBarIletkenlik.Location = new Point(3, 231);
+            CalibrationSettingsBarIletkenlik.Margin = new Padding(3, 1, 3, 1);
             CalibrationSettingsBarIletkenlik.Name = "CalibrationSettingsBarIletkenlik";
-            CalibrationSettingsBarIletkenlik.Padding = new Padding(1);
             CalibrationSettingsBarIletkenlik.Parameter = "Iletkenlik";
-            CalibrationSettingsBarIletkenlik.Size = new Size(1148, 58);
+            CalibrationSettingsBarIletkenlik.Size = new Size(1148, 62);
             CalibrationSettingsBarIletkenlik.SpanRef = "";
             CalibrationSettingsBarIletkenlik.SpanTime = "";
             CalibrationSettingsBarIletkenlik.TabIndex = 4;
@@ -118,11 +118,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             CalibrationSettingsBarPh.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CalibrationSettingsBarPh.BackColor = Color.FromArgb(235, 235, 235);
             CalibrationSettingsBarPh.Dock = DockStyle.Fill;
-            CalibrationSettingsBarPh.Location = new Point(3, 169);
+            CalibrationSettingsBarPh.Location = new Point(3, 167);
+            CalibrationSettingsBarPh.Margin = new Padding(3, 1, 3, 1);
             CalibrationSettingsBarPh.Name = "CalibrationSettingsBarPh";
-            CalibrationSettingsBarPh.Padding = new Padding(1);
             CalibrationSettingsBarPh.Parameter = "pH";
-            CalibrationSettingsBarPh.Size = new Size(1148, 58);
+            CalibrationSettingsBarPh.Size = new Size(1148, 62);
             CalibrationSettingsBarPh.SpanRef = "";
             CalibrationSettingsBarPh.SpanTime = "";
             CalibrationSettingsBarPh.TabIndex = 3;
@@ -134,11 +134,11 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             CalibrationSettingsBarKoi.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CalibrationSettingsBarKoi.BackColor = Color.FromArgb(235, 235, 235);
             CalibrationSettingsBarKoi.Dock = DockStyle.Fill;
-            CalibrationSettingsBarKoi.Location = new Point(3, 105);
+            CalibrationSettingsBarKoi.Location = new Point(3, 103);
+            CalibrationSettingsBarKoi.Margin = new Padding(3, 1, 3, 1);
             CalibrationSettingsBarKoi.Name = "CalibrationSettingsBarKoi";
-            CalibrationSettingsBarKoi.Padding = new Padding(1);
             CalibrationSettingsBarKoi.Parameter = "KOi";
-            CalibrationSettingsBarKoi.Size = new Size(1148, 58);
+            CalibrationSettingsBarKoi.Size = new Size(1148, 62);
             CalibrationSettingsBarKoi.SpanRef = "";
             CalibrationSettingsBarKoi.SpanTime = "";
             CalibrationSettingsBarKoi.TabIndex = 2;
@@ -151,10 +151,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             CalibrationSettingsBarAkm.BackColor = Color.FromArgb(235, 235, 235);
             CalibrationSettingsBarAkm.Dock = DockStyle.Fill;
             CalibrationSettingsBarAkm.Location = new Point(3, 41);
+            CalibrationSettingsBarAkm.Margin = new Padding(3, 3, 3, 1);
             CalibrationSettingsBarAkm.Name = "CalibrationSettingsBarAkm";
-            CalibrationSettingsBarAkm.Padding = new Padding(1);
             CalibrationSettingsBarAkm.Parameter = "AKM";
-            CalibrationSettingsBarAkm.Size = new Size(1148, 58);
+            CalibrationSettingsBarAkm.Size = new Size(1148, 60);
             CalibrationSettingsBarAkm.SpanRef = "";
             CalibrationSettingsBarAkm.SpanTime = "";
             CalibrationSettingsBarAkm.TabIndex = 0;
@@ -177,10 +177,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 621);
             Controls.Add(tableLayoutPanel1);
             Name = "CalibrationSettingsPage";
-            Text = "CalibrationSettingsPage";
+            Size = new Size(1170, 621);
             tableLayoutPanel1.ResumeLayout(false);
             TableLayoutPanelMain.ResumeLayout(false);
             ResumeLayout(false);
@@ -193,8 +192,8 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
         private TitleBarControl titleBarControl1;
         private CalibrationSettingsBar CalibrationSettingsBarAkm;
         private CalibrationSettingsBar CalibrationSettingsBarKoi;
-        private CalibrationSettingsBar CalibrationSettingsBarIletkenlik;
         private CalibrationSettingsBar CalibrationSettingsBarPh;
         private Button ButtonSave;
+        private CalibrationSettingsBar CalibrationSettingsBarIletkenlik;
     }
 }

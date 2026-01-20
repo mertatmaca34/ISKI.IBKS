@@ -99,9 +99,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             StationSettingsControlStationId.AyarDegeri = "";
             StationSettingsControlStationId.BackColor = Color.FromArgb(235, 235, 235);
             StationSettingsControlStationId.Dock = DockStyle.Fill;
-            StationSettingsControlStationId.Location = new Point(3, 105);
+            StationSettingsControlStationId.Location = new Point(3, 103);
+            StationSettingsControlStationId.Margin = new Padding(3, 1, 3, 3);
             StationSettingsControlStationId.Name = "StationSettingsControlStationId";
-            StationSettingsControlStationId.Size = new Size(1148, 58);
+            StationSettingsControlStationId.Size = new Size(1148, 60);
             StationSettingsControlStationId.TabIndex = 2;
             // 
             // titleBarControl1
@@ -121,9 +122,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             StationSettingsControlStationName.AyarDegeri = "";
             StationSettingsControlStationName.BackColor = Color.FromArgb(235, 235, 235);
             StationSettingsControlStationName.Dock = DockStyle.Fill;
-            StationSettingsControlStationName.Location = new Point(3, 41);
+            StationSettingsControlStationName.Location = new Point(3, 39);
+            StationSettingsControlStationName.Margin = new Padding(3, 1, 3, 1);
             StationSettingsControlStationName.Name = "StationSettingsControlStationName";
-            StationSettingsControlStationName.Size = new Size(1148, 58);
+            StationSettingsControlStationName.Size = new Size(1148, 62);
             StationSettingsControlStationName.TabIndex = 1;
             // 
             // StationSettingsPage
@@ -131,10 +133,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 621);
             Controls.Add(tableLayoutPanel1);
             Name = "StationSettingsPage";
-            Text = "StationSettingsPage";
+            Size = new Size(1170, 621);
             tableLayoutPanel1.ResumeLayout(false);
             TableLayoutPanelMain.ResumeLayout(false);
             ResumeLayout(false);

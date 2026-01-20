@@ -122,7 +122,6 @@
               "ByteOffset": 0,
               "BitOffset": 7
             },
-
             "KabinHaftalikYikamada": {
               "DataType": "Bool",
               "ByteOffset": 1,
@@ -163,7 +162,6 @@
               "ByteOffset": 1,
               "BitOffset": 7
             },
-
             "Pompa3Calisiyor": {
               "DataType": "Bool",
               "ByteOffset": 2,

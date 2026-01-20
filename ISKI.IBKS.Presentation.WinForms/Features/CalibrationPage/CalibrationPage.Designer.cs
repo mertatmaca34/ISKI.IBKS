@@ -287,6 +287,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             ButtonKoiZero.BackColor = Color.FromArgb(0, 131, 200);
             ButtonKoiZero.Dock = DockStyle.Fill;
+            ButtonKoiZero.Enabled = false;
             ButtonKoiZero.FlatAppearance.BorderSize = 0;
             ButtonKoiZero.ForeColor = Color.White;
             ButtonKoiZero.Location = new Point(385, 5);
@@ -825,6 +826,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage
             // 
             ButtonAkmZero.BackColor = Color.FromArgb(0, 131, 200);
             ButtonAkmZero.Dock = DockStyle.Fill;
+            ButtonAkmZero.Enabled = false;
             ButtonAkmZero.FlatAppearance.BorderSize = 0;
             ButtonAkmZero.ForeColor = Color.White;
             ButtonAkmZero.Location = new Point(385, 5);

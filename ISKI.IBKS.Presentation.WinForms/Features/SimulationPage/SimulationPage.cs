@@ -111,8 +111,19 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SimulationPage
                 LabelSicaklik.Text = snapshot.KabinSicakligi?.ToString("F1") ?? "-";
                 LabelNem.Text = snapshot.KabinNemi?.ToString("F1") ?? "-";
 
-                // Update Pump Frequencies
-                LabelFrekans.Text = $"P1: {snapshot.Pompa1CalismaFrekansi:F1} / P2: {snapshot.Pompa2CalismaFrekansi:F1}";
+                // Update Pump Frequencies (Only Active Pump)
+                if (snapshot.Pompa1Calisiyor == true)
+                {
+                    LabelFrekans.Text = $"{snapshot.Pompa1CalismaFrekansi:F1} Hz";
+                }
+                else if (snapshot.Pompa2Calisiyor == true)
+                {
+                    LabelFrekans.Text = $"{snapshot.Pompa2CalismaFrekansi:F1} Hz";
+                }
+                else 
+                {
+                    LabelFrekans.Text = "0,0 Hz";
+                }
 
                 // Update Active Pump Indicator
                 if (snapshot.Pompa1Calisiyor == true) LabelAktifPompa.Text = "Pompa 1";

@@ -99,9 +99,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             SettingsControlPassword.AyarDegeri = "";
             SettingsControlPassword.BackColor = Color.FromArgb(235, 235, 235);
             SettingsControlPassword.Dock = DockStyle.Fill;
-            SettingsControlPassword.Location = new Point(3, 233);
+            SettingsControlPassword.Location = new Point(3, 231);
+            SettingsControlPassword.Margin = new Padding(3, 1, 3, 3);
             SettingsControlPassword.Name = "SettingsControlPassword";
-            SettingsControlPassword.Size = new Size(1148, 58);
+            SettingsControlPassword.Size = new Size(1148, 60);
             SettingsControlPassword.TabIndex = 3;
             // 
             // SettingsControlUsername
@@ -111,8 +112,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             SettingsControlUsername.BackColor = Color.FromArgb(235, 235, 235);
             SettingsControlUsername.Dock = DockStyle.Fill;
             SettingsControlUsername.Location = new Point(3, 169);
+            SettingsControlUsername.Margin = new Padding(3, 3, 3, 1);
             SettingsControlUsername.Name = "SettingsControlUsername";
-            SettingsControlUsername.Size = new Size(1148, 58);
+            SettingsControlUsername.Size = new Size(1148, 60);
             SettingsControlUsername.TabIndex = 2;
             // 
             // titleBarControl1
@@ -133,8 +135,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             SettingsControlApiUrl.BackColor = Color.FromArgb(235, 235, 235);
             SettingsControlApiUrl.Dock = DockStyle.Fill;
             SettingsControlApiUrl.Location = new Point(3, 41);
+            SettingsControlApiUrl.Margin = new Padding(3, 3, 3, 1);
             SettingsControlApiUrl.Name = "SettingsControlApiUrl";
-            SettingsControlApiUrl.Size = new Size(1148, 58);
+            SettingsControlApiUrl.Size = new Size(1148, 60);
             SettingsControlApiUrl.TabIndex = 1;
             // 
             // ButtonSave
@@ -158,10 +161,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ChildPages
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(1170, 621);
             Controls.Add(tableLayoutPanel1);
             Name = "ApiSettingsPage";
-            Text = "ApiSettingsPage";
+            Size = new Size(1170, 621);
             tableLayoutPanel1.ResumeLayout(false);
             TableLayoutPanelMain.ResumeLayout(false);
             ResumeLayout(false);
