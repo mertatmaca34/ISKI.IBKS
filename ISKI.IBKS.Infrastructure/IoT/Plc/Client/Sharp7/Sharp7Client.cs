@@ -1,183 +1,65 @@
-﻿using ISKI.IBKS.Application.Features.Plc.Abstractions;
-using ISKI.IBKS.Infrastructure.IoT.Plc.Exceptions;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using ISKI.IBKS.Application.Common.IoT.Plc;
 using Sharp7;
-using System.Net;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
 
-public class Sharp7Client : IPlcClient
+public sealed class Sharp7Client : IPlcClient
 {
-    private S7Client S7Client { get; set; }
+    private readonly S7Client _client = new();
+    private DateTime? _connectedAt;
 
-    public bool IsConnected => S7Client.Connected;
+    public bool IsConnected => _client.Connected;
 
-    private DateTimeOffset? _connectedTime;
-    public TimeSpan Uptime =>
-        IsConnected && _connectedTime.HasValue
-            ? DateTimeOffset.UtcNow - _connectedTime.Value
-            : TimeSpan.Zero;
+    public TimeSpan Uptime => (IsConnected && _connectedAt.HasValue) ? DateTime.Now - _connectedAt.Value : TimeSpan.Zero;
 
-    public Sharp7Client()
+    public async Task<bool> ConnectAsync(string ip, int rack, int slot, CancellationToken ct = default)
     {
-        S7Client = new S7Client
+        if (IsConnected) return true;
+
+        return await Task.Run(() =>
         {
-            ConnTimeout = 5000,
-            SendTimeout = 5000
-        };
+            int res = _client.ConnectTo(ip, rack, slot);
+            if (res == 0) _connectedAt = DateTime.Now;
+            return res == 0;
+        }, ct);
     }
 
-    public void Connect(string ipAddress, int rack, int slot)
+    public async Task DisconnectAsync(CancellationToken ct = default)
     {
-        if (S7Client.Connected)
-            return;
-
-        var res = S7Client.ConnectTo(ipAddress, rack, slot);
-
-        if (res != 0)
+        await Task.Run(() =>
         {
-            var errorText = S7Client.ErrorText(res);
-
-            throw new PlcConnectionException(ipAddress, rack, slot, errorText);
-        }
-
-        _connectedTime = DateTime.Now;
+            _client.Disconnect();
+            _connectedAt = null;
+        }, ct);
     }
 
-    public void Disconnect()
+    public async Task<bool> WriteBitAsync(int db, int offset, int bit, bool value, CancellationToken ct = default)
     {
-        if (S7Client.Connected)
+        return await Task.Run(() =>
         {
-            var res = S7Client.Disconnect();
-
-            if (res != 0)
-            {
-                var errorText = S7Client.ErrorText(res);
-
-                throw new PlcConnectionException(errorText);
-            }
-        }
+            byte[] buf = new byte[1];
+            _client.DBRead(db, offset, 1, buf);
+            if (value) buf[0] |= (byte)(1 << bit);
+            else buf[0] &= (byte)~(1 << bit);
+            return _client.DBWrite(db, offset, 1, buf) == 0;
+        }, ct);
     }
 
-    public void ForceReconnect(string ipAddress, int rack, int slot)
+    public async Task<byte[]> ReadBytesAsync(int db, int offset, int size, CancellationToken ct = default)
     {
-        // Önce mevcut bağlantıyı kapat (hata olsa bile devam et)
-        try
+        return await Task.Run(() =>
         {
-            if (S7Client.Connected)
-            {
-                S7Client.Disconnect();
-            }
-        }
-        catch
-        {
-            // Disconnect hatalarını yoksay
-        }
-
-        // Yeni S7Client oluştur (eski bağlantı durumunu temizle)
-        S7Client = new S7Client
-        {
-            ConnTimeout = 5000,
-            SendTimeout = 5000
-        };
-
-        _connectedTime = null;
-
-        // Yeniden bağlan
-        var res = S7Client.ConnectTo(ipAddress, rack, slot);
-
-        if (res != 0)
-        {
-            var errorText = S7Client.ErrorText(res);
-            throw new PlcConnectionException(ipAddress, rack, slot, errorText);
-        }
-
-        _connectedTime = DateTime.Now;
+            byte[] buf = new byte[size];
+            int res = _client.DBRead(db, offset, size, buf);
+            return res == 0 ? buf : throw new Exception($"PLC read error: {res}");
+        }, ct);
     }
 
-    public byte[] ReadBytes(int dbNumber, int startByteAddress, byte[] buffer)
+    public void Dispose()
     {
-        if (S7Client.Connected)
-        {
-            var res = S7Client.DBRead(dbNumber, startByteAddress, buffer.Length, buffer);
-
-            if (res != 0)
-            {
-                var errorText = S7Client.ErrorText(res);
-
-                throw new PlcReadException(dbNumber, startByteAddress, buffer.Length, buffer, errorText);
-            }
-
-            return buffer;
-        }
-        else
-        {
-            throw new PlcConnectionException();
-        }
-    }
-
-    public void WriteBytes(int dbNumber, int startByteAddress, byte[] data)
-    {
-        if (S7Client.Connected) 
-        {
-            var res = S7Client.DBWrite(dbNumber, startByteAddress, data.Length, data);
-
-            if (res != 0)
-            {
-                var errorText = S7Client.ErrorText(res);
-
-                throw new PlcReadException(dbNumber, startByteAddress, data.Length, data, errorText);
-            }
-        }
-        else
-        {
-            throw new PlcConnectionException();
-        }
-    }
-
-    public float ReadReal(byte[] buffer, int byteOffset)
-    {
-        return S7.GetRealAt(buffer, byteOffset);
-    }
-
-    public bool ReadBit(byte[] buffer, int byteOffset, int bitOffset)
-    {
-        return S7.GetBitAt(buffer, byteOffset, bitOffset);
-    }
-
-    public DateTime ReadDateTime(byte[] buffer, int byteOffset)
-    {
-        return S7.GetDTLAt(buffer, byteOffset);
-    }
-
-    public byte ReadByte(byte[] buffer, int byteOffset)
-    {
-        return S7.GetByteAt(buffer, byteOffset);
-    }
-
-    public void WriteBit(int dbNumber, int byteOffset, int bitOffset, bool value)
-    {
-        if (S7Client.Connected)
-        {
-            var buffer = new byte[1];
-            buffer[0] = value ? (byte)1 : (byte)0;
-            
-            // S7Consts.S7AreaDB = 0x84
-            // Amount = 1 (1 bit)
-            // WordLen = S7Consts.S7WLBit = 0x01
-            // Start = (byteOffset * 8) + bitOffset
-            int start = (byteOffset * 8) + bitOffset;
-            
-            var res = S7Client.WriteArea(S7Consts.S7AreaDB, dbNumber, start, 1, S7Consts.S7WLBit, buffer);
-
-            if (res != 0)
-            {
-                var errorText = S7Client.ErrorText(res);
-                throw new PlcReadException(dbNumber, byteOffset, 1, buffer, errorText);
-            }
-        }
-        else
-        {
-            throw new PlcConnectionException();
-        }
+        _client.Disconnect();
     }
 }

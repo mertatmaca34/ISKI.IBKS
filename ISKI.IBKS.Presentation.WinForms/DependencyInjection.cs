@@ -1,65 +1,160 @@
-﻿using ISKI.IBKS.Presentation.WinForms.Common.Navigation;
-using ISKI.IBKS.Presentation.WinForms.Extensions;
-using ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage;
-using ISKI.IBKS.Presentation.WinForms.Features.HomePage;
-using ISKI.IBKS.Presentation.WinForms.Features.Main;
-using ISKI.IBKS.Presentation.WinForms.Features.ReportingPage;
-using ISKI.IBKS.Presentation.WinForms.Features.SimulationPage;
-using ISKI.IBKS.Presentation.WinForms.Middleware;
 using Microsoft.Extensions.DependencyInjection;
+using ISKI.IBKS.Presentation.WinForms.Features.Main.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.WizardMain;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.StationSettings;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.PlcSettings;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.SaisApiSettings;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.CalibrationSettings;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.MailSettings;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.Model;
+using ISKI.IBKS.Presentation.WinForms.Features.SetupWizard.Steps;
+using ISKI.IBKS.Presentation.WinForms.Features.HomePage.View;
+using ISKI.IBKS.Presentation.WinForms.Features.HomePage.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.SimulationPage.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SimulationPage.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.View;
+using ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailMain.View;
+using ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailMain.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailStatements.View;
+using ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailStatements.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailUsers.View;
+using ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailUsers.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.ReportingPage.View;
+using ISKI.IBKS.Presentation.WinForms.Features.ReportingPage.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.SettingsMain.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.PlcSettings.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.PlcSettings.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.StationSettings.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.StationSettings.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ApiSettings.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.ApiSettings.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.MailSettings.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.MailSettings.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.CalibrationSettings.View;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.CalibrationSettings.Presenter;
+using ISKI.IBKS.Presentation.WinForms.Common.Navigation;
+using System.Reflection;
 
 namespace ISKI.IBKS.Presentation.WinForms;
 
-/// <summary>
-/// Dependency injection configuration for the Presentation layer.
-/// </summary>
 public static class DependencyInjection
 {
-    /// <summary>
-    /// Adds presentation layer services to the service collection.
-    /// </summary>
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        // Core services
-        services.AddSingleton<GlobalExceptionHandler>();
+        services.AddSingleton<INavigationService>(sp => 
+            new NavigationService(sp, sp.GetRequiredService<MainForm>().ContentPanel));
 
-        // MainForm and NavigationService are registered together since NavigationService
-        // needs to be created after MainForm to access its content panel
-        services.AddSingleton<MainForm>(sp =>
-        {
-            var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<MainForm>>();
-            var form = new MainForm(sp, logger);
+        // Middleware
+        services.AddSingleton<Middleware.GlobalExceptionHandler>();
 
-            // Create navigation service with the form's content panel
-            var navigationService = new NavigationService(sp, form.ContentPanel);
+        // Main
+        services.AddSingleton<MainForm>();
+        services.AddTransient<IMainFormView>(p => p.GetRequiredService<MainForm>());
 
-            // Now set the navigation service on the form
-            form.SetNavigationService(navigationService);
+        // Setup Wizard
+        services.AddScoped<SetupState>();
+        services.AddTransient<SetupWizardForm>();
+        services.AddTransient<ISetupWizardView>(p => p.GetRequiredService<SetupWizardForm>());
 
-            // Create presenter
-            _ = ActivatorUtilities.CreateInstance<MainFormPresenter>(sp, (IMainFormView)form);
+        //Setup Wizard Steps
+        services.AddTransient<StationSettingsStep>();
+        services.AddTransient<IStationSettingsStepView>(p => p.GetRequiredService<StationSettingsStep>());
+        services.AddTransient<ISetupWizardStep>(p => p.GetRequiredService<StationSettingsStep>());
 
-            return form;
-        });
+        services.AddTransient<PlcSettingsStep>();
+        services.AddTransient<IPlcSettingsStepView>(p => p.GetRequiredService<PlcSettingsStep>());
+        services.AddTransient<ISetupWizardStep>(p => p.GetRequiredService<PlcSettingsStep>());
 
-        services.AddSingleton<IMainFormView>(sp => sp.GetRequiredService<MainForm>());
-        services.AddSingleton<INavigationService>(sp =>
-        {
-            var form = sp.GetRequiredService<MainForm>();
-            return new NavigationService(sp, form.ContentPanel);
-        });
+        services.AddTransient<SaisApiSettingsStep>();
+        services.AddTransient<ISaisApiSettingsStepView>(p => p.GetRequiredService<SaisApiSettingsStep>());
+        services.AddTransient<ISetupWizardStep>(p => p.GetRequiredService<SaisApiSettingsStep>());
 
-        // Pages - Add new pages here as they are created
-        services.AddPage<IHomePageView, HomePage, HomePagePresenter>();
-        services.AddPage<SimulationPage>();
-        services.AddPage<CalibrationPage>();
-        services.AddPage<ReportingPage>();
+        services.AddTransient<CalibrationSettingsStepPage>();
+        services.AddTransient<ICalibrationSettingsStepView>(p => p.GetRequiredService<CalibrationSettingsStepPage>());
+        services.AddTransient<ISetupWizardStep>(p => p.GetRequiredService<CalibrationSettingsStepPage>());
 
-        services.AddPage<ISKI.IBKS.Presentation.WinForms.Features.MailPage.MailPage>();
-        services.AddPage<ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.SettingsPage>();
+        services.AddTransient<MailSettingsStepPage>();
+        services.AddTransient<IMailSettingsStepView>(p => p.GetRequiredService<MailSettingsStepPage>());
+        services.AddTransient<ISetupWizardStep>(p => p.GetRequiredService<MailSettingsStepPage>());
+
+        services.AddTransient<FinalSummaryStep>();
+        services.AddTransient<IFinalSummaryStepView>(p => p.GetRequiredService<FinalSummaryStep>());
+        services.AddTransient<ISetupWizardStep>(p => p.GetRequiredService<FinalSummaryStep>());
+
+        services.AddTransient<SetupWizardPresenter>();
+
+        // Home Page
+        services.AddTransient<HomePage>();
+        services.AddTransient<IHomePageView>(p => p.GetRequiredService<HomePage>());
+        services.AddTransient<HomePagePresenter>();
+
+        // Simulation Page
+        services.AddTransient<SimulationPage>();
+        services.AddTransient<ISimulationPageView>(p => p.GetRequiredService<SimulationPage>());
+        services.AddTransient<SimulationPagePresenter>();
+
+        // Calibration Page
+        services.AddTransient<CalibrationPage>();
+        services.AddTransient<ICalibrationPageView>(p => p.GetRequiredService<CalibrationPage>());
+        services.AddTransient<CalibrationPagePresenter>();
+
+        // Mail Page
+        // Mail Page
+        services.AddTransient<MailPage>();
+        services.AddTransient<IMailPageView>(p => p.GetRequiredService<MailPage>());
+        services.AddTransient<MailPagePresenter>();
+
+        // Mail Statements Page
+        services.AddTransient<MailStatementsPage>();
+        services.AddTransient<IMailStatementsPageView>(p => p.GetRequiredService<MailStatementsPage>());
+        services.AddTransient<MailStatementsPagePresenter>();
+
+        // Mail Users Page
+        services.AddTransient<MailUsersPage>();
+        services.AddTransient<IMailUsersPageView>(p => p.GetRequiredService<MailUsersPage>());
+        services.AddTransient<MailUsersPagePresenter>();
+
+        // Reporting Page
+        services.AddTransient<ReportingPage>();
+        services.AddTransient<IReportingPageView>(p => p.GetRequiredService<ReportingPage>());
+        services.AddTransient<ReportingPagePresenter>();
+
+        // Settings Page
+        services.AddTransient<SettingsPage>();
+        services.AddTransient<ISettingsPageView>(p => p.GetRequiredService<SettingsPage>());
+        // StationSettings Page
+        services.AddTransient<StationSettingsPage>();
+        services.AddTransient<IStationSettingsPageView>(p => p.GetRequiredService<StationSettingsPage>());
+        services.AddTransient<StationSettingsPresenter>();
+
+        // PlcSettings Page
+        services.AddTransient<PlcSettingsPage>();
+        services.AddTransient<IPlcSettingsPageView>(p => p.GetRequiredService<PlcSettingsPage>());
+        services.AddTransient<PlcSettingsPresenter>();
+
+        // ApiSettings Page
+        services.AddTransient<ApiSettingsPage>();
+        services.AddTransient<IApiSettingsPageView>(p => p.GetRequiredService<ApiSettingsPage>());
+        services.AddTransient<ApiSettingsPresenter>();
+
+        // MailSettings Page
+        services.AddTransient<MailServerSettingsPage>();
+        services.AddTransient<IMailServerSettingsPageView>(p => p.GetRequiredService<MailServerSettingsPage>());
+        services.AddTransient<MailServerSettingsPresenter>();
+
+        // CalibrationSettings Page
+        services.AddTransient<CalibrationSettingsPage>();
+        services.AddTransient<ICalibrationSettingsPageView>(p => p.GetRequiredService<CalibrationSettingsPage>());
+        services.AddTransient<CalibrationSettingsPresenter>();
+
+        // Auto-register any other Presenters/Views if missed
+        // services.Scan(scan => scan
+        //    .FromAssemblyOf<MainForm>()
+        //    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Presenter")))
+        //    .AsSelf()
+        //    .WithTransientLifetime());
 
         return services;
     }
 }
-
-

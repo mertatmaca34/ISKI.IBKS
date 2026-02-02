@@ -1,16 +1,9 @@
-﻿namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
+namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
 {
     partial class HealthSummaryCardControl
     {
-        /// <summary> 
-        ///Gerekli tasarımcı değişkeni.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        ///Kullanılan tüm kaynakları temizleyin.
-        /// </summary>
-        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,12 +13,8 @@
             base.Dispose(disposing);
         }
 
-        #region Bileşen Tasarımcısı üretimi kod
+        #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
 
-        /// <summary> 
-        /// Tasarımcı desteği için gerekli metot - bu metodun 
-        ///içeriğini kod düzenleyici ile değiştirmeyin.
-        /// </summary>
         private void InitializeComponent()
         {
             TableLayoutPanelBg = new TableLayoutPanel();
@@ -38,9 +27,9 @@
             TableLayoutPanelRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PictureStatus).BeginInit();
             SuspendLayout();
-            // 
-            // TableLayoutPanelBg
-            // 
+            
+            
+            
             TableLayoutPanelBg.BackColor = Color.White;
             TableLayoutPanelBg.ColumnCount = 3;
             TableLayoutPanelBg.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -56,9 +45,9 @@
             TableLayoutPanelBg.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             TableLayoutPanelBg.Size = new Size(577, 71);
             TableLayoutPanelBg.TabIndex = 2;
-            // 
-            // LabelKey
-            // 
+            
+            
+            
             LabelKey.Anchor = AnchorStyles.None;
             LabelKey.AutoSize = true;
             LabelKey.Font = new Font("Calibri", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
@@ -67,9 +56,9 @@
             LabelKey.Size = new Size(13, 18);
             LabelKey.TabIndex = 2;
             LabelKey.Text = "-";
-            // 
-            // panel2
-            // 
+            
+            
+            
             panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.FromArgb(235, 235, 235);
             panel2.Location = new Point(287, 17);
@@ -77,9 +66,9 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1, 37);
             panel2.TabIndex = 0;
-            // 
-            // TableLayoutPanelRight
-            // 
+            
+            
+            
             TableLayoutPanelRight.ColumnCount = 2;
             TableLayoutPanelRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             TableLayoutPanelRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -92,9 +81,9 @@
             TableLayoutPanelRight.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanelRight.Size = new Size(278, 65);
             TableLayoutPanelRight.TabIndex = 3;
-            // 
-            // LabelValue
-            // 
+            
+            
+            
             LabelValue.Anchor = AnchorStyles.Right;
             LabelValue.AutoSize = true;
             LabelValue.Font = new Font("Calibri", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
@@ -104,9 +93,9 @@
             LabelValue.TabIndex = 2;
             LabelValue.Text = "-";
             LabelValue.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // PictureStatus
-            // 
+            
+            
+            
             PictureStatus.Anchor = AnchorStyles.Left;
             PictureStatus.Location = new Point(142, 24);
             PictureStatus.Name = "PictureStatus";
@@ -114,9 +103,9 @@
             PictureStatus.SizeMode = PictureBoxSizeMode.StretchImage;
             PictureStatus.TabIndex = 3;
             PictureStatus.TabStop = false;
-            // 
-            // HealthSummaryCardControl
-            // 
+            
+            
+            
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 235, 235);
@@ -142,3 +131,4 @@
         private PictureBox PictureStatus;
     }
 }
+

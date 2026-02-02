@@ -7,16 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\launchSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.76.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="WolverineFx" Version="5.13.0" />
+    <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="5.13.0" />
+    <PackageReference Include="WolverineFx.Http" Version="5.13.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ISKI.IBKS.Application\ISKI.IBKS.Application.csproj" />
     <ProjectReference Include="..\ISKI.IBKS.Infrastructure\ISKI.IBKS.Infrastructure.csproj" />
-    <ProjectReference Include="..\ISKI.IBKS.Persistence\ISKI.IBKS.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\station_stream.proto" GrpcServices="Both" />
   </ItemGroup>
 
 </Project>
-

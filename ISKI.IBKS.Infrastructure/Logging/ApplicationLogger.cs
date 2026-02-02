@@ -1,25 +1,21 @@
+using ISKI.IBKS.Application.Common.Configuration;
 using ISKI.IBKS.Domain.Entities;
-using ISKI.IBKS.Persistence.Contexts;
+using ISKI.IBKS.Domain.Enums;
+using ISKI.IBKS.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ISKI.IBKS.Infrastructure.Logging;
 
-public interface IApplicationLogger
-{
-    Task LogInfo(string title, string description, LogCategory category = LogCategory.System);
-    Task LogWarning(string title, string description, LogCategory category = LogCategory.System);
-    Task LogError(string title, string description, LogCategory category = LogCategory.System);
-    Task LogError(string title, Exception exception, LogCategory category = LogCategory.System);
-}
-
 public class ApplicationLogger : IApplicationLogger
 {
     private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IStationConfiguration _stationConfig;
 
-    public ApplicationLogger(IServiceScopeFactory scopeFactory)
+    public ApplicationLogger(IServiceScopeFactory scopeFactory, IStationConfiguration stationConfig)
     {
         _scopeFactory = scopeFactory;
+        _stationConfig = stationConfig;
     }
 
     public async Task LogInfo(string title, string description, LogCategory category = LogCategory.System)
@@ -54,22 +50,14 @@ public class ApplicationLogger : IApplicationLogger
             using var scope = _scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
 
-            var stationId = Guid.Empty;
-            try
-            {
-                var settings = await dbContext.StationSettings.AsNoTracking().FirstOrDefaultAsync();
-                if (settings != null) stationId = settings.StationId;
-            }
-            catch { /* Ignore if station settings not available */ }
-
-            var logEntry = new LogEntry(stationId, title, description, level, category);
+            var logEntry = new LogEntry(_stationConfig.StationId, title, description, level, category);
             dbContext.LogEntries.Add(logEntry);
             await dbContext.SaveChangesAsync();
         }
         catch
         {
-            // Fail silently to avoid breaking the application
             System.Diagnostics.Debug.WriteLine($"Failed to create log entry: {title}");
         }
     }
 }
+

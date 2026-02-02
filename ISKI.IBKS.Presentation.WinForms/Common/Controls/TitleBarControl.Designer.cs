@@ -1,16 +1,9 @@
-﻿namespace ISKI.IBKS.Presentation.WinForms.Common.Controls
+namespace ISKI.IBKS.Presentation.WinForms.Common.Controls
 {
     partial class TitleBarControl
     {
-        /// <summary> 
-        ///Gerekli tasarımcı değişkeni.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        ///Kullanılan tüm kaynakları temizleyin.
-        /// </summary>
-        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,12 +13,8 @@
             base.Dispose(disposing);
         }
 
-        #region Bileşen Tasarımcısı üretimi kod
+        #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
 
-        /// <summary> 
-        /// Tasarımcı desteği için gerekli metot - bu metodun 
-        ///içeriğini kod düzenleyici ile değiştirmeyin.
-        /// </summary>
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -33,9 +22,9 @@
             label1 = new Label();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
+            
+            
+            
             tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 8F));
@@ -50,9 +39,9 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(570, 30);
             tableLayoutPanel1.TabIndex = 0;
-            // 
-            // panel1
-            // 
+            
+            
+            
             panel1.BackColor = Color.FromArgb(0, 131, 200);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
@@ -60,9 +49,9 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(8, 30);
             panel1.TabIndex = 0;
-            // 
-            // label1
-            // 
+            
+            
+            
             label1.Anchor = AnchorStyles.Left;
             label1.AutoSize = true;
             label1.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -71,9 +60,9 @@
             label1.Size = new Size(50, 18);
             label1.TabIndex = 2;
             label1.Text = "label1";
-            // 
-            // TitleBarControl
-            // 
+            
+            
+            
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 235, 235);
@@ -93,3 +82,4 @@
         private Label label1;
     }
 }
+

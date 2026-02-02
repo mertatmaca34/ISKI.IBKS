@@ -226,4 +226,16 @@
   <data name="electronics_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\electronics_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SQLEXPR_x64_ENU" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQLEXPR_x64_ENU.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="LocalAPI" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LocalAPI.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dotnet-hosting-8.0.23-win" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dotnet-hosting-8.0.23-win.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icons8_water" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8_water.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

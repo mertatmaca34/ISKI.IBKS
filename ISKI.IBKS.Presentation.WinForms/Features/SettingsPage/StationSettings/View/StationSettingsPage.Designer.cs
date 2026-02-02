@@ -1,0 +1,143 @@
+using ISKI.IBKS.Presentation.WinForms.Common.Controls;
+using ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls;
+
+namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.StationSettings.View
+{
+    partial class StationSettingsPage
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            tableLayoutPanel1 = new TableLayoutPanel();
+            TableLayoutPanelMain = new TableLayoutPanel();
+            ButtonSave = new Button();
+            StationSettingsControlStationId = new SettingsBarControl();
+            titleBarControl1 = new TitleBarControl();
+            StationSettingsControlStationName = new SettingsBarControl();
+            tableLayoutPanel1.SuspendLayout();
+            TableLayoutPanelMain.SuspendLayout();
+            SuspendLayout();
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(TableLayoutPanelMain, 0, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(1170, 621);
+            tableLayoutPanel1.TabIndex = 1;
+            // 
+            // TableLayoutPanelMain
+            // 
+            TableLayoutPanelMain.ColumnCount = 1;
+            TableLayoutPanelMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            TableLayoutPanelMain.Controls.Add(ButtonSave, 0, 3);
+            TableLayoutPanelMain.Controls.Add(StationSettingsControlStationId, 0, 2);
+            TableLayoutPanelMain.Controls.Add(titleBarControl1, 0, 0);
+            TableLayoutPanelMain.Controls.Add(StationSettingsControlStationName, 0, 1);
+            TableLayoutPanelMain.Dock = DockStyle.Fill;
+            TableLayoutPanelMain.Location = new Point(8, 8);
+            TableLayoutPanelMain.Margin = new Padding(8);
+            TableLayoutPanelMain.Name = "TableLayoutPanelMain";
+            TableLayoutPanelMain.RowCount = 5;
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            TableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            TableLayoutPanelMain.Size = new Size(1154, 294);
+            TableLayoutPanelMain.TabIndex = 0;
+            // 
+            // ButtonSave
+            // 
+            ButtonSave.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            ButtonSave.BackColor = Color.FromArgb(0, 131, 200);
+            ButtonSave.FlatAppearance.BorderColor = Color.FromArgb(235, 235, 235);
+            ButtonSave.FlatAppearance.MouseDownBackColor = Color.WhiteSmoke;
+            ButtonSave.FlatAppearance.MouseOverBackColor = SystemColors.ButtonFace;
+            ButtonSave.ForeColor = Color.White;
+            ButtonSave.Location = new Point(930, 174);
+            ButtonSave.Margin = new Padding(8, 8, 0, 8);
+            ButtonSave.Name = "ButtonSave";
+            ButtonSave.Size = new Size(224, 43);
+            ButtonSave.TabIndex = 3;
+            ButtonSave.Text = "Kaydet";
+            ButtonSave.UseVisualStyleBackColor = false;
+            // 
+            // StationSettingsControlStationId
+            // 
+            StationSettingsControlStationId.AyarAdi = "İSTASYON ID:";
+            StationSettingsControlStationId.AyarDegeri = "";
+            StationSettingsControlStationId.BackColor = Color.FromArgb(235, 235, 235);
+            StationSettingsControlStationId.Dock = DockStyle.Fill;
+            StationSettingsControlStationId.Location = new Point(3, 103);
+            StationSettingsControlStationId.Margin = new Padding(3, 1, 3, 3);
+            StationSettingsControlStationId.Name = "StationSettingsControlStationId";
+            StationSettingsControlStationId.Size = new Size(1148, 60);
+            StationSettingsControlStationId.TabIndex = 2;
+            // 
+            // titleBarControl1
+            // 
+            titleBarControl1.BackColor = Color.FromArgb(235, 235, 235);
+            titleBarControl1.Dock = DockStyle.Fill;
+            titleBarControl1.Location = new Point(3, 3);
+            titleBarControl1.Name = "titleBarControl1";
+            titleBarControl1.Padding = new Padding(1);
+            titleBarControl1.Size = new Size(1148, 32);
+            titleBarControl1.TabIndex = 0;
+            titleBarControl1.TitleBarText = "İSTASYON AYARLARI";
+            // 
+            // StationSettingsControlStationName
+            // 
+            StationSettingsControlStationName.AyarAdi = "İSTASYON ADI:";
+            StationSettingsControlStationName.AyarDegeri = "";
+            StationSettingsControlStationName.BackColor = Color.FromArgb(235, 235, 235);
+            StationSettingsControlStationName.Dock = DockStyle.Fill;
+            StationSettingsControlStationName.Location = new Point(3, 41);
+            StationSettingsControlStationName.Margin = new Padding(3, 3, 3, 1);
+            StationSettingsControlStationName.Name = "StationSettingsControlStationName";
+            StationSettingsControlStationName.Size = new Size(1148, 60);
+            StationSettingsControlStationName.TabIndex = 1;
+            // 
+            // StationSettingsPage
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
+            Controls.Add(tableLayoutPanel1);
+            Name = "StationSettingsPage";
+            Size = new Size(1170, 621);
+            tableLayoutPanel1.ResumeLayout(false);
+            TableLayoutPanelMain.ResumeLayout(false);
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button ButtonSave;
+        private TableLayoutPanel TableLayoutPanelMain;
+        private TitleBarControl titleBarControl1;
+        private SettingsBarControl StationSettingsControlStationName;
+        private SettingsBarControl StationSettingsControlStationId;
+    }
+}
+

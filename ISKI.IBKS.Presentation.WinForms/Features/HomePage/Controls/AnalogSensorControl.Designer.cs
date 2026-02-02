@@ -1,16 +1,9 @@
-﻿namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
+namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
 {
     partial class AnalogSensorControl
     {
-        /// <summary> 
-        ///Gerekli tasarımcı değişkeni.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        ///Kullanılan tüm kaynakları temizleyin.
-        /// </summary>
-        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,12 +13,8 @@
             base.Dispose(disposing);
         }
 
-        #region Bileşen Tasarımcısı üretimi kod
+        #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
 
-        /// <summary> 
-        /// Tasarımcı desteği için gerekli metot - bu metodun 
-        ///içeriğini kod düzenleyici ile değiştirmeyin.
-        /// </summary>
         private void InitializeComponent()
         {
             TableLayoutPanelBg = new TableLayoutPanel();
@@ -37,9 +26,9 @@
             LabelSensorName = new Label();
             TableLayoutPanelBg.SuspendLayout();
             SuspendLayout();
-            // 
-            // TableLayoutPanelBg
-            // 
+            
+            
+            
             TableLayoutPanelBg.BackColor = Color.White;
             TableLayoutPanelBg.ColumnCount = 6;
             TableLayoutPanelBg.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 8F));
@@ -61,9 +50,9 @@
             TableLayoutPanelBg.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanelBg.Size = new Size(579, 63);
             TableLayoutPanelBg.TabIndex = 1;
-            // 
-            // LabelSensorInstantValue
-            // 
+            
+            
+            
             LabelSensorInstantValue.Anchor = AnchorStyles.None;
             LabelSensorInstantValue.AutoSize = true;
             LabelSensorInstantValue.Font = new Font("Calibri", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
@@ -72,9 +61,9 @@
             LabelSensorInstantValue.Size = new Size(13, 18);
             LabelSensorInstantValue.TabIndex = 2;
             LabelSensorInstantValue.Text = "-";
-            // 
-            // PanelStatusIndicator
-            // 
+            
+            
+            
             PanelStatusIndicator.BackColor = Color.FromArgb(19, 162, 97);
             PanelStatusIndicator.Dock = DockStyle.Fill;
             PanelStatusIndicator.Location = new Point(0, 0);
@@ -82,9 +71,9 @@
             PanelStatusIndicator.Name = "PanelStatusIndicator";
             PanelStatusIndicator.Size = new Size(8, 63);
             PanelStatusIndicator.TabIndex = 0;
-            // 
-            // panel2
-            // 
+            
+            
+            
             panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.FromArgb(235, 235, 235);
             panel2.Location = new Point(195, 13);
@@ -92,9 +81,9 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1, 37);
             panel2.TabIndex = 0;
-            // 
-            // panel3
-            // 
+            
+            
+            
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(235, 235, 235);
             panel3.Location = new Point(388, 13);
@@ -102,9 +91,9 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(1, 37);
             panel3.TabIndex = 0;
-            // 
-            // LabelSensorHourlyAvgValue
-            // 
+            
+            
+            
             LabelSensorHourlyAvgValue.Anchor = AnchorStyles.None;
             LabelSensorHourlyAvgValue.AutoSize = true;
             LabelSensorHourlyAvgValue.Font = new Font("Calibri", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
@@ -113,9 +102,9 @@
             LabelSensorHourlyAvgValue.Size = new Size(13, 18);
             LabelSensorHourlyAvgValue.TabIndex = 2;
             LabelSensorHourlyAvgValue.Text = "-";
-            // 
-            // LabelSensorName
-            // 
+            
+            
+            
             LabelSensorName.Anchor = AnchorStyles.None;
             LabelSensorName.AutoSize = true;
             LabelSensorName.Font = new Font("Calibri", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
@@ -124,9 +113,9 @@
             LabelSensorName.Size = new Size(13, 18);
             LabelSensorName.TabIndex = 2;
             LabelSensorName.Text = "-";
-            // 
-            // AnalogSensorControl
-            // 
+            
+            
+            
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(TableLayoutPanelBg);
@@ -148,3 +137,4 @@
         private Label LabelSensorInstantValue;
     }
 }
+

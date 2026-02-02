@@ -1,16 +1,9 @@
-﻿namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
+namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
 {
     partial class SettingsBarControl
     {
-        /// <summary> 
-        ///Gerekli tasarımcı değişkeni.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        ///Kullanılan tüm kaynakları temizleyin.
-        /// </summary>
-        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,12 +13,8 @@
             base.Dispose(disposing);
         }
 
-        #region Bileşen Tasarımcısı üretimi kod
+        #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
 
-        /// <summary> 
-        /// Tasarımcı desteği için gerekli metot - bu metodun 
-        ///içeriğini kod düzenleyici ile değiştirmeyin.
-        /// </summary>
         private void InitializeComponent()
         {
             panel2 = new Panel();
@@ -34,18 +23,18 @@
             textBox1 = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // panel2
-            // 
+            
+            
+            
             panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.FromArgb(235, 235, 235);
             panel2.Location = new Point(496, 5);
             panel2.Name = "panel2";
             panel2.Size = new Size(1, 50);
             panel2.TabIndex = 4;
-            // 
-            // LabelParameter
-            // 
+            
+            
+            
             LabelParameter.Anchor = AnchorStyles.None;
             LabelParameter.AutoSize = true;
             LabelParameter.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -54,9 +43,9 @@
             LabelParameter.Size = new Size(13, 18);
             LabelParameter.TabIndex = 3;
             LabelParameter.Text = "-";
-            // 
-            // tableLayoutPanel1
-            // 
+            
+            
+            
             tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 3;
@@ -73,9 +62,9 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(995, 60);
             tableLayoutPanel1.TabIndex = 1;
-            // 
-            // textBox1
-            // 
+            
+            
+            
             textBox1.Anchor = AnchorStyles.None;
             textBox1.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             textBox1.Location = new Point(505, 19);
@@ -83,9 +72,9 @@
             textBox1.Size = new Size(487, 22);
             textBox1.TabIndex = 5;
             textBox1.TextAlign = HorizontalAlignment.Center;
-            // 
-            // StationSettingsControl
-            // 
+            
+            
+            
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 235, 235);
@@ -105,3 +94,4 @@
         private TextBox textBox1;
     }
 }
+

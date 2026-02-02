@@ -4,61 +4,54 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using ISKI.IBKS.Application.Common.Configuration;
 
 namespace ISKI.IBKS.WebAPI.Authentication;
 
-/// <summary>
-/// Basic Authentication handler for SAIS API access.
-/// Validates username and password from configuration.
-/// </summary>
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private readonly IConfiguration _configuration;
+    private readonly IStationConfiguration _stationConfig;
 
     public BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        IConfiguration configuration)
+        IStationConfiguration stationConfig)
         : base(options, logger, encoder)
     {
-        _configuration = configuration;
+        _stationConfig = stationConfig;
     }
 
-    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         if (!Request.Headers.ContainsKey("Authorization"))
         {
-            return Task.FromResult(AuthenticateResult.Fail("Authorization header missing"));
+            return AuthenticateResult.Fail("Authorization header missing");
         }
 
         try
         {
             var authHeader = AuthenticationHeaderValue.Parse(Request.Headers.Authorization!);
-            
+
             if (authHeader.Scheme != "Basic")
             {
-                return Task.FromResult(AuthenticateResult.Fail("Invalid authentication scheme"));
+                return AuthenticateResult.Fail("Invalid authentication scheme");
             }
 
             var credentialBytes = Convert.FromBase64String(authHeader.Parameter ?? string.Empty);
             var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
-            
+
             if (credentials.Length != 2)
             {
-                return Task.FromResult(AuthenticateResult.Fail("Invalid credentials format"));
+                return AuthenticateResult.Fail("Invalid credentials format");
             }
 
             var username = credentials[0];
             var password = credentials[1];
 
-            // Get expected credentials from configuration
-            var expectedUsername = _configuration["SaisApi:ConnectionUser"];
-            var expectedPassword = _configuration["SaisApi:ConnectionPassword"];
-
-            if (username != expectedUsername || password != expectedPassword)
+            if (username != _stationConfig.LocalApi.UserName || password != _stationConfig.LocalApi.Password)
             {
-                return Task.FromResult(AuthenticateResult.Fail("Invalid username or password"));
+                return AuthenticateResult.Fail("Geçersiz kullanıcı adı veya şifre");
             }
 
             var claims = new[]
@@ -71,11 +64,12 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-            return Task.FromResult(AuthenticateResult.Success(ticket));
+            return AuthenticateResult.Success(ticket);
         }
         catch (Exception ex)
         {
-            return Task.FromResult(AuthenticateResult.Fail($"Authentication failed: {ex.Message}"));
+            return AuthenticateResult.Fail($"Authentication failed: {ex.Message}");
         }
     }
 }
+

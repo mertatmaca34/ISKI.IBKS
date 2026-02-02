@@ -3,7 +3,7 @@
     "BaseUrl2": "https://entegrationsais.csb.gov.tr/",
     "BaseUrl": "http://172.17.15.4/",
     "LoginUrl": "/Security/login",
-    "Timeout": "00:00:1",
+    "Timeout": "00:00:01",
     "UserName": "istanbul_iski_kucuksu",
     "Password": "iskiist34",
     "TicketTtl": "00:29:00",

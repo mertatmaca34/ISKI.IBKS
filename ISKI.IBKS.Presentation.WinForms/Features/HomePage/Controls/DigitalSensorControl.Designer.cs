@@ -1,16 +1,9 @@
-﻿namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
+namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls;
 
 partial class DigitalSensorControl
 {
-    /// <summary> 
-    ///Gerekli tasarımcı değişkeni.
-    /// </summary>
     private System.ComponentModel.IContainer components = null;
 
-    /// <summary> 
-    ///Kullanılan tüm kaynakları temizleyin.
-    /// </summary>
-    ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
     protected override void Dispose(bool disposing)
     {
         if (disposing && (components != null))
@@ -20,12 +13,8 @@ partial class DigitalSensorControl
         base.Dispose(disposing);
     }
 
-    #region Bileşen Tasarımcısı üretimi kod
+    #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
 
-    /// <summary> 
-    /// Tasarımcı desteği için gerekli metot - bu metodun 
-    ///içeriğini kod düzenleyici ile değiştirmeyin.
-    /// </summary>
     private void InitializeComponent()
     {
         tableLayoutPanel1 = new TableLayoutPanel();
@@ -33,9 +22,9 @@ partial class DigitalSensorControl
         PanelStatusIndicator = new Panel();
         tableLayoutPanel1.SuspendLayout();
         SuspendLayout();
-        // 
-        // tableLayoutPanel1
-        // 
+        
+        
+        
         tableLayoutPanel1.BackColor = Color.White;
         tableLayoutPanel1.ColumnCount = 2;
         tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 8F));
@@ -50,9 +39,9 @@ partial class DigitalSensorControl
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tableLayoutPanel1.Size = new Size(184, 38);
         tableLayoutPanel1.TabIndex = 0;
-        // 
-        // LabelSensorName
-        // 
+        
+        
+        
         LabelSensorName.Anchor = AnchorStyles.None;
         LabelSensorName.AutoSize = true;
         LabelSensorName.Font = new Font("Calibri", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
@@ -61,9 +50,9 @@ partial class DigitalSensorControl
         LabelSensorName.Size = new Size(13, 18);
         LabelSensorName.TabIndex = 3;
         LabelSensorName.Text = "-";
-        // 
-        // PanelStatusIndicator
-        // 
+        
+        
+        
         PanelStatusIndicator.BackColor = Color.Gray;
         PanelStatusIndicator.Dock = DockStyle.Fill;
         PanelStatusIndicator.Location = new Point(0, 0);
@@ -71,9 +60,9 @@ partial class DigitalSensorControl
         PanelStatusIndicator.Name = "PanelStatusIndicator";
         PanelStatusIndicator.Size = new Size(8, 38);
         PanelStatusIndicator.TabIndex = 0;
-        // 
-        // DigitalSensorControl
-        // 
+        
+        
+        
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(235, 235, 235);
@@ -92,3 +81,4 @@ partial class DigitalSensorControl
     private Panel PanelStatusIndicator;
     private Label LabelSensorName;
 }
+

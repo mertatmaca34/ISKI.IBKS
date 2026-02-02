@@ -1,14 +1,11 @@
 using System.Net;
 using System.Net.Mail;
-using ISKI.IBKS.Application.Services.Mail;
+using ISKI.IBKS.Application.Common.Notifications;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace ISKI.IBKS.Infrastructure.Services.Mail;
 
-/// <summary>
-/// SMTP tabanlı alarm e-posta bildirim servisi
-/// </summary>
 public sealed class SmtpAlarmMailService : IAlarmMailService
 {
     private readonly MailConfiguration _config;
@@ -55,19 +52,8 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
         DateTime occurredAt,
         CancellationToken ct = default)
     {
-        // Bu metot normalde veritabanından aboneleri çekip gönderir
-        // Şimdilik placeholder olarak bırakıyoruz
         _logger.LogInformation("Alarm bildirimi gönderilecek: {AlarmId} - {Title}", alarmDefinitionId, alarmTitle);
-        // FIXME: AlarmManager bu işi yapmalı veya burada DB'den user çekilmeli?
-        // Refactoring kapsamında AlarmManager logic'i yönetiyor ama mail gönderimi burada.
-        // AlarmManager direk mail servisini kullanıyor.
-        // Eğer "Subscribers" mantığı varsa, AlarmManager'da kullanıcıları çekip tek tek SendAlarmNotificationAsync çağırabiliriz 
-        // VEYA bu metodun içini doldurabiliriz.
-        // Mevcut yapıda AlarmManager'ın bu metodu çağırması bekleniyor.
-        // Ancak ben AlarmManager'da SendAlarmMailAsync (arayüzde olmayan metod?) çağırdım.
-        // IAlarmManager implementation'da `_mailService.SendAlarmMailAsync` diye bir şey uydurdum.
-        // IAlarmMailService arayüzünde `SendAlarmNotificationAsync` var.
-        // Düzelteceğim.
+
         return 0;
     }
 
@@ -80,7 +66,7 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
 <html>
 <body style='font-family: Arial, sans-serif;'>
     <h2 style='color: #0083C8;'>IBKS Test E-postası</h2>
-    <p>Bu bir test e-postasıdır.</p>
+    <p>Bu bir test e-postasÃ„Â±dÃ„Â±r.</p>
     <p>E-posta bildirimleri düzgün çalışıyor.</p>
     <hr/>
     <p style='font-size: 12px; color: #666;'>
@@ -114,7 +100,6 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
             return false;
         }
 
-        // Port fix (default 587)
         if (smtpPort == 0) smtpPort = 587;
 
         using var client = new SmtpClient(smtpHost, smtpPort)
@@ -135,7 +120,7 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
         };
 
         await client.SendMailAsync(message, ct);
-        _logger.LogInformation("E-posta gönderildi: {To}", toEmail);
+        _logger.LogInformation("E-posta gÃƒÂ¶nderildi: {To}", toEmail);
         return true;
     }
 
@@ -185,3 +170,4 @@ public sealed class SmtpAlarmMailService : IAlarmMailService
 </html>";
     }
 }
+
