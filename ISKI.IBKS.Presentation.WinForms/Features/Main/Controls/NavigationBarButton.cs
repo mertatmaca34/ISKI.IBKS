@@ -10,25 +10,30 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main.Controls
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern nint CreateRoundRectRgn
         (
-            int nLeftRect,
-            int nTopRect,
-            int nRightRect,
-            int nBottomRect,
-            int nWidthEllipse,
-            int nHeightEllipse
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
         );
 
+        // Default (inactive) colors
         public Color InactiveBackColor { get; set; } = Color.White;
         public Color InactiveForeColor { get; set; } = Color.DimGray;
         public Color HoverBackColor { get; set; } = Color.FromArgb(230, 230, 230);
         public Color MouseDownColor { get; set; } = Color.FromArgb(210, 210, 210);
 
+        // Active (selected) colors
         public Color ActiveBackColor { get; set; } = Color.FromArgb(230, 240, 255);
         public Color ActiveForeColor { get; set; } = Color.FromArgb(0, 102, 204);
         public Color ActiveHoverBackColor { get; set; } = Color.FromArgb(210, 230, 255);
 
         private bool _isActive;
 
+        /// <summary>
+        /// Gets or sets whether this button is currently active/selected.
+        /// </summary>
         public bool IsActive
         {
             get => _isActive;
@@ -78,6 +83,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Main.Controls
             BackColor = _isActive ? ActiveHoverBackColor : HoverBackColor;
         }
 
+        /// <summary>
+        /// Applies the appropriate style based on active state.
+        /// </summary>
         private void ApplyCurrentStyle()
         {
             if (_isActive)

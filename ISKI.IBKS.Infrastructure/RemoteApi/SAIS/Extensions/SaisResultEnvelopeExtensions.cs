@@ -1,17 +1,21 @@
-using ISKI.IBKS.Application.Common.RemoteApi.SAIS;
-using ISKI.IBKS.Shared.Results;
+﻿using ISKI.IBKS.Domain.Exceptions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Extensions;
-
 public static class SaisResultEnvelopeExtensions
 {
-    public static Result ToResult<T>(this SaisResultEnvelope<T> envelope)
+    public static void EnsureSuccess<T>(this SaisResultEnvelope<T> envelope)
     {
-        if (envelope.Result)
+        if (envelope is not { Result: true })
         {
-            return Result.Success();
+            throw new RemoteApiException(
+                envelope.Message ?? "SAIS API returned an unsuccessful result.");
         }
-
-        return Result.Failure(Error.Create("SAIS_ERROR", envelope.Message ?? "Unknown SAIS error"));
     }
 }
+

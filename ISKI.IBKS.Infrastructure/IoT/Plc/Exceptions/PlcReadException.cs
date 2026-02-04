@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc.Exceptions;
 
-public class PlcReadException : Exception
+public class PlcReadException: Exception
 {
     public int DbNumber { get; }
     public int StartByteAddress { get; }
@@ -22,4 +22,3 @@ public class PlcReadException : Exception
         Buffer = buffer;
     }
 }
-

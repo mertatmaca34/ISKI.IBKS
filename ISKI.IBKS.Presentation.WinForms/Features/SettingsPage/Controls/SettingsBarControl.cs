@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,14 +12,14 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
 {
     public partial class SettingsBarControl : UserControl
     {
-        [Description("Ayar AdÄ±"), Category("IBKS")]
+        [Description("Ayar Adı"), Category("IBKS")]
         public string AyarAdi
         {
             get => LabelParameter.Text;
             set => LabelParameter.Text = value;
         }
 
-        [Description("Ayar DeÄŸeri"), Category("IBKS")]
+        [Description("Ayar Değeri"), Category("IBKS")]
         public string AyarDegeri
         {
             get => textBox1.Text;
@@ -31,4 +31,3 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
         }
     }
 }
-

@@ -1,17 +1,23 @@
 using System.Collections.Generic;
 
-namespace ISKI.IBKS.Application.Common.IoT.Plc;
+namespace ISKI.IBKS.Application.Options;
 
-public class UiMappingOptions
+public sealed class UiMappingOptions
 {
-    public List<PlcParameterMapping> Mappings { get; set; } = new();
+    public UiMappingStation Station { get; init; } = new UiMappingStation();
 }
 
-public class PlcParameterMapping
+public sealed class UiMappingStation
 {
-    public string ParameterCode { get; set; } = string.Empty;
-    public string PlcTagName { get; set; } = string.Empty;
-    public string Unit { get; set; } = string.Empty;
-    public double? MinValue { get; set; }
-    public double? MaxValue { get; set; }
+    public List<UiMappingEntryRaw> Analog { get; init; } = new();
+    public List<UiMappingEntryRaw> Digital { get; init; } = new();
+}
+
+public sealed class UiMappingEntryRaw
+{
+    public string Key { get; init; } = string.Empty; // tag name in StationSnapshot
+    public string Label { get; init; } = string.Empty; // text shown in UI
+    public string Unit { get; init; } = string.Empty; // unit to show (for analog)
+    public string Format { get; init; } = "N2"; // numeric format string
+    public int? Order { get; init; }
 }

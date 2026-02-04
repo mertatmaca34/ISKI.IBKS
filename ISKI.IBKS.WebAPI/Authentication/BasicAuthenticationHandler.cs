@@ -4,22 +4,28 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using ISKI.IBKS.Application.Common.Configuration;
+using ISKI.IBKS.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISKI.IBKS.WebAPI.Authentication;
 
+/// <summary>
+/// Basic Authentication handler for SAIS API access.
+/// Validates username and password from configuration.
+/// </summary>
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private readonly IStationConfiguration _stationConfig;
+    private readonly IServiceScopeFactory _scopeFactory;
 
     public BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        IStationConfiguration stationConfig)
+        IServiceScopeFactory scopeFactory)
         : base(options, logger, encoder)
     {
-        _stationConfig = stationConfig;
+        _scopeFactory = scopeFactory;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -32,7 +38,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         try
         {
             var authHeader = AuthenticationHeaderValue.Parse(Request.Headers.Authorization!);
-
+            
             if (authHeader.Scheme != "Basic")
             {
                 return AuthenticateResult.Fail("Invalid authentication scheme");
@@ -40,7 +46,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
 
             var credentialBytes = Convert.FromBase64String(authHeader.Parameter ?? string.Empty);
             var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
-
+            
             if (credentials.Length != 2)
             {
                 return AuthenticateResult.Fail("Invalid credentials format");
@@ -49,7 +55,17 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var username = credentials[0];
             var password = credentials[1];
 
-            if (username != _stationConfig.LocalApi.UserName || password != _stationConfig.LocalApi.Password)
+            // Validate against database
+            using var scope = _scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
+            var settings = await dbContext.StationSettings.AsNoTracking().FirstOrDefaultAsync();
+
+            if (settings == null)
+            {
+                return AuthenticateResult.Fail("İstasyon ayarları bulunamadı");
+            }
+
+            if (username != settings.ConnectionUser || password != settings.ConnectionPassword)
             {
                 return AuthenticateResult.Fail("Geçersiz kullanıcı adı veya şifre");
             }
@@ -72,4 +88,3 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         }
     }
 }
-

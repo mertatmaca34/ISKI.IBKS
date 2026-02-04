@@ -1,10 +1,16 @@
-namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
+﻿namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
 {
     partial class CalibrationStatusBarSpanControl
     {
-
+        /// <summary> 
+        ///Gerekli tasarımcı değişkeni.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary> 
+        ///Kullanılan tüm kaynakları temizleyin.
+        /// </summary>
+        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -14,8 +20,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             base.Dispose(disposing);
         }
 
-        #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
+        #region Bileşen Tasarımcısı üretimi kod
 
+        /// <summary> 
+        /// Tasarımcı desteği için gerekli metot - bu metodun 
+        ///içeriğini kod düzenleyici ile değiştirmeyin.
+        /// </summary>
         private void InitializeComponent()
         {
             LabelZeroStd = new Label();
@@ -37,9 +47,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
-            
-            
-            
+            // 
+            // LabelZeroStd
+            // 
             LabelZeroStd.Anchor = AnchorStyles.None;
             LabelZeroStd.AutoSize = true;
             LabelZeroStd.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -49,9 +59,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             LabelZeroStd.Size = new Size(13, 18);
             LabelZeroStd.TabIndex = 1;
             LabelZeroStd.Text = "-";
-            
-            
-            
+            // 
+            // tableLayoutPanel1
+            // 
             tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 11;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5F));
@@ -72,9 +82,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(200, 100);
             tableLayoutPanel1.TabIndex = 0;
-            
-            
-            
+            // 
+            // label1
+            // 
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Arial Narrow", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -84,18 +94,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             label1.Size = new Size(20, 60);
             label1.TabIndex = 1;
             label1.Text = "Zero Ref: ";
-            
-            
-            
+            // 
+            // panel5
+            // 
             panel5.Anchor = AnchorStyles.None;
             panel5.BackColor = Color.FromArgb(235, 235, 235);
             panel5.Location = new Point(46, 39);
             panel5.Name = "panel5";
             panel5.Size = new Size(1, 21);
             panel5.TabIndex = 0;
-            
-            
-            
+            // 
+            // LabelSpanStd
+            // 
             LabelSpanStd.Anchor = AnchorStyles.None;
             LabelSpanStd.AutoSize = true;
             LabelSpanStd.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -105,9 +115,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             LabelSpanStd.Size = new Size(13, 18);
             LabelSpanStd.TabIndex = 1;
             LabelSpanStd.Text = "-";
-            
-            
-            
+            // 
+            // tableLayoutPanel2
+            // 
             tableLayoutPanel2.BackColor = Color.White;
             tableLayoutPanel2.ColumnCount = 11;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5F));
@@ -139,9 +149,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Size = new Size(569, 27);
             tableLayoutPanel2.TabIndex = 1;
-            
-            
-            
+            // 
+            // label3
+            // 
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Arial Narrow", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -151,36 +161,36 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             label3.Size = new Size(51, 15);
             label3.TabIndex = 1;
             label3.Text = "Span Ref:";
-            
-            
-            
+            // 
+            // panel1
+            // 
             panel1.Anchor = AnchorStyles.None;
             panel1.BackColor = Color.FromArgb(235, 235, 235);
             panel1.Location = new Point(138, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(1, 21);
             panel1.TabIndex = 0;
-            
-            
-            
+            // 
+            // panel2
+            // 
             panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.FromArgb(235, 235, 235);
             panel2.Location = new Point(282, 3);
             panel2.Name = "panel2";
             panel2.Size = new Size(1, 21);
             panel2.TabIndex = 0;
-            
-            
-            
+            // 
+            // panel3
+            // 
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(235, 235, 235);
             panel3.Location = new Point(426, 3);
             panel3.Name = "panel3";
             panel3.Size = new Size(1, 21);
             panel3.TabIndex = 0;
-            
-            
-            
+            // 
+            // LabelSpanRef
+            // 
             LabelSpanRef.Anchor = AnchorStyles.None;
             LabelSpanRef.AutoSize = true;
             LabelSpanRef.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -190,9 +200,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             LabelSpanRef.Size = new Size(13, 18);
             LabelSpanRef.TabIndex = 1;
             LabelSpanRef.Text = "-";
-            
-            
-            
+            // 
+            // label4
+            // 
             label4.Anchor = AnchorStyles.None;
             label4.AutoSize = true;
             label4.Font = new Font("Arial Narrow", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -202,9 +212,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             label4.Size = new Size(59, 15);
             label4.TabIndex = 1;
             label4.Text = "Span Meas:";
-            
-            
-            
+            // 
+            // LabelSpanMeas
+            // 
             LabelSpanMeas.Anchor = AnchorStyles.None;
             LabelSpanMeas.AutoSize = true;
             LabelSpanMeas.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -214,9 +224,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             LabelSpanMeas.Size = new Size(13, 18);
             LabelSpanMeas.TabIndex = 1;
             LabelSpanMeas.Text = "-";
-            
-            
-            
+            // 
+            // label5
+            // 
             label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.Font = new Font("Arial Narrow", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -226,9 +236,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             label5.Size = new Size(52, 27);
             label5.TabIndex = 1;
             label5.Text = "Span Diff (%):";
-            
-            
-            
+            // 
+            // label6
+            // 
             label6.Anchor = AnchorStyles.None;
             label6.AutoSize = true;
             label6.Font = new Font("Arial Narrow", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -238,9 +248,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             label6.Size = new Size(51, 15);
             label6.TabIndex = 1;
             label6.Text = "Span Std:";
-            
-            
-            
+            // 
+            // LabelSpanDiff
+            // 
             LabelSpanDiff.Anchor = AnchorStyles.None;
             LabelSpanDiff.AutoSize = true;
             LabelSpanDiff.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -250,9 +260,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
             LabelSpanDiff.Size = new Size(13, 18);
             LabelSpanDiff.TabIndex = 1;
             LabelSpanDiff.Text = "-";
-            
-            
-            
+            // 
+            // CalibrationStatusBarSpanControl
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 235, 235);
@@ -287,4 +297,3 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
         private Label LabelSpanDiff;
     }
 }
-

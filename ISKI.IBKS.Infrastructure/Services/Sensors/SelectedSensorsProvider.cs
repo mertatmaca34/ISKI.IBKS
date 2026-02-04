@@ -1,19 +1,27 @@
-using ISKI.IBKS.Application.Common.Configuration;
+using ISKI.IBKS.Application.Services.Sensors;
+using ISKI.IBKS.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISKI.IBKS.Infrastructure.Services.Sensors;
 
+/// <summary>
+/// Seçili sensör listesini veritabanından sağlayan servis
+/// </summary>
 public sealed class SelectedSensorsProvider : ISelectedSensorsProvider
 {
-    private readonly IStationConfiguration _stationConfig;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-    public SelectedSensorsProvider(IStationConfiguration stationConfig)
+    public SelectedSensorsProvider(IServiceScopeFactory scopeFactory)
     {
-        _stationConfig = stationConfig;
+        _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
     }
 
-    public Task<IReadOnlyList<string>> GetSelectedSensorsAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<string>> GetSelectedSensorsAsync(CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(_stationConfig.SelectedSensors);
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<IbksDbContext>();
+        var settings = await dbContext.StationSettings.AsNoTracking().FirstOrDefaultAsync(cancellationToken);
+        return settings?.GetSelectedSensors() ?? new List<string>();
     }
 }
-

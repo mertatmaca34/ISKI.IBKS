@@ -1,12 +1,37 @@
-using FluentValidation;
-using ISKI.IBKS.Application.Common.IoT.Plc;
-using ISKI.IBKS.Infrastructure.Persistence.Contexts;
+﻿using ISKI.IBKS.Application.Features.AnalogSensors.Abstractions;
+using ISKI.IBKS.Application.Features.AnalogSensors.Services;
+using ISKI.IBKS.Application.Features.DigitalSensors.Services;
+using ISKI.IBKS.Application.Features.HealthSummary.Abstractions;
+using ISKI.IBKS.Application.Features.HealthSummary.Services;
+using ISKI.IBKS.Application.Features.Plc.Abstractions;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
+using ISKI.IBKS.Application.Features.StationStatus.Services;
+using ISKI.IBKS.Application.Options;
+using ISKI.IBKS.Infrastructure.Application.Features.StationStatus; // Restored
+using ISKI.IBKS.Infrastructure.Services.DataCollection;
+using ISKI.IBKS.Infrastructure.Services.Mail;
+using ISKI.IBKS.Application.Features.Alarms;
+using ISKI.IBKS.Infrastructure.Services.Alarms;
+using ISKI.IBKS.Infrastructure.IoT.Plc;
+using ISKI.IBKS.Infrastructure.IoT.Plc.Client.Sharp7;
+using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
+using ISKI.IBKS.Infrastructure.IoT.Plc.Readers;
+using ISKI.IBKS.Infrastructure.IoT.Plc.StatusProviders;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
-using ISKI.IBKS.Persistence;
-using ISKI.IBKS.Shared.Constants;
-using Microsoft.EntityFrameworkCore;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Providers;
+using ISKI.IBKS.Infrastructure.BackgroundServices;
+using ISKI.IBKS.Application.Services.Mail;
+using ISKI.IBKS.Application.Services.DataCollection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ISKI.IBKS.Persistence;
+using ISKI.IBKS.Application.Services.Sql;
+using ISKI.IBKS.Infrastructure.Services.Sql;
+using ISKI.IBKS.Application.Services.Iis;
+using ISKI.IBKS.Infrastructure.Services.Iis;
+using ISKI.IBKS.Application.Features.DigitalSensors.Abstractions;
 
 namespace ISKI.IBKS.Infrastructure;
 
@@ -16,24 +41,21 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<PlcSettings>(configuration.GetSection(ConfigurationConstants.Sections.Plc));
-        services.Configure<SAISOptions>(configuration.GetSection(ConfigurationConstants.Sections.Sais));
-        services.Configure<UiMappingOptions>(configuration.GetSection(ConfigurationConstants.Sections.UiMapping));
-        services.Configure<Services.Mail.MailConfiguration>(configuration.GetSection(ConfigurationConstants.Sections.MailSettings));
+        // Bind PLC, SAIS and UI mapping configs from provided IConfiguration (plc.json, sais.json, ui-mapping.json)
+        services.Configure<PlcSettings>(configuration.GetSection("Plc"));
+        services.Configure<SAISOptions>(configuration.GetSection("SAIS"));
+        services.Configure<UiMappingOptions>(configuration.GetSection("UiMapping"));
+        services.Configure<MailConfiguration>(configuration.GetSection("MailSettings"));
+        
+        // Persistence
+        services.AddPersistence(configuration);
 
-        services.AddLocalization(options => options.ResourcesPath = "Localization");
+        // IoT / Plc
+        services.AddSingleton<IPlcClient, Sharp7Client>();
+        services.AddSingleton<IStationSnapshotReader, StationSnapshotReader>();
 
-        services.AddDbContext<IbksDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(IbksDbContext).Assembly.FullName)));
-
-        services.AddValidatorsFromAssembly(typeof(IPlcClient).Assembly);
-
-        services.AddSingleton<IPlcClient, IoT.Plc.Client.Sharp7.Sharp7Client>();
-        services.AddSingleton<IStationSnapshotReader, IoT.Plc.Readers.StationSnapshotReader>();
-
-        services.AddHttpClient<Application.Common.RemoteApi.SAIS.ISaisAuthClient, RemoteApi.SAIS.Http.SaisAuthClient>()
+        // IoC: SAIS auth client (no ticket header) - typed HttpClient
+        services.AddHttpClient<ISaisAuthClient, SaisAuthClient>()
             .ConfigureHttpClient((sp, client) =>
             {
                 var opts = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<SAISOptions>>().Value;
@@ -41,10 +63,14 @@ public static class DependencyInjection
                 client.Timeout = opts.Timeout;
             });
 
-        services.AddSingleton<Application.Common.IoT.Snapshots.IStationSnapshotCache, IoT.Plc.StationSnapshotCache>();
+        // Cache
+        services.AddSingleton<IStationSnapshotCache, StationSnapshotCache>();
 
-        services.AddSingleton<Application.Common.RemoteApi.SAIS.ISaisTicketProvider, RemoteApi.SAIS.Providers.TicketProvider>();
-        services.AddHttpClient<Application.Common.RemoteApi.SAIS.ISaisApiClient, RemoteApi.SAIS.Http.SaisApiClient>()
+        //saisApi
+        // Register TicketProvider as singleton that resolves ISaisAuthClient from scope at call time to avoid DI cycles
+        services.AddSingleton<ISaisTicketProvider, TicketProvider>();
+
+        services.AddHttpClient<ISaisApiClient, SaisApiClient>()
             .ConfigureHttpClient((sp, client) =>
             {
                 var opts = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<SAISOptions>>().Value;
@@ -52,25 +78,32 @@ public static class DependencyInjection
                 client.Timeout = opts.Timeout;
             });
 
-        services.AddScoped<Application.Common.Configuration.ISelectedSensorsProvider, Services.Sensors.SelectedSensorsProvider>();
+        //services
+        services.AddScoped<IAnalogSensorService, AnalogSensorService>();
+        services.AddScoped<IStationStatusService, StationStatusService>();
+        services.AddScoped<IDigitalSensorService, DigitalSensorService>();
+        services.AddScoped<IPlcStatusProvider, PlcStatusProvider>();
+        services.AddScoped<ISaisStatusProvider, SaisStatusProvider>();
+        services.AddScoped<IHealthSummaryService, HealthSummaryService>();
+        
+        // Sensor selection provider
+        services.AddScoped<ISKI.IBKS.Application.Services.Sensors.ISelectedSensorsProvider, ISKI.IBKS.Infrastructure.Services.Sensors.SelectedSensorsProvider>();
 
-        services.AddHostedService<IoT.Plc.PlcPollingService>();
-        services.AddHostedService<BackgroundServices.PlcPollingWorker>();
+        // Background polling
+        services.AddHostedService<PlcPollingService>();
+        services.AddHostedService<DataCollectionBackgroundService>();
+        services.AddHostedService<SampleRequestMonitor>();
+        
+        // Logging
+        services.AddSingleton<ISKI.IBKS.Infrastructure.Logging.IApplicationLogger, ISKI.IBKS.Infrastructure.Logging.ApplicationLogger>();
 
-        services.AddSingleton<Logging.IApplicationLogger, Logging.ApplicationLogger>();
-
-        services.AddSingleton<Application.Common.Configuration.IIisDeploymentService, Services.Iis.IisDeploymentService>();
-        services.AddSingleton<Application.Common.Notifications.IAlarmMailService, Services.Mail.SmtpAlarmMailService>();
-        services.AddScoped<Application.Common.IoT.IDataCollectionService, Services.DataCollection.DataCollectionService>();
-
-        services.AddSingleton<Services.DataCollection.LegacyServiceShim>();
-        services.AddSingleton<Application.Common.IoT.Snapshots.IAnalogSensorService>(sp => sp.GetRequiredService<Services.DataCollection.LegacyServiceShim>());
-        services.AddSingleton<Application.Common.IoT.Snapshots.IDigitalSensorService>(sp => sp.GetRequiredService<Services.DataCollection.LegacyServiceShim>());
-        services.AddSingleton<Application.Common.IoT.Snapshots.IStationStatusService>(sp => sp.GetRequiredService<Services.DataCollection.LegacyServiceShim>());
-        services.AddSingleton<Application.Common.IoT.Snapshots.IHealthSummaryService>(sp => sp.GetRequiredService<Services.DataCollection.LegacyServiceShim>());
-
-        services.AddSingleton<Application.Common.Configuration.IStationConfiguration>(sp => new Services.Configuration.StationConfigurationService(configuration));
-        services.AddSingleton<Application.Common.Configuration.IStationRuntimeState, Services.Configuration.StationRuntimeState>();
+        // Application Services
+        services.AddScoped<IAlarmMailService, ISKI.IBKS.Infrastructure.Services.Mail.SmtpAlarmMailService>();
+        services.AddScoped<IAlarmManager, AlarmManager>();
+        services.AddSingleton<IDataCollectionService, ISKI.IBKS.Infrastructure.Services.DataCollection.DataCollectionService>();
+        services.AddScoped<ISqlCheckService, SqlCheckService>();
+        services.AddSingleton<ISqlInstallationService, SqlInstallationService>();
+        services.AddSingleton<IIisDeploymentService, IisDeploymentService>();
 
         return services;
     }

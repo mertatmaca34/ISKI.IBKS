@@ -1,5 +1,4 @@
-namespace ISKI.IBKS.Application.Common.Extensions;
-
+﻿namespace ISKI.IBKS.Application.Common.Extensions;
 public static class NumericExtensions
 {
     public static double ToDouble(this object? input)

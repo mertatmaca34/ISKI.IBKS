@@ -1,26 +1,28 @@
-using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using ISKI.IBKS.Application.Common.RemoteApi.SAIS;
+﻿using ISKI.IBKS.Infrastructure.Logging;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Calibration;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Channel;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Data;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Diagnostics;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Login;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Sample;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.SendData;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Station;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Units;
 using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Options;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Http;
 
 public class SaisApiClient : SaisApiClientBase, ISaisApiClient
 {
-    public SaisApiClient(
-        HttpClient httpClient,
-        ISaisTicketProvider? saisTicketProvider,
-        IOptions<SAISOptions> saisOptions,
-        ILogger<SaisApiClient> logger)
+    public SaisApiClient(HttpClient httpClient, ISaisTicketProvider? saisTicketProvider, IOptions<SAISOptions> saisOptions, IApplicationLogger logger)
         : base(httpClient, saisOptions, saisTicketProvider, logger)
     {
     }
 
-    #region Guvenlik Servisleri
+    #region Güvenlik Servisleri
     public Task<SaisResultEnvelope<LoginResponse>> LoginAsync(LoginRequest request, CancellationToken ct = default)
         => PostAsync<LoginResponse>(relativeUri: "/Security/login", payload: request, includeTicket: false, cancellationToken: ct);
     #endregion
@@ -30,7 +32,7 @@ public class SaisApiClient : SaisApiClientBase, ISaisApiClient
         => PostAsync<DateTime>(relativeUri: "/SAIS/GetServerDateTime", payload: null, includeTicket: true, cancellationToken: ct);
     #endregion
 
-    #region Istasyon Servisleri
+    #region İstasyon Servisleri
     public Task<SaisResultEnvelope<StationInfoResponse>> GetStationInformationAsync(Guid stationId, CancellationToken ct = default)
         => PostAsync<StationInfoResponse>(relativeUri: $"/SAIS/GetStationInformation?stationId={stationId}", payload: null, includeTicket: true, cancellationToken: ct);
 
@@ -111,7 +113,4 @@ public class SaisApiClient : SaisApiClientBase, ISaisApiClient
     public Task<SaisResultEnvelope<object>> SampleRequestErrorAsync(SampleErrorRequest request, CancellationToken ct = default)
         => PostAsync<object>(relativeUri: "/SAIS/SampleRequestError", payload: request, includeTicket: true, cancellationToken: ct);
     #endregion
-
-    public async Task<SaisResultEnvelope<bool>> SendInstantDataAsync(object data, CancellationToken ct = default) { return new SaisResultEnvelope<bool> { Result = true, Objects = true }; }
-    public async Task<SaisResultEnvelope<bool>> SendHistoryDataAsync(object data, CancellationToken ct = default) { return new SaisResultEnvelope<bool> { Result = true, Objects = true }; }
 }

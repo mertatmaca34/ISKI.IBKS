@@ -1,72 +1,68 @@
 using ISKI.IBKS.Domain.Common.Entities;
-using ISKI.IBKS.Domain.Events.Sampling;
-using ISKI.IBKS.Domain.Enums;
 
 namespace ISKI.IBKS.Domain.Entities;
 
+/// <summary>
+/// Numune alma taleplerini temsil eder.
+/// SAIS numune servisleri için kullanılır.
+/// </summary>
 public sealed class SampleRequest : AuditableEntity<Guid>
 {
     public Guid StationId { get; private set; }
-
+    
+    /// <summary>
+    /// SAIS tarafından verilen numune kodu
+    /// </summary>
     public string SampleCode { get; private set; } = string.Empty;
-
+    
+    /// <summary>
+    /// Numune alımına neden olan parametre (sınır aşımı durumunda)
+    /// </summary>
     public string? TriggerParameter { get; private set; }
-
+    
+    /// <summary>
+    /// Numune alma durumu
+    /// </summary>
     public SampleStatus Status { get; private set; }
-
+    
+    /// <summary>
+    /// Numune başlangıç zamanı
+    /// </summary>
     public DateTime StartedAt { get; private set; }
-
+    
+    /// <summary>
+    /// Numune bitiş zamanı
+    /// </summary>
     public DateTime? CompletedAt { get; private set; }
-
+    
+    /// <summary>
+    /// Tetikleme türü
+    /// </summary>
     public SampleTriggerType TriggerType { get; private set; }
-
+    
+    /// <summary>
+    /// Hata mesajı (başarısız durumda)
+    /// </summary>
     public string? ErrorMessage { get; private set; }
-
-    public static SampleRequest CreateRemote(Guid stationId)
-    {
-        return new SampleRequest
-        {
-            Id = Guid.NewGuid(),
-            StationId = stationId,
-            TriggerType = SampleTriggerType.SaisRemote,
-            Status = SampleStatus.Pending,
-            StartedAt = DateTime.UtcNow
-        };
-    }
-
-    public static SampleRequest Create(Guid stationId, string reason, SamplePriority priority)
-    {
-        return new SampleRequest
-        {
-            Id = Guid.NewGuid(),
-            StationId = stationId,
-            TriggerParameter = reason,
-            TriggerType = SampleTriggerType.Manual,
-            Status = SampleStatus.Pending,
-            StartedAt = DateTime.UtcNow
-        };
-    }
 
     private SampleRequest() { }
 
     public static SampleRequest CreateFromSaisTrigger(Guid stationId, string sampleCode)
     {
-        var request = new SampleRequest
+        return new SampleRequest
         {
             Id = Guid.NewGuid(),
             StationId = stationId,
             SampleCode = sampleCode,
             TriggerType = SampleTriggerType.SaisRemote,
-            Status = SampleStatus.Started,
+            Status = SampleStatus.Pending,
             StartedAt = DateTime.UtcNow
         };
-
-        return request;
     }
 
     public static SampleRequest CreateFromLimitOver(Guid stationId, string triggerParameter)
     {
-        var request = new SampleRequest
+        return new SampleRequest
         {
             Id = Guid.NewGuid(),
             StationId = stationId,
@@ -75,39 +71,18 @@ public sealed class SampleRequest : AuditableEntity<Guid>
             Status = SampleStatus.Pending,
             StartedAt = DateTime.UtcNow
         };
-
-        request.RaiseDomainEvent(new SampleTriggeredDomainEvent(
-            request.Id,
-            request.StationId,
-            request.TriggerParameter,
-            request.TriggerType));
-
-        return request;
     }
 
     public void SetSampleCode(string sampleCode)
     {
-        if (Status != SampleStatus.Pending)
-            return;
-
         SampleCode = sampleCode;
         Status = SampleStatus.Started;
     }
 
-    public void Complete(int bottleNumber)
-    {
-        if (Status != SampleStatus.Started)
-            return;
-
-        Status = SampleStatus.Completed;
-        CompletedAt = DateTime.UtcNow;
-
-        RaiseDomainEvent(new SampleCompletedDomainEvent(Id, StationId, SampleCode));
-    }
-
     public void MarkAsCompleted()
     {
-        Complete(0);
+        Status = SampleStatus.Completed;
+        CompletedAt = DateTime.UtcNow;
     }
 
     public void MarkAsFailed(string errorMessage)
@@ -118,3 +93,17 @@ public sealed class SampleRequest : AuditableEntity<Guid>
     }
 }
 
+public enum SampleStatus
+{
+    Pending = 0,    // Bekliyor
+    Started = 1,    // Başladı
+    Completed = 2,  // Tamamlandı
+    Failed = 3      // Başarısız
+}
+
+public enum SampleTriggerType
+{
+    SaisRemote = 0,  // SAIS tarafından tetiklendi
+    LimitOver = 1,   // Sınır aşımı nedeniyle
+    Manual = 2       // Manuel tetikleme
+}

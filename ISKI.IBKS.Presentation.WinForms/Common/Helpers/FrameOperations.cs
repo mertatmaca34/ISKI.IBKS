@@ -1,7 +1,14 @@
 namespace ISKI.IBKS.Presentation.WinForms.Common.Helpers;
 
+/// <summary>
+/// Helper class for managing frame-based animations in the UI.
+/// Used for alternating between bitmap frames for visual effects.
+/// </summary>
 public static class FrameOperations
 {
+    /// <summary>
+    /// Changes a panel's background image if it's different from the current one.
+    /// </summary>
     public static void ChangePanelFrame(Panel panel, Bitmap nextFrame)
     {
         if (panel.BackgroundImage == nextFrame)
@@ -14,6 +21,9 @@ public static class FrameOperations
         }
     }
 
+    /// <summary>
+    /// Changes a PictureBox's image based on pump state.
+    /// </summary>
     public static void ChangePictureBoxFrame(PictureBox pictureBox, Bitmap animation, Bitmap idle, PumpState pumpState)
     {
         if (pictureBox.Image == animation && pumpState == PumpState.Working)
@@ -34,6 +44,9 @@ public static class FrameOperations
         }
     }
 
+    /// <summary>
+    /// Alternates a UserControl's background image between two frames.
+    /// </summary>
     public static void ChangeControlFrame(UserControl control, Bitmap frame1, Bitmap frame2)
     {
         if (control.BackgroundImage == frame1)
@@ -47,3 +60,11 @@ public static class FrameOperations
     }
 }
 
+/// <summary>
+/// Pump state enumeration for animation control.
+/// </summary>
+public enum PumpState
+{
+    Idle,
+    Working
+}

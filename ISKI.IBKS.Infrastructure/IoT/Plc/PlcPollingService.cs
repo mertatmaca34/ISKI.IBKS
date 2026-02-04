@@ -1,11 +1,11 @@
-using ISKI.IBKS.Application.Common.IoT.Plc;
+﻿using ISKI.IBKS.Infrastructure.IoT.Plc.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ISKI.IBKS.Application.Common.IoT.Snapshots;
+using ISKI.IBKS.Application.Features.StationSnapshots.Abstractions;
 
 namespace ISKI.IBKS.Infrastructure.IoT.Plc;
 
@@ -43,7 +43,7 @@ public class PlcPollingService : BackgroundService
 
                 try
                 {
-                    var snapshot = await _stationSnapshotReader.ReadAsync(station, stoppingToken);
+                    var snapshot = await _stationSnapshotReader.Read(station.IpAddress);
 
                     if (snapshot is not null)
                     {
@@ -66,4 +66,3 @@ public class PlcPollingService : BackgroundService
         _logger.LogInformation("PLC polling service stopped.");
     }
 }
-

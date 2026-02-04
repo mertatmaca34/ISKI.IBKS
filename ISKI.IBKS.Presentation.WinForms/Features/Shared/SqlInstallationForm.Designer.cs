@@ -2,25 +2,32 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.Shared;
 
 partial class SqlInstallationForm
 {
+    /// <summary>
+    /// Required designer variable.
+    /// </summary>
     private System.ComponentModel.IContainer components = null;
-    private System.Windows.Forms.Panel contentPanel;
-    private System.Windows.Forms.Label lblTitle;
-    private System.Windows.Forms.ProgressBar progressBar;
-    private System.Windows.Forms.Label lblStatus;
-    private System.Windows.Forms.Button btnCancel;
 
+    /// <summary>
+    /// Clean up any resources being used.
+    /// </summary>
     protected override void Dispose(bool disposing)
     {
         if (disposing && (components != null))
         {
             components.Dispose();
         }
+        _cts?.Dispose();
         base.Dispose(disposing);
     }
 
+    #region Windows Form Designer generated code
+
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
     private void InitializeComponent()
     {
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SqlInstallationForm));
         contentPanel = new Panel();
         lblTitle = new Label();
         progressBar = new ProgressBar();
@@ -36,7 +43,6 @@ partial class SqlInstallationForm
         contentPanel.Controls.Add(progressBar);
         contentPanel.Controls.Add(lblStatus);
         contentPanel.Controls.Add(btnCancel);
-        contentPanel.Dock = DockStyle.Fill;
         contentPanel.Location = new Point(0, 0);
         contentPanel.Name = "contentPanel";
         contentPanel.Size = new Size(450, 200);
@@ -44,13 +50,14 @@ partial class SqlInstallationForm
         // 
         // lblTitle
         // 
+        lblTitle.BackColor = Color.Transparent;
         lblTitle.Font = new Font("Segoe UI Semibold", 14F);
         lblTitle.ForeColor = Color.White;
         lblTitle.Location = new Point(25, 25);
         lblTitle.Name = "lblTitle";
         lblTitle.Size = new Size(400, 32);
         lblTitle.TabIndex = 0;
-        lblTitle.Text = "Veritabanı Yapılandırılıyor...";
+        lblTitle.Text = "⚙️  Veritabanı Yapılandırılıyor...";
         lblTitle.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // progressBar
@@ -64,6 +71,8 @@ partial class SqlInstallationForm
         // 
         // lblStatus
         // 
+        lblStatus.BackColor = Color.Transparent;
+        lblStatus.Font = new Font("Segoe UI", 9F);
         lblStatus.ForeColor = Color.FromArgb(180, 180, 180);
         lblStatus.Location = new Point(25, 95);
         lblStatus.Name = "lblStatus";
@@ -77,6 +86,7 @@ partial class SqlInstallationForm
         btnCancel.Cursor = Cursors.Hand;
         btnCancel.FlatAppearance.BorderColor = Color.FromArgb(80, 80, 90);
         btnCancel.FlatStyle = FlatStyle.Flat;
+        btnCancel.Font = new Font("Segoe UI", 9F);
         btnCancel.ForeColor = Color.White;
         btnCancel.Location = new Point(325, 155);
         btnCancel.Name = "btnCancel";
@@ -84,7 +94,6 @@ partial class SqlInstallationForm
         btnCancel.TabIndex = 3;
         btnCancel.Text = "İptal Et";
         btnCancel.UseVisualStyleBackColor = false;
-        btnCancel.Click += BtnCancel_Click;
         // 
         // SqlInstallationForm
         // 
@@ -93,12 +102,19 @@ partial class SqlInstallationForm
         BackColor = Color.FromArgb(32, 32, 38);
         ClientSize = new Size(450, 200);
         Controls.Add(contentPanel);
+        DoubleBuffered = true;
         FormBorderStyle = FormBorderStyle.None;
-        Icon = (Icon)resources.GetObject("$this.Icon");
         Name = "SqlInstallationForm";
         StartPosition = FormStartPosition.CenterScreen;
-        TopMost = true;
         contentPanel.ResumeLayout(false);
         ResumeLayout(false);
     }
+
+    #endregion
+
+    private System.Windows.Forms.Panel contentPanel;
+    private System.Windows.Forms.Label lblTitle;
+    private System.Windows.Forms.ProgressBar progressBar;
+    private System.Windows.Forms.Label lblStatus;
+    private System.Windows.Forms.Button btnCancel;
 }

@@ -3,13 +3,18 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ISKI.IBKS.Domain.Entities;
 
+/// <summary>
+/// Sensör verilerini temsil eder. SAIS API formatına uyumlu yapı.
+/// Her kayıt 1 dakikalık periyodu temsil eder.
+/// </summary>
 public sealed class SensorData : AuditableEntity<Guid>
 {
     public Guid StationId { get; private set; }
     public DateTime ReadTime { get; private set; }
-    public int Period { get; private set; } = 1;
+    public int Period { get; private set; } = 1; // 1=1dk, 2=5dk, 4=30dk, 8=saatlik, 16=günlük
     public string? SoftwareVersion { get; private set; }
 
+    // Analog Sensörler
     public double? TesisDebi { get; private set; }
     public int? TesisDebi_Status { get; private set; }
 
@@ -34,6 +39,7 @@ public sealed class SensorData : AuditableEntity<Guid>
     public double? Sicaklik { get; private set; }
     public int? Sicaklik_Status { get; private set; }
 
+    // Opsiyonel Sensörler
     public double? DesarjDebi { get; private set; }
     public int? DesarjDebi_Status { get; private set; }
 
@@ -43,6 +49,7 @@ public sealed class SensorData : AuditableEntity<Guid>
     public double? HariciDebi2 { get; private set; }
     public int? HariciDebi2_Status { get; private set; }
 
+    // SAIS'e gönderildi mi?
     public bool IsSentToSais { get; private set; }
     public DateTime? SentToSaisAt { get; private set; }
 
@@ -95,4 +102,3 @@ public sealed class SensorData : AuditableEntity<Guid>
         SentToSaisAt = DateTime.UtcNow;
     }
 }
-

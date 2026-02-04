@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,28 +12,28 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
 {
     public partial class CalibrationStatusBarSpanControl : UserControl
     {
-        [Description("Span Ref DeÄŸeri"), Category("IBKS")]
+        [Description("Span Ref Değeri"), Category("IBKS")]
         public string SpanRef
         {
             get => LabelSpanRef.Text;
             set => LabelSpanRef.Text = value;
         }
 
-        [Description("Span Meas DeÄŸeri"), Category("IBKS")]
+        [Description("Span Meas Değeri"), Category("IBKS")]
         public string SpanMeas
         {
             get => LabelSpanMeas.Text;
             set => LabelSpanMeas.Text = value;
         }
 
-        [Description("Span Diff DeÄŸeri"), Category("IBKS")]
+        [Description("Span Diff Değeri"), Category("IBKS")]
         public string SpanDiff
         {
             get => LabelSpanDiff.Text;
             set => LabelSpanDiff.Text = value;
         }
 
-        [Description("Span Std DeÄŸeri"), Category("IBKS")]
+        [Description("Span Std Değeri"), Category("IBKS")]
         public string SpanStd
         {
             get => LabelSpanStd.Text;
@@ -45,4 +45,3 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.CalibrationPage.Controls
         }
     }
 }
-

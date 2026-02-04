@@ -1,5 +1,4 @@
-using ISKI.IBKS.Shared.Localization;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -10,13 +9,6 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
         public HealthSummaryCardControl()
         {
             InitializeComponent();
-            InitializeLocalization();
-        }
-
-        private void InitializeLocalization()
-        {
-            // Placeholder for any structural localization if needed
-            UpdateText(PlcConnected, ApiHealthy, LastPhCalibration, LastIletkenlikCalibration);
         }
 
         public string Title
@@ -43,14 +35,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
 
         public bool PlcConnected
         {
-            get => _plcConnected;
-            set
-            {
-                _plcConnected = value;
-                UpdateText(_plcConnected, ApiHealthy, LastPhCalibration, LastIletkenlikCalibration);
-            }
+            get => LabelKey.Text?.Contains("PLC İletişimi") ?? false; // not exact reverse mapping; mainly read-only
+            set => UpdateText(value, ApiHealthy, LastPhCalibration, LastIletkenlikCalibration);
         }
-        private bool _plcConnected;
 
         private bool _apiHealthy;
         public bool ApiHealthy
@@ -87,10 +74,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
 
         private void UpdateText(bool plcConnected, bool apiHealthy, DateTime? phCalib, DateTime? iletCalib)
         {
-            LabelKey.Text = $"{Strings.Health_PlcConnection}:\r\n{Strings.Health_ApiConnection}:\r\n{Strings.Health_LastPhCalib}:\r\n{Strings.Health_LastCondCalib}:";
+            // Left column: labels
+            LabelKey.Text = "PLC İletişimi:\r\nAPI İletişimi:\r\nSon Kalibrasyon (pH):\r\nSon Kalibrasyon (İletkenlik):";
 
-            var plcText = plcConnected ? Strings.Common_Healthy : Strings.Common_Problematic;
-            var apiText = apiHealthy ? Strings.Common_Healthy : Strings.Common_Problematic;
+            // Right column: values
+            var plcText = plcConnected ? "Sağlıklı ✅" : "Problemli ❌";
+            var apiText = apiHealthy ? "Sağlıklı ✅" : "Problemli ❌";
             var phText = phCalib.HasValue ? phCalib.Value.ToString("dd.MM.yyyy") : "-";
             var iletText = iletCalib.HasValue ? iletCalib.Value.ToString("dd.MM.yyyy") : "-";
 
@@ -98,4 +87,3 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.HomePage.Controls
         }
     }
 }
-

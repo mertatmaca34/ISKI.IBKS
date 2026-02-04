@@ -1,9 +1,16 @@
-namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
+﻿namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
 {
     partial class CalibrationSettingsBar
     {
+        /// <summary> 
+        ///Gerekli tasarımcı değişkeni.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary> 
+        ///Kullanılan tüm kaynakları temizleyin.
+        /// </summary>
+        ///<param name="disposing">yönetilen kaynaklar dispose edilmeliyse doğru; aksi halde yanlış.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -13,8 +20,12 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             base.Dispose(disposing);
         }
 
-        #region BileÅŸen TasarÄ±mcÄ±sÄ± Ã¼retimi kod
+        #region Bileşen Tasarımcısı üretimi kod
 
+        /// <summary> 
+        /// Tasarımcı desteği için gerekli metot - bu metodun 
+        ///içeriğini kod düzenleyici ile değiştirmeyin.
+        /// </summary>
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -41,9 +52,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             tableLayoutPanel4.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             SuspendLayout();
-            
-            
-            
+            // 
+            // tableLayoutPanel1
+            // 
             tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 9;
@@ -73,18 +84,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(995, 60);
             tableLayoutPanel1.TabIndex = 0;
-            
-            
-            
+            // 
+            // panel2
+            // 
             panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.FromArgb(235, 235, 235);
             panel2.Location = new Point(195, 5);
             panel2.Name = "panel2";
             panel2.Size = new Size(1, 50);
             panel2.TabIndex = 4;
-            
-            
-            
+            // 
+            // LabelParameter
+            // 
             LabelParameter.Anchor = AnchorStyles.None;
             LabelParameter.AutoSize = true;
             LabelParameter.Font = new Font("Arial", 11.25F, FontStyle.Bold);
@@ -93,27 +104,27 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             LabelParameter.Size = new Size(41, 18);
             LabelParameter.TabIndex = 3;
             LabelParameter.Text = "AKM";
-            
-            
-            
+            // 
+            // panel1
+            // 
             panel1.Anchor = AnchorStyles.None;
             panel1.BackColor = Color.FromArgb(235, 235, 235);
             panel1.Location = new Point(396, 5);
             panel1.Name = "panel1";
             panel1.Size = new Size(1, 50);
             panel1.TabIndex = 5;
-            
-            
-            
+            // 
+            // panel3
+            // 
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(235, 235, 235);
             panel3.Location = new Point(597, 5);
             panel3.Name = "panel3";
             panel3.Size = new Size(1, 50);
             panel3.TabIndex = 5;
-            
-            
-            
+            // 
+            // tableLayoutPanel2
+            // 
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(ComboBoxZeroRef, 0, 1);
@@ -127,9 +138,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
             tableLayoutPanel2.Size = new Size(191, 60);
             tableLayoutPanel2.TabIndex = 6;
-            
-            
-            
+            // 
+            // ComboBoxZeroRef
+            // 
             ComboBoxZeroRef.Dock = DockStyle.Fill;
             ComboBoxZeroRef.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBoxZeroRef.FormattingEnabled = true;
@@ -139,9 +150,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             ComboBoxZeroRef.Name = "ComboBoxZeroRef";
             ComboBoxZeroRef.Size = new Size(175, 23);
             ComboBoxZeroRef.TabIndex = 5;
-            
-            
-            
+            // 
+            // label1
+            // 
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Arial", 11.25F, FontStyle.Bold);
@@ -150,9 +161,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             label1.Size = new Size(113, 18);
             label1.TabIndex = 3;
             label1.Text = "Zero Referans:";
-            
-            
-            
+            // 
+            // tableLayoutPanel3
+            // 
             tableLayoutPanel3.ColumnCount = 1;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.Controls.Add(label3, 0, 0);
@@ -166,9 +177,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
             tableLayoutPanel3.Size = new Size(191, 60);
             tableLayoutPanel3.TabIndex = 6;
-            
-            
-            
+            // 
+            // label3
+            // 
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Arial", 11.25F, FontStyle.Bold);
@@ -176,10 +187,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             label3.Name = "label3";
             label3.Size = new Size(94, 18);
             label3.TabIndex = 3;
-            label3.Text = "Zero SÃ¼resi:";
-            
-            
-            
+            label3.Text = "Zero Süresi:";
+            // 
+            // ComboBoxZeroTime
+            // 
             ComboBoxZeroTime.Dock = DockStyle.Fill;
             ComboBoxZeroTime.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBoxZeroTime.FormattingEnabled = true;
@@ -189,9 +200,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             ComboBoxZeroTime.Name = "ComboBoxZeroTime";
             ComboBoxZeroTime.Size = new Size(175, 23);
             ComboBoxZeroTime.TabIndex = 4;
-            
-            
-            
+            // 
+            // tableLayoutPanel4
+            // 
             tableLayoutPanel4.ColumnCount = 1;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel4.Controls.Add(ComboBoxSpanRef, 0, 1);
@@ -205,9 +216,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
             tableLayoutPanel4.Size = new Size(191, 60);
             tableLayoutPanel4.TabIndex = 6;
-            
-            
-            
+            // 
+            // ComboBoxSpanRef
+            // 
             ComboBoxSpanRef.Dock = DockStyle.Fill;
             ComboBoxSpanRef.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBoxSpanRef.FormattingEnabled = true;
@@ -217,9 +228,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             ComboBoxSpanRef.Name = "ComboBoxSpanRef";
             ComboBoxSpanRef.Size = new Size(175, 23);
             ComboBoxSpanRef.TabIndex = 5;
-            
-            
-            
+            // 
+            // label4
+            // 
             label4.Anchor = AnchorStyles.None;
             label4.AutoSize = true;
             label4.Font = new Font("Arial", 11.25F, FontStyle.Bold);
@@ -228,18 +239,18 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             label4.Size = new Size(117, 18);
             label4.TabIndex = 3;
             label4.Text = "Span Referans:";
-            
-            
-            
+            // 
+            // panel4
+            // 
             panel4.Anchor = AnchorStyles.None;
             panel4.BackColor = Color.FromArgb(235, 235, 235);
             panel4.Location = new Point(798, 5);
             panel4.Name = "panel4";
             panel4.Size = new Size(1, 50);
             panel4.TabIndex = 5;
-            
-            
-            
+            // 
+            // tableLayoutPanel5
+            // 
             tableLayoutPanel5.ColumnCount = 1;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel5.Controls.Add(ComboBoxSpanTime, 0, 1);
@@ -253,9 +264,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
             tableLayoutPanel5.Size = new Size(191, 60);
             tableLayoutPanel5.TabIndex = 6;
-            
-            
-            
+            // 
+            // ComboBoxSpanTime
+            // 
             ComboBoxSpanTime.Dock = DockStyle.Fill;
             ComboBoxSpanTime.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBoxSpanTime.FormattingEnabled = true;
@@ -265,9 +276,9 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             ComboBoxSpanTime.Name = "ComboBoxSpanTime";
             ComboBoxSpanTime.Size = new Size(175, 23);
             ComboBoxSpanTime.TabIndex = 5;
-            
-            
-            
+            // 
+            // label5
+            // 
             label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.Font = new Font("Arial", 11.25F, FontStyle.Bold);
@@ -275,10 +286,10 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
             label5.Name = "label5";
             label5.Size = new Size(98, 18);
             label5.TabIndex = 3;
-            label5.Text = "Span SÃ¼resi:";
-            
-            
-            
+            label5.Text = "Span Süresi:";
+            // 
+            // CalibrationSettingsBar
+            // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -322,4 +333,3 @@ namespace ISKI.IBKS.Presentation.WinForms.Features.SettingsPage.Controls
         private ComboBox ComboBoxSpanRef;
     }
 }
-

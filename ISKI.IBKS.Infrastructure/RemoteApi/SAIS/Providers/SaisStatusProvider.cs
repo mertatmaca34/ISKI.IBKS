@@ -1,6 +1,6 @@
-using ISKI.IBKS.Application.Common.RemoteApi.SAIS;
-using ISKI.IBKS.Application.Common.RemoteApi.SAIS;
-using ISKI.IBKS.Application.Common.RemoteApi.SAIS;
+﻿using ISKI.IBKS.Application.Features.HealthSummary.Abstractions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Abstractions;
+using ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Contracts.Calibration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +22,7 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Providers
 
             var getLastCalibrationDates = await saisApiClient.GetCalibrationAsync(request, ct);
 
+
             return getLastCalibrationDates?.Objects?
                 .Where(c => string.Equals(c.DBColumnName, "Iletkenlik", StringComparison.OrdinalIgnoreCase))
                 .OrderByDescending(c => c.CalibrationDate)
@@ -39,6 +40,7 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Providers
             try
             {
                 var getLastCalibrationDates = await saisApiClient.GetCalibrationAsync(request, ct);
+
 
                 return getLastCalibrationDates?.Objects?
                     .Where(c => string.Equals(c.DBColumnName, "Ph", StringComparison.OrdinalIgnoreCase))
@@ -70,4 +72,3 @@ namespace ISKI.IBKS.Infrastructure.RemoteApi.SAIS.Providers
         }
     }
 }
-

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +12,7 @@ namespace ISKI.IBKS.Presentation.WinForms.Common.Controls
 {
     public partial class TitleBarControl : UserControl
     {
+
         [Description("Title Bar Text"), Category("IBKS")]
         public string TitleBarText
         {
@@ -24,4 +25,3 @@ namespace ISKI.IBKS.Presentation.WinForms.Common.Controls
         }
     }
 }
-

@@ -1,27 +1,58 @@
 using ISKI.IBKS.Domain.Common.Entities;
-using ISKI.IBKS.Domain.Enums;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ISKI.IBKS.Domain.Entities;
 
-public sealed class AlarmEvent : AuditableEntity<Guid>
+/// <summary>
+/// Oluşan alarm olaylarını temsil eder.
+/// Alarm geçmişi için kullanılır.
+/// </summary>
+public sealed class AlarmEvent : Entity<Guid>
 {
     public Guid StationId { get; private set; }
     public Guid AlarmDefinitionId { get; private set; }
+    
+    /// <summary>
+    /// Alarm oluşma zamanı
+    /// </summary>
     public DateTime OccurredAt { get; private set; }
+    
+    /// <summary>
+    /// Alarm kapanma zamanı (null ise hala aktif)
+    /// </summary>
     public DateTime? ResolvedAt { get; private set; }
+    
+    /// <summary>
+    /// Alarm tetikleyen değer
+    /// </summary>
     public double? TriggerValue { get; private set; }
+    
+    /// <summary>
+    /// İlgili sensör adı
+    /// </summary>
     public string SensorName { get; private set; } = string.Empty;
+    
+    /// <summary>
+    /// Alarm mesajı
+    /// </summary>
     public string Message { get; private set; } = string.Empty;
+    
+    /// <summary>
+    /// Bildirim gönderildi mi?
+    /// </summary>
     public bool NotificationSent { get; private set; }
+    
+    /// <summary>
+    /// Bildirim gönderim zamanı
+    /// </summary>
     public DateTime? NotificationSentAt { get; private set; }
+    
+    /// <summary>
+    /// Alarm önceliği
+    /// </summary>
     public AlarmPriority Priority { get; private set; }
-
-    public AlarmDefinition? AlarmDefinition { get; private set; }
 
     private AlarmEvent() { }
 
-    [SetsRequiredMembers]
     public AlarmEvent(
         Guid stationId,
         Guid alarmDefinitionId,
@@ -38,7 +69,6 @@ public sealed class AlarmEvent : AuditableEntity<Guid>
         TriggerValue = triggerValue;
         Priority = priority;
         OccurredAt = DateTime.UtcNow;
-        CreatedAt = DateTime.UtcNow;
         NotificationSent = false;
     }
 
@@ -54,4 +84,8 @@ public sealed class AlarmEvent : AuditableEntity<Guid>
     }
 
     public bool IsActive => !ResolvedAt.HasValue;
+
+    public TimeSpan? Duration => ResolvedAt.HasValue 
+        ? ResolvedAt.Value - OccurredAt 
+        : DateTime.UtcNow - OccurredAt;
 }

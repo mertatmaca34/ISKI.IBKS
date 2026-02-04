@@ -7,23 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\**" />
-    <EmbeddedResource Remove="Features\**" />
-    <None Remove="Features\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.9.0" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
-    <PackageReference Include="MediatR" Version="12.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ISKI.IBKS.Domain\ISKI.IBKS.Domain.csproj" />
-    <ProjectReference Include="..\ISKI.IBKS.Shared\ISKI.IBKS.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Simulation\Services\" />
   </ItemGroup>
 
 </Project>
